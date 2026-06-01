@@ -138,6 +138,7 @@ CREATE TABLE IF NOT EXISTS nightsquirrel.tbl_r_video
     vid_id         bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     vid_title      character varying(1024),
     vid_editor     character varying(1024),
+    vid_author1_per_id bigint,
     vid_date       character varying(8),
     vid_platform   character varying(512),
     vid_language   character varying(20),
@@ -156,6 +157,7 @@ CREATE TABLE IF NOT EXISTS nightsquirrel.tbl_r_weblink
     wlk_id         bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     wlk_title      character varying(1024),
     wlk_editor     character varying(1024),
+    wlk_author1_per_id bigint,
     wlk_date       character varying(8),
     wlk_platform   character varying(512),
     wlk_language   character varying(20),
@@ -188,6 +190,7 @@ CREATE TABLE IF NOT EXISTS nightsquirrel.tbl_r_reference
     ref_is_current       boolean     NOT NULL DEFAULT false,                                                                                              
     ref_is_recent        boolean     NOT NULL DEFAULT false,                                                                                              
     ref_is_crucial       boolean     NOT NULL DEFAULT false,
+    ref_is_other_outstanding_work boolean NOT NULL DEFAULT false, 
     ref_created_at       timestamptz NOT NULL DEFAULT now(),
     ref_updated_at       timestamptz NOT NULL DEFAULT now(),
     CONSTRAINT chk_tbl_r_reference_single_entity CHECK (
@@ -265,6 +268,10 @@ ALTER TABLE nightsquirrel.tbl_r_video   ADD CONSTRAINT fk_tbl_r_video_usr
     FOREIGN KEY (usr_id) REFERENCES nightsquirrel.tbl_u_user (usr_id) ON DELETE RESTRICT;
 ALTER TABLE nightsquirrel.tbl_r_weblink ADD CONSTRAINT fk_tbl_r_weblink_usr
     FOREIGN KEY (usr_id) REFERENCES nightsquirrel.tbl_u_user (usr_id) ON DELETE RESTRICT;
+ALTER TABLE nightsquirrel.tbl_r_video ADD CONSTRAINT fk_tbl_r_video_author1
+      FOREIGN KEY (vid_author1_per_id) REFERENCES nightsquirrel.tbl_r_person (per_id) ON DELETE SET NULL;                                  
+ALTER TABLE nightsquirrel.tbl_r_weblink ADD CONSTRAINT fk_tbl_r_weblink_author1                                                          
+      FOREIGN KEY (wlk_author1_per_id) REFERENCES nightsquirrel.tbl_r_person (per_id) ON DELETE SET NULL;  
 
 -- Reference → type, user, typed entities, images
 ALTER TABLE nightsquirrel.tbl_r_reference ADD CONSTRAINT fk_tbl_r_reference_type
@@ -315,6 +322,8 @@ CREATE INDEX idx_tbl_r_article_usr_id       ON nightsquirrel.tbl_r_article (usr_
 
 CREATE INDEX idx_tbl_r_video_usr_id         ON nightsquirrel.tbl_r_video   (usr_id);
 CREATE INDEX idx_tbl_r_weblink_usr_id       ON nightsquirrel.tbl_r_weblink (usr_id);
+CREATE INDEX idx_tbl_r_video_author1_per_id   ON nightsquirrel.tbl_r_video   (vid_author1_per_id);
+CREATE INDEX idx_tbl_r_weblink_author1_per_id  ON nightsquirrel.tbl_r_weblink (wlk_author1_per_id);                        
 
 CREATE INDEX idx_tbl_r_reference_rtp_id     ON nightsquirrel.tbl_r_reference (rtp_id);
 CREATE INDEX idx_tbl_r_reference_usr_id     ON nightsquirrel.tbl_r_reference (usr_id);
@@ -324,6 +333,7 @@ CREATE INDEX idx_tbl_r_reference_bok_id     ON nightsquirrel.tbl_r_reference (re
 CREATE INDEX idx_tbl_r_reference_art_id     ON nightsquirrel.tbl_r_reference (ref_art_id);
 CREATE INDEX idx_tbl_r_reference_vid_id     ON nightsquirrel.tbl_r_reference (ref_vid_id);
 CREATE INDEX idx_tbl_r_reference_wlk_id     ON nightsquirrel.tbl_r_reference (ref_wlk_id);
+CREATE INDEX idx_tbl_r_reference_is_outstanding ON nightsquirrel.tbl_r_reference (ref_is_other_outstanding_work);
 
 CREATE INDEX idx_tbl_r2q_ref_id             ON nightsquirrel.tbl_r_reference2question (ref_id);
 CREATE INDEX idx_tbl_r2q_qtn_id             ON nightsquirrel.tbl_r_reference2question (qtn_id);

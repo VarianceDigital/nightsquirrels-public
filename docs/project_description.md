@@ -157,6 +157,10 @@ NOTE: the person page features also a dedicated section listing the person's out
 
 THere is also a **"People" page**, a listing of all items of the "persons" table. The list features each person, with a summary of related references (the list is interactive).
 
+#### Other outstanding works of the person
+
+To implement the "Other outstanding works" of the Person's page, the flag is_other_outstanding_work is used for the reference entity. The entity item with is_other_outstanding_work set to true is a sort of light-weight reference: no cover image, no details, no publisher, just the title of the work and not much else. This type of reference item is not shown in the library.
+
 ## Tags
 
 The tag entity is implemented; tags can "decorate" semantically questions and references. Students, tutors and admin can attach one or more tags to a question: the student to her questions, the tutor to assigned questions, the admin to every question.
