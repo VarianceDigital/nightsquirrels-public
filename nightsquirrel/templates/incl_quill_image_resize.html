@@ -1,0 +1,84 @@
+{#
+  incl_quill_image_resize.html
+  In-editor image resize handles.
+  Include INSIDE a DOMContentLoaded handler, after `quill` is defined.
+  Click an image to show a blue selection border + bottom-right drag handle.
+  Drag to resize; width is persisted in the Quill delta via formatText.
+#}
+    // === In-editor image resize ===
+    (function () {
+      const container = quill.root.parentElement; // .ql-container (position: relative)
+
+      const overlay = document.createElement('div');
+      overlay.style.cssText = 'position:absolute;pointer-events:none;display:none;' +
+                              'border:2px solid #0d6efd;box-sizing:border-box;z-index:100;';
+
+      const handle = document.createElement('div');
+      handle.title = 'Drag to resize';
+      handle.style.cssText = 'position:absolute;right:-5px;bottom:-5px;' +
+                             'width:10px;height:10px;background:#0d6efd;' +
+                             'cursor:se-resize;pointer-events:all;border-radius:2px;';
+      overlay.appendChild(handle);
+      container.appendChild(overlay);
+
+      let activeImg = null;
+      let drag = null;
+
+      function positionOverlay(img) {
+        const cRect = container.getBoundingClientRect();
+        const iRect = img.getBoundingClientRect();
+        overlay.style.left   = (iRect.left - cRect.left + quill.root.scrollLeft) + 'px';
+        overlay.style.top    = (iRect.top  - cRect.top  + quill.root.scrollTop)  + 'px';
+        overlay.style.width  = iRect.width  + 'px';
+        overlay.style.height = iRect.height + 'px';
+        overlay.style.display = 'block';
+      }
+
+      function showOverlay(img) { activeImg = img; positionOverlay(img); }
+      function hideOverlay()    { overlay.style.display = 'none'; activeImg = null; }
+
+      quill.root.addEventListener('click', (e) => {
+        if (e.target.tagName === 'IMG') { showOverlay(e.target); }
+        else                            { hideOverlay(); }
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!container.contains(e.target)) hideOverlay();
+      });
+
+      quill.on('text-change', () => {
+        if (!activeImg) return;
+        if (!quill.root.contains(activeImg)) hideOverlay();
+        else positionOverlay(activeImg);
+      });
+
+      handle.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!activeImg) return;
+        drag = { startX: e.clientX, startW: activeImg.getBoundingClientRect().width };
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup',   onUp);
+      });
+
+      function onMove(e) {
+        if (!drag || !activeImg) return;
+        const newW = Math.max(40, drag.startW + (e.clientX - drag.startX));
+        activeImg.setAttribute('width', Math.round(newW));
+        positionOverlay(activeImg);
+      }
+
+      function onUp() {
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup',   onUp);
+        if (!drag || !activeImg) { drag = null; return; }
+        const finalW = Math.round(activeImg.getBoundingClientRect().width);
+        const blot   = Quill.find(activeImg, true);
+        if (blot) {
+          const idx = quill.getIndex(blot);
+          if (idx >= 0) quill.formatText(idx, 1, { width: String(finalW) }, 'user');
+        }
+        drag = null;
+        positionOverlay(activeImg);
+      }
+    }());

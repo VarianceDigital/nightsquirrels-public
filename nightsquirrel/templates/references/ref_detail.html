@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+{% block metatags %}<title>{{ ref.ref_title or _('Reference') }} | Night Squirrels</title>{% endblock %}
+{% block ns_container %}ns-container-md{% endblock %}
+{% block contents %}
+
+<div class="d-flex justify-content-between align-items-center mt-3 mb-4">
+  <div>
+    <h2 class="m-0">{{ ref.ref_title or '—' }}</h2>
+    {% if entity and entity.bok_subtitle %}<p class="text-muted mb-0 mt-1">{{ entity.bok_subtitle }}</p>{% endif %}
+  </div>
+  <div class="d-flex gap-2">
+    {% if g.usr_is_student %}
+    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#askQuestionModal">
+      <i class="bi bi-patch-question me-1"></i>{{ _('Ask a question') }}
+    </button>
+    {% endif %}
+    {% if g.usr_is_admin or ref.usr_id == g.user_id %}
+    <a class="btn btn-outline-secondary btn-sm"
+       href="{{ url_for('bl_references.ref_cover_page', ref_id=ref.ref_id) }}">
+      <i class="bi bi-image"></i> {{ _('Manage cover') }}
+    </a>
+    {% endif %}
+    <a class="btn btn-outline-secondary btn-sm" onclick="history.back(); return false;"
+       href="{{ url_for('bl_references.library') }}">{{ _('Back') }}</a>
+  </div>
+</div>
+
+<div class="card mb-3">
+  <div class="card-header">
+    <span class="badge bg-secondary">{{ ref.rtp_name_eng }}</span>
+  </div>
+  <div class="card-body">
+    {% if ref.cover_s3_key %}
+    <div class="text-center mb-3">
+      <img src="{{ images_bucket_url }}{{ ref.cover_s3_key }}"
+           alt="{{ ref.ref_title or '' }}"
+           class="img-fluid rounded shadow-sm" style="max-height: 280px;">
+    </div>
+    {% endif %}
+
+    <dl class="row mb-0">
+
+    {% if ref.rtp_name_eng == 'Book' and entity %}
+      {% if entity.bok_author1_name %}
+      <dt class="col-sm-3">{{ _('Author') }}</dt>
+      <dd class="col-sm-9">
+        {% if entity.bok_author1_per_id %}<a href="{{ url_for('bl_references.person_page', per_id=entity.bok_author1_per_id) }}" class="text-decoration-none">{{ entity.bok_author1_name }}</a>{% else %}{{ entity.bok_author1_name }}{% endif %}
+        {% if entity.bok_author2_name %}, {% if entity.bok_author2_per_id %}<a href="{{ url_for('bl_references.person_page', per_id=entity.bok_author2_per_id) }}" class="text-decoration-none">{{ entity.bok_author2_name }}</a>{% else %}{{ entity.bok_author2_name }}{% endif %}{% endif %}
+        {% if entity.bok_author_other %}, {{ entity.bok_author_other }}{% endif %}
+        {% if entity.bok_author_etal %} et al.{% endif %}
+      </dd>
+      {% endif %}
+      {% if entity.bok_editor1_name %}
+      <dt class="col-sm-3">{{ _('Editor') }}</dt>
+      <dd class="col-sm-9">
+        {% if entity.bok_editor1_per_id %}<a href="{{ url_for('bl_references.person_page', per_id=entity.bok_editor1_per_id) }}" class="text-decoration-none">{{ entity.bok_editor1_name }}</a>{% else %}{{ entity.bok_editor1_name }}{% endif %}
+        {% if entity.bok_editor2_name %}, {% if entity.bok_editor2_per_id %}<a href="{{ url_for('bl_references.person_page', per_id=entity.bok_editor2_per_id) }}" class="text-decoration-none">{{ entity.bok_editor2_name }}</a>{% else %}{{ entity.bok_editor2_name }}{% endif %}{% endif %}
+        {% if entity.bok_editor_other %}, {{ entity.bok_editor_other }}{% endif %}
+        {% if entity.bok_editor_etal %} et al.{% endif %}
+      </dd>
+      {% endif %}
+      {% if entity.bok_translator1_name %}
+      <dt class="col-sm-3">{{ _('Translator') }}</dt>
+      <dd class="col-sm-9">
+        {% if entity.bok_translator1_per_id %}<a href="{{ url_for('bl_references.person_page', per_id=entity.bok_translator1_per_id) }}" class="text-decoration-none">{{ entity.bok_translator1_name }}</a>{% else %}{{ entity.bok_translator1_name }}{% endif %}
+        {% if entity.bok_translator2_name %}, {% if entity.bok_translator2_per_id %}<a href="{{ url_for('bl_references.person_page', per_id=entity.bok_translator2_per_id) }}" class="text-decoration-none">{{ entity.bok_translator2_name }}</a>{% else %}{{ entity.bok_translator2_name }}{% endif %}{% endif %}
+        {% if entity.bok_translator_other %}, {{ entity.bok_translator_other }}{% endif %}
+      </dd>
+      {% endif %}
+      {% if entity.pub_name %}
+      <dt class="col-sm-3">{{ _('Publisher') }}</dt>
+      <dd class="col-sm-9">{{ entity.pub_name }}</dd>
+      {% endif %}
+      {% if entity.bok_year %}
+      <dt class="col-sm-3">{{ _('Year') }}</dt>
+      <dd class="col-sm-9">{{ entity.bok_year }}</dd>
+      {% endif %}
+      {% if entity.bok_location %}
+      <dt class="col-sm-3">{{ _('Location') }}</dt>
+      <dd class="col-sm-9">{{ entity.bok_location }}</dd>
+      {% endif %}
+      {% if entity.bok_edition %}
+      <dt class="col-sm-3">{{ _('Edition') }}</dt>
+      <dd class="col-sm-9">{{ entity.bok_edition }}</dd>
+      {% endif %}
+      {% if entity.bok_isbn %}
+      <dt class="col-sm-3">ISBN</dt>
+      <dd class="col-sm-9">{{ entity.bok_isbn }}</dd>
+      {% endif %}
+      {% if entity.bok_language %}
+      <dt class="col-sm-3">{{ _('Language') }}</dt>
+      <dd class="col-sm-9">{{ entity.bok_language }}</dd>
+      {% endif %}
+      {% if entity.bok_pages %}
+      <dt class="col-sm-3">{{ _('Pages') }}</dt>
+      <dd class="col-sm-9">{{ entity.bok_pages }}</dd>
+      {% endif %}
+      {% if entity.bok_link %}
+      <dt class="col-sm-3">{{ _('Link') }}</dt>
+      <dd class="col-sm-9"><a href="{{ entity.bok_link }}" target="_blank" rel="noopener">{{ entity.bok_link }}</a></dd>
+      {% endif %}
+
+    {% elif ref.rtp_name_eng == 'Paper' and entity %}
+      {% if entity.art_author1_name %}
+      <dt class="col-sm-3">{{ _('Author') }}</dt>
+      <dd class="col-sm-9">
+        {% if entity.art_author1_per_id %}<a href="{{ url_for('bl_references.person_page', per_id=entity.art_author1_per_id) }}" class="text-decoration-none">{{ entity.art_author1_name }}</a>{% else %}{{ entity.art_author1_name }}{% endif %}
+        {% if entity.art_author2_name %}, {% if entity.art_author2_per_id %}<a href="{{ url_for('bl_references.person_page', per_id=entity.art_author2_per_id) }}" class="text-decoration-none">{{ entity.art_author2_name }}</a>{% else %}{{ entity.art_author2_name }}{% endif %}{% endif %}
+        {% if entity.art_author_other %}, {{ entity.art_author_other }}{% endif %}
+        {% if entity.art_author_etal %} et al.{% endif %}
+      </dd>
+      {% endif %}
+      {% if entity.art_container %}
+      <dt class="col-sm-3">{{ _('Journal') }}</dt>
+      <dd class="col-sm-9">{{ entity.art_container }}</dd>
+      {% endif %}
+      {% if entity.art_issue %}
+      <dt class="col-sm-3">{{ _('Issue') }}</dt>
+      <dd class="col-sm-9">{{ entity.art_issue }}</dd>
+      {% endif %}
+      {% if entity.art_date %}
+      <dt class="col-sm-3">{{ _('Date') }}</dt>
+      <dd class="col-sm-9">{{ entity.art_date }}</dd>
+      {% endif %}
+      {% if entity.pub_name %}
+      <dt class="col-sm-3">{{ _('Publisher') }}</dt>
+      <dd class="col-sm-9">{{ entity.pub_name }}</dd>
+      {% endif %}
+      {% if entity.art_location %}
+      <dt class="col-sm-3">{{ _('Location') }}</dt>
+      <dd class="col-sm-9">{{ entity.art_location }}</dd>
+      {% endif %}
+      {% if entity.art_doi %}
+      <dt class="col-sm-3">DOI</dt>
+      <dd class="col-sm-9">{{ entity.art_doi }}</dd>
+      {% endif %}
+      {% if entity.art_language %}
+      <dt class="col-sm-3">{{ _('Language') }}</dt>
+      <dd class="col-sm-9">{{ entity.art_language }}</dd>
+      {% endif %}
+      {% if entity.art_link %}
+      <dt class="col-sm-3">{{ _('Link') }}</dt>
+      <dd class="col-sm-9"><a href="{{ entity.art_link }}" target="_blank" rel="noopener">{{ entity.art_link }}</a></dd>
+      {% endif %}
+
+    {% elif ref.rtp_name_eng == 'Video' and entity %}
+      {% if entity.vid_editor %}
+      <dt class="col-sm-3">{{ _('Editor') }}</dt>
+      <dd class="col-sm-9">{{ entity.vid_editor }}</dd>
+      {% endif %}
+      {% if entity.vid_date %}
+      <dt class="col-sm-3">{{ _('Date') }}</dt>
+      <dd class="col-sm-9">{{ entity.vid_date }}</dd>
+      {% endif %}
+      {% if entity.vid_platform %}
+      <dt class="col-sm-3">{{ _('Platform') }}</dt>
+      <dd class="col-sm-9">{{ entity.vid_platform }}</dd>
+      {% endif %}
+      {% if entity.vid_language %}
+      <dt class="col-sm-3">{{ _('Language') }}</dt>
+      <dd class="col-sm-9">{{ entity.vid_language }}</dd>
+      {% endif %}
+      {% if entity.vid_link %}
+      <dt class="col-sm-3">{{ _('Link') }}</dt>
+      <dd class="col-sm-9"><a href="{{ entity.vid_link }}" target="_blank" rel="noopener">{{ entity.vid_link }}</a></dd>
+      {% endif %}
+
+    {% elif ref.rtp_name_eng == 'Web Link' and entity %}
+      {% if entity.wlk_editor %}
+      <dt class="col-sm-3">{{ _('Editor') }}</dt>
+      <dd class="col-sm-9">{{ entity.wlk_editor }}</dd>
+      {% endif %}
+      {% if entity.wlk_date %}
+      <dt class="col-sm-3">{{ _('Date') }}</dt>
+      <dd class="col-sm-9">{{ entity.wlk_date }}</dd>
+      {% endif %}
+      {% if entity.wlk_platform %}
+      <dt class="col-sm-3">{{ _('Platform') }}</dt>
+      <dd class="col-sm-9">{{ entity.wlk_platform }}</dd>
+      {% endif %}
+      {% if entity.wlk_language %}
+      <dt class="col-sm-3">{{ _('Language') }}</dt>
+      <dd class="col-sm-9">{{ entity.wlk_language }}</dd>
+      {% endif %}
+      {% if entity.wlk_link %}
+      <dt class="col-sm-3">{{ _('Link') }}</dt>
+      <dd class="col-sm-9"><a href="{{ entity.wlk_link }}" target="_blank" rel="noopener">{{ entity.wlk_link }}</a></dd>
+      {% endif %}
+    {% endif %}
+
+    </dl>
+
+    {% if ref.ref_note %}
+    <p class="fst-italic text-muted small mt-3 mb-0">{{ ref.ref_note }}</p>
+    {% endif %}
+  </div>
+</div>
+
+{% if ref_tags %}
+<div class="mb-3">
+  {% for t in ref_tags %}
+  <a href="{{ url_for('bl_references.tag_page', tag_id=t.tag_id) }}"
+     class="badge bg-light text-dark border me-1 text-decoration-none">{{ t|localized_name('tag_name') }}</a>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if g.usr_is_student %}
+<div class="modal fade" id="askQuestionModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ _('Choose a question type') }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted small mb-3">{{ _('Start a new question inspired by') }} <strong>{{ ref.ref_title or '—' }}</strong>.</p>
+        <div class="row g-2">
+          {% for t in qtypes %}
+          <div class="col-6 col-md-4">
+            <div class="border rounded p-3 h-100 position-relative"
+                 style="cursor:pointer;"
+                 onclick="location.href='{{ url_for('bl_question.new_question', from_ref=ref.ref_id, qtp_id=t.qtp_id) }}'">
+              <span class="fw-semibold small">{{ t|localized_name('qtp_name') }}</span>
+              <a href="{{ url_for('bl_examples.examples') }}#type-{{ t.qtp_id }}"
+                 target="_blank"
+                 class="position-absolute top-0 end-0 m-1 badge rounded-pill bg-light text-muted border text-decoration-none"
+                 style="font-size:.65rem;"
+                 onclick="event.stopPropagation()"
+                 title="{{ _('See examples') }}">ⓘ</a>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

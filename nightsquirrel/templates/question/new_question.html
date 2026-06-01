@@ -1,0 +1,526 @@
+{% extends 'base.html' %}
+
+{% block metatags %}<title>{{ _('New Question') }} | Night Squirrels</title>{% endblock %}
+
+{% block ns_container %}ns-container-md{% endblock %}
+{% block contents %}
+  <div class="row">
+    <div class="col-12">
+      <h2 class="mt-3 mb-3">{{ _('New Question') }}</h2>
+
+      {% if g.usr_is_student and not g.student_profile_complete %}
+      <div class="alert alert-info d-flex align-items-center mb-3" role="alert">
+          <i class="bi bi-mortarboard me-2 fs-5"></i>
+          <div>
+              {{ _('Set your school type and year in your') }}
+              <a href="{{ url_for('bl_auth.userprofile') }}#sct_id" class="alert-link">{{ _('profile') }}</a>
+              {{ _('to auto-fill these fields.') }}
+          </div>
+      </div>
+      {% endif %}
+
+      <form method="post" enctype="multipart/form-data" id="questionForm">
+        <input type="hidden" name="from_ref" value="{{ ref_context.ref_id if ref_context else '' }}">
+
+        {% if ref_context %}
+        <div class="alert alert-secondary alert-dismissible d-flex gap-3 align-items-start mb-3" role="alert">
+          <i class="bi bi-book-fill fs-5 mt-1 text-muted flex-shrink-0"></i>
+          <div>
+            <div class="fw-semibold">{{ ref_context.ref.ref_title or '—' }}</div>
+            {% if ref_context.ref.ref_author1_name %}
+            <div class="small text-muted">{{ ref_context.ref.ref_author1_name }}{% if ref_context.ref.ref_year %}, {{ ref_context.ref.ref_year }}{% endif %}</div>
+            {% endif %}
+            {% if ref_context.tags %}
+            <div class="mt-1">
+              {% for t in ref_context.tags %}
+              <a href="{{ url_for('bl_references.tag_page', tag_id=t.tag_id) }}"
+                 class="badge bg-light text-dark border me-1 text-decoration-none small">{{ t|localized_name('tag_name') }}</a>
+              {% endfor %}
+            </div>
+            {% endif %}
+            <div class="text-muted small mt-1">{{ _('The reference will be attached to your question automatically.') }}</div>
+          </div>
+          <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
+        </div>
+        {% endif %}
+
+        <div class="mb-3">
+          <label class="form-label">{{ _('Title') }} *</label>
+          <input class="form-control" name="qtn_title" id="qtn_title" value="{{ (form.get('qtn_title') or '') }}">
+          <div class="invalid-feedback">{{ _('Title is required.') }}</div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">{{ _('Subject') }}</label>
+            <select class="form-select" name="sbj_id">
+              <option value="">{{ _('(optional)') }}</option>
+              {% for s in subjects %}
+                <option value="{{s.sbj_id}}" {% if form.get('sbj_id') and form.get('sbj_id')|int == s.sbj_id %}selected{% endif %}>
+                  {{ s|localized_name('sbj_name') }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">{{ _('Question type') }}</label>
+            <select class="form-select" name="qtp_id">
+              <option value="">{{ _('(optional)') }}</option>
+              {% for t in qtypes %}
+                <option value="{{t.qtp_id}}" {% if form.get('qtp_id') and form.get('qtp_id')|int == t.qtp_id %}selected{% endif %}>
+                  {{ t|localized_name('qtp_name') }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">{{ _('Attach a photo or PDF (optional)') }}</label>
+          <input type="file" class="form-control" name="document"
+                 accept="image/jpeg,image/png,image/heic,application/pdf">
+          <div class="form-text">{{ _('JPG, PNG, HEIC or PDF. Max 10 MB.') }}</div>
+          <div id="imgPreviewWrap" class="mt-2 d-none">
+            <div class="d-flex align-items-center gap-3">
+              <img id="imgPreviewThumb" src="" alt=""
+                   style="max-height:100px;max-width:180px;border-radius:4px;border:1px solid #dee2e6;">
+              <div class="d-flex flex-column gap-1">
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="imgReCropBtn">
+                  ✂ {{ _('Re-crop') }}
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-info" id="imgExtractBtn">
+                  <i class="bi bi-stars"></i> {{ _('Extract text from image') }}
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-danger" id="imgRemoveBtn">
+                  {{ _('Remove') }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-2">
+          <label class="form-label">{{ _('Describe your question') }}</label>
+          <div id="editor" class="ns-quill-editor"></div>
+          <div id="extractedNotice" class="alert alert-info py-2 px-3 mt-2 mb-0 d-none small">
+            <i class="bi bi-stars me-1"></i>{{ _('Content extracted from your image — please review and correct if needed.') }}
+          </div>
+        </div>
+
+        <input type="hidden" name="ctx_delta" id="ctx_delta" />
+        <input type="hidden" name="ctx_plaintext" id="ctx_plaintext" />
+
+        <hr class="my-4"/>
+
+        {% if g.student_profile_complete %}
+        <p class="text-muted small mb-2 ns-profile-summary">
+            <i class="bi bi-mortarboard me-1"></i>
+            {{ _('Using your profile:') }}
+            {% for st in schooltypes if st.sct_id == g.sct_id %}
+                <strong>{{ st|localized_name('sct_name') }}</strong>
+            {% endfor %}
+            &middot; {{ _('Year') }} {{ g.usr_school_grade }}
+            <a href="{{ url_for('bl_auth.userprofile') }}#sct_id" class="ms-2">{{ _('(change)') }}</a>
+        </p>
+        {% endif %}
+
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          <a class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse"
+             href="#academicDetails" role="button"
+             aria-expanded="{% if not g.student_profile_complete %}true{% else %}false{% endif %}"
+             aria-controls="academicDetails">
+            <i class="bi bi-mortarboard me-1"></i>{{ _('Academic details') }}
+          </a>
+          <a class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse"
+             href="#additionalDetails" role="button"
+             aria-expanded="false" aria-controls="additionalDetails">
+            <i class="bi bi-sliders me-1"></i>{{ _('Additional details') }}
+          </a>
+        </div>
+
+        <div class="collapse {% if not g.student_profile_complete %}show{% endif %}" id="academicDetails">
+          <div class="card card-body mb-3">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">{{ _('School type') }}</label>
+                <select class="form-select" name="sct_id">
+                  <option value="">{{ _('(optional)') }}</option>
+                  {% for st in schooltypes %}
+                    <option value="{{st.sct_id}}" {% if form.get('sct_id') and form.get('sct_id')|int == st.sct_id %}selected{% endif %}>
+                      {{ st|localized_name('sct_name') }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">{{ _('Grade / Year') }}</label>
+                <input class="form-control" type="number" min="1" max="20" name="qtn_grade"
+                       value="{{ form.get('qtn_grade') or '' }}">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="collapse" id="additionalDetails">
+          <div class="card card-body mb-3">
+            <div class="mb-3">
+              <label class="form-label">{{ _('Difficulty (1-5)') }}</label>
+              <input class="form-control" type="number" min="1" max="5" name="qtn_difficulty"
+                     value="{{ form.get('qtn_difficulty') or '' }}">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">{{ _('Notes (optional)') }}</label>
+              <textarea class="form-control" name="qtn_notes" rows="2">{{ form.get('qtn_notes') or '' }}</textarea>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary mt-3" type="submit">{{ _('Submit question') }}</button>
+        <a class="btn btn-outline-secondary mt-3" href="{{ url_for('bl_question.my_questions') }}">{{ _('Cancel') }}</a>
+        {% if not ref_context %}
+        <p class="text-muted small mt-2 mb-0">
+          <i class="bi bi-info-circle me-1"></i>{{ _('You can attach') }} <strong>{{ _('references') }}</strong> {{ _('to your question after saving.') }}
+        </p>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+
+{% include 'incl_formula_modal.html' %}
+
+<div class="modal fade" id="cropModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header py-2">
+        <h6 class="modal-title mb-0">{{ _('Crop & Rotate') }}</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-1" style="max-height:65vh;overflow:hidden;background:#222">
+        <img id="cropImg" src="" style="display:block;max-width:100%;max-height:60vh;margin:auto">
+      </div>
+      <div class="modal-footer py-2 justify-content-between">
+        <div class="d-flex gap-2">
+          <button type="button" class="btn btn-outline-secondary btn-sm" id="cropRotateLeft">↺ {{ _('Rotate left') }}</button>
+          <button type="button" class="btn btn-outline-secondary btn-sm" id="cropRotateRight">↻ {{ _('Rotate right') }}</button>
+        </div>
+        <div class="d-flex gap-2">
+          <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">{{ _('Cancel') }}</button>
+          <button type="button" class="btn btn-primary btn-sm" id="cropApplyBtn">{{ _('Apply') }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include 'incl_quill_katex.html' %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    if (!window.Quill) { console.error("Quill not loaded"); return; }
+    if (!window.katex) { console.warn("KaTeX not loaded; formula preview may fail"); }
+  
+    const quill = new Quill('#editor', {
+      theme: 'snow',
+      modules: {
+        toolbar: [
+          [{ header: [1, 2, 3, false] }],
+          ['bold', 'italic', 'underline'],
+          [{ list: 'ordered' }, { list: 'bullet' }],
+          [{ align: [] }],
+          ['link', 'code-block', 'formula', 'image'],
+          ['clean']
+        ]
+      }
+    });
+  
+    // --- Restore Quill content after a failed submission (e.g. missing title) ---
+    {% if form.get('ctx_delta') %}
+    try {
+      let initialDelta = {{ form.get('ctx_delta') | tojson }};
+      if (typeof initialDelta === 'string') initialDelta = JSON.parse(initialDelta);
+      if (initialDelta && typeof initialDelta === 'object' && Array.isArray(initialDelta.ops)) {
+        quill.setContents(initialDelta);
+      }
+    } catch (e) {
+      console.warn("Failed to restore editor content:", e);
+    }
+    {% endif %}
+  
+    // --- Modal plumbing ---
+    const modalEl = document.getElementById('formulaModal');
+    const formulaInput = document.getElementById('formulaInput');
+    const formulaPreview = document.getElementById('formulaPreview');
+    const formulaError = document.getElementById('formulaError');
+    const applyBtn = document.getElementById('formulaApplyBtn');
+    const bsModal = modalEl ? new bootstrap.Modal(modalEl) : null;
+  
+    let formulaContext = { mode: 'insert', index: null }; // mode: insert|edit
+
+    // When the formula modal closes without applying (Cancel / X / ESC / backdrop),
+    // we want the caret back where it was (not at the beginning of the document).
+    let formulaApplied = false;
+    let restoreRange = null; // {index, length}
+
+    function focusQuillNoScroll() {
+      // Quill focus may scroll; preserve scroll position.
+      const y = window.scrollY;
+      quill.focus();
+      window.scrollTo(0, y);
+    }
+  
+    function renderPreview(latex) {
+      formulaError.style.display = 'none';
+      formulaError.textContent = '';
+      formulaPreview.innerHTML = '';
+  
+      if (!latex) return;
+  
+      try {
+        if (!window.katex) throw new Error("KaTeX is not available");
+        window.katex.render(latex, formulaPreview, { throwOnError: false, displayMode: true });
+      } catch (e) {
+        formulaError.style.display = 'block';
+        formulaError.textContent = String(e);
+      }
+    }
+  
+    function openFormulaModal({ latex = '', mode = 'insert', index = null }) {
+      formulaContext = { mode, index };
+      formulaApplied = false;
+
+      // Capture where we want to restore the caret if the user cancels.
+      if (mode === 'insert') {
+        const sel = quill.getSelection(true) || { index: quill.getLength(), length: 0 };
+        restoreRange = { index: sel.index, length: 0 };
+      } else if (mode === 'edit' && typeof index === 'number') {
+        // Put caret just after the formula embed.
+        restoreRange = { index: index + 1, length: 0 };
+      } else {
+        restoreRange = null;
+      }
+
+      formulaInput.value = latex || '';
+      renderPreview(formulaInput.value);
+      bsModal.show();
+      setTimeout(() => formulaInput.focus(), 150);
+    }
+  
+    formulaInput.addEventListener('input', () => renderPreview(formulaInput.value));
+  
+    applyBtn.addEventListener('click', () => {
+      const latex = (formulaInput.value || '').trim();
+      if (!latex) { bsModal.hide(); return; }
+
+      formulaApplied = true;
+  
+      if (formulaContext.mode === 'insert') {
+        const range = quill.getSelection(true) || { index: quill.getLength() };
+        quill.insertEmbed(range.index, 'formula', latex, 'user');
+        quill.setSelection(range.index + 1, 0, 'silent');
+      } else if (formulaContext.mode === 'edit' && typeof formulaContext.index === 'number') {
+        quill.deleteText(formulaContext.index, 1, 'user');
+        quill.insertEmbed(formulaContext.index, 'formula', latex, 'user');
+        quill.setSelection(formulaContext.index + 1, 0, 'silent');
+      }
+  
+      bsModal.hide();
+    });
+
+    // If the modal closes without applying, restore caret.
+    if (modalEl) {
+      modalEl.addEventListener('hidden.bs.modal', () => {
+        if (formulaApplied) return;
+        if (!restoreRange) return;
+        focusQuillNoScroll();
+        quill.setSelection(restoreRange.index, 0, 'silent');
+      });
+    }
+  
+    // Toolbar formula button -> modal insert
+    const toolbar = quill.getModule('toolbar');
+    if (toolbar) {
+      toolbar.addHandler('formula', () => openFormulaModal({ mode: 'insert' }));
+    }
+  
+    // Click-to-edit existing formula embeds
+    quill.root.addEventListener('click', (e) => {
+      const blot = Quill.find(e.target, true);
+      if (!blot || !blot.domNode) return;
+  
+      const el = blot.domNode;
+      const latex = el.getAttribute && el.getAttribute('data-value');
+      if (!latex) return;
+  
+      const index = quill.getIndex(blot);
+      if (index < 0) return;
+  
+      openFormulaModal({ latex, mode: 'edit', index });
+    });
+  
+    // On submit: save delta + plaintext, disable button to prevent double-submit
+    const form = document.getElementById('questionForm');
+
+    form.addEventListener('submit', (e) => {
+      document.getElementById('ctx_delta').value = JSON.stringify(quill.getContents());
+      document.getElementById('ctx_plaintext').value = quill.getText();
+      const btn = form.querySelector('[type=submit]');
+      if (btn && !btn.disabled) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"' +
+                        ' role="status" aria-hidden="true"></span>' + btn.textContent.trim();
+      }
+    });
+
+    {% include 'incl_quill_image_upload.html' %}
+    {% include 'incl_quill_image_resize.html' %}
+
+    // === Image crop / rotate (Cropper.js) ===
+    (function () {
+      let cropper = null;
+      let croppedBlob = null;
+      let originalDataUrl = null;
+
+      const fileInput    = document.querySelector('input[name="document"]');
+      const cropImg      = document.getElementById('cropImg');
+      const cropModalEl  = document.getElementById('cropModal');
+      const bsCropModal  = new bootstrap.Modal(cropModalEl);
+      const previewWrap  = document.getElementById('imgPreviewWrap');
+      const previewThumb = document.getElementById('imgPreviewThumb');
+
+      // HEIC and PDF cannot be rendered in a canvas — skip the cropper for those
+      const SKIP_TYPES = new Set(['image/heic', 'image/heif', 'application/pdf']);
+
+      function openCropper(dataUrl) {
+        cropImg.src = dataUrl;
+        bsCropModal.show();
+      }
+
+      fileInput.addEventListener('change', () => {
+        const file = fileInput.files[0];
+        if (!file || SKIP_TYPES.has(file.type) || !file.type.startsWith('image/')) {
+          croppedBlob = null;
+          originalDataUrl = null;
+          previewWrap.classList.add('d-none');
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = (e) => { originalDataUrl = e.target.result; openCropper(originalDataUrl); };
+        reader.readAsDataURL(file);
+      });
+
+      cropModalEl.addEventListener('shown.bs.modal', () => {
+        if (cropper) { cropper.destroy(); cropper = null; }
+        cropper = new Cropper(cropImg, { viewMode: 1, autoCropArea: 1, responsive: true, background: false });
+      });
+
+      // If the user cancels without applying, clear the file input
+      cropModalEl.addEventListener('hidden.bs.modal', () => {
+        if (!croppedBlob) { fileInput.value = ''; previewWrap.classList.add('d-none'); }
+      });
+
+      document.getElementById('cropRotateLeft').addEventListener('click',  () => cropper?.rotate(-90));
+      document.getElementById('cropRotateRight').addEventListener('click', () => cropper?.rotate(90));
+
+      const extractNotice = document.getElementById('extractedNotice');
+      const extractBtn    = document.getElementById('imgExtractBtn');
+
+      async function runExtraction() {
+        if (!croppedBlob) return;
+        extractNotice.textContent = {{ _("Extracting content from image…") | tojson }};
+        extractNotice.classList.remove('d-none');
+        extractBtn.disabled = true;
+        try {
+          const fd = new FormData();
+          fd.append('image', croppedBlob, 'image.jpg');
+          const res = await fetch('{{ url_for("bl_question.extract_image_endpoint") }}',
+                                  { method: 'POST', body: fd });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.delta && Array.isArray(data.delta.ops)) {
+              quill.setContents(data.delta);
+              extractNotice.innerHTML = '<i class="bi bi-stars me-1"></i>' +
+                {{ _("Content extracted from your image — please review and correct if needed.") | tojson }};
+            } else {
+              extractNotice.classList.add('d-none');
+            }
+          } else {
+            extractNotice.classList.add('d-none');
+          }
+        } catch (err) {
+          console.warn('Image extraction failed:', err);
+          extractNotice.classList.add('d-none');
+        } finally {
+          extractBtn.disabled = false;
+        }
+      }
+
+      document.getElementById('cropApplyBtn').addEventListener('click', () => {
+        if (!cropper) return;
+        cropper.getCroppedCanvas({ maxWidth: 2048, maxHeight: 2048 }).toBlob(async (blob) => {
+          croppedBlob = blob;
+          previewThumb.src = URL.createObjectURL(blob);
+          previewWrap.classList.remove('d-none');
+          bsCropModal.hide();
+          // Auto-extract only when editor is empty
+          if (quill.getText().trim() === '') await runExtraction();
+        }, 'image/jpeg', 0.92);
+      });
+
+      extractBtn.addEventListener('click', runExtraction);
+
+      document.getElementById('imgReCropBtn').addEventListener('click', () => {
+        if (originalDataUrl) openCropper(originalDataUrl);
+      });
+
+      document.getElementById('imgRemoveBtn').addEventListener('click', () => {
+        croppedBlob = null; originalDataUrl = null;
+        fileInput.value = ''; previewThumb.src = '';
+        previewWrap.classList.add('d-none');
+      });
+
+      // Intercept submit only when a crop has been applied; otherwise native submit handles it
+      const submitBtn   = form.querySelector('[type=submit]');
+      const origBtnText = submitBtn.textContent.trim();
+
+      form.addEventListener('submit', async (e) => {
+        if (!croppedBlob) return;
+        e.preventDefault();
+
+        // Client-side title validation — keep the user on the page with all content intact
+        const titleInput = document.getElementById('qtn_title');
+        if (!titleInput.value.trim()) {
+          titleInput.classList.add('is-invalid');
+          titleInput.focus();
+          submitBtn.disabled = false;
+          submitBtn.textContent = origBtnText;
+          return;
+        }
+        titleInput.classList.remove('is-invalid');
+
+        const fd = new FormData(form);
+        fd.set('document', croppedBlob, 'cropped.jpg');
+        fd.set('ctx_delta', JSON.stringify(quill.getContents()));
+        fd.set('ctx_plaintext', quill.getText());
+
+        try {
+          const res = await fetch(form.action || window.location.href, { method: 'POST', body: fd });
+          if (res.redirected) {
+            window.location.href = res.url;
+          } else {
+            // Server re-rendered (unexpected error) — reload in place to show flash messages
+            window.location.reload();
+          }
+        } catch (err) {
+          console.error('Upload error:', err);
+          submitBtn.disabled = false;
+          submitBtn.textContent = origBtnText;
+        }
+      });
+    }());
+  });
+</script>
+  
+{% endblock %}

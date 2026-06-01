@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block metatags %}<title>{{ _('Admin') }} · {{ _('Users') }} | Night Squirrels</title>{% endblock %}
+{% block ns_container %}ns-container-wide{% endblock %}
+{% block contents %}
+
+  <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mt-3 mb-3">
+    <h2 class="m-0">{{ _('Admin') }} · {{ _('Users') }}</h2>
+    <a class="btn btn-outline-secondary" href="{{ url_for('bl_admin.dashboard') }}"><i class="bi bi-arrow-left"></i> {{ _('Dashboard') }}</a>
+  </div>
+
+  <form class="row g-2 mb-3" method="get">
+    <div class="col-md-8">
+      <input class="form-control" name="q" placeholder="{{ _('Search email / name') }}"
+             value="{{ q or '' }}">
+    </div>
+    <div class="col-md-2 d-grid">
+      <button class="btn btn-primary">{{ _('Filter') }}</button>
+    </div>
+    <div class="col-md-2 d-grid">
+      <a class="btn btn-outline-secondary" href="{{ url_for('bl_admin.users') }}">{{ _('Clear') }}</a>
+    </div>
+  </form>
+
+  <div class="table-responsive">
+    <table class="table table-sm align-middle">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>{{ _('Name / Email') }}</th>
+          <th>{{ _('Created') }}</th>
+          <th class="text-center">{{ _('Valid') }}</th>
+          <th class="text-center">{{ _('Student') }}</th>
+          <th class="text-center">{{ _('Tutor') }}</th>
+          <th class="text-center">{{ _('Admin') }}</th>
+          <th class="text-center">{{ _('Payer') }}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for r in rows %}
+        <tr>
+          <form method="post"
+                action="{{ url_for('bl_admin.update_user_flags', usr_id=r.usr_id, q=q) }}">
+          <td>{{ r.usr_id }}</td>
+          <td class="small">
+            <div class="fw-semibold">{{ r.usr_name or '' }}</div>
+            <div class="text-muted">{{ r.usr_email }}</div>
+          </td>
+          <td class="small text-muted">{{ r.usr_timestamp.strftime('%Y-%m-%d') if r.usr_timestamp else '' }}</td>
+          <td class="text-center">
+            <input type="checkbox" name="usr_isvalid" {% if r.usr_isvalid %}checked{% endif %}>
+          </td>
+          <td class="text-center">
+            <input type="checkbox" name="usr_is_student" {% if r.usr_is_student %}checked{% endif %}>
+          </td>
+          <td class="text-center">
+            <input type="checkbox" name="usr_is_tutor" {% if r.usr_is_tutor %}checked{% endif %}>
+          </td>
+          <td class="text-center">
+            <input type="checkbox" name="usr_is_admin" {% if r.usr_is_admin %}checked{% endif %}>
+          </td>
+          <td class="text-center">
+            <input type="checkbox" name="usr_is_payer" {% if r.usr_is_payer %}checked{% endif %}>
+          </td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary"><i class="bi bi-check-lg"></i> {{ _('Save') }}</button>
+          </td>
+          </form>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block metatags %}<title>{{ _('Error 404') }} | Night Squirrels</title>{% endblock %}
+
+{% block contents %}
+
+	<div class="row">
+		<ol class="breadcrumb small">
+			<li class="breadcrumb-item"><a href="{{url_for('bl_home.index')}}">{{ _('Home') }}</a></li>
+			<li class="breadcrumb-item active" aria-current="page">{{ _('Error 404') }}</li>
+		</ol>
+	</div>
+	<div class="row text-center">
+		<div class="col-12">
+			<h2 class="mb-5">{{ _('Sorry, the page you requested was not found.') }}</h2>
+			<p class="mb-0">{{ _('This page might have been moved, updated or deleted.') }}</p>
+			<p>{{ _('Please visit the') }} <a href="{{url_for('bl_home.index')}}">{{ _('Home') }}</a> {{ _('or') }} <a href="{{url_for('bl_home.about')}}">{{ _('About') }}</a> {{ _('pages.') }}</p>
+		</div>
+	</div>
+	<div class="row text-center">
+		<div class="col-12 d-flex justify-content-center">
+			<figure class="ns-img-placeholder" style="width:320px; height:300px;">
+				<i class="bi bi-image ns-placeholder-icon"></i>
+				<span class="ns-placeholder-name">error404.png</span>
+				<span class="ns-placeholder-dims">320 × 300 px</span>
+				<figcaption class="ns-placeholder-caption">Image TBD</figcaption>
+			</figure>
+		</div>
+	</div>
+
+
+{% endblock %}

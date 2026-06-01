@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block metatags %}<title>{{ _('Admin') }} · {{ _('Tags') }} | Night Squirrels</title>{% endblock %}
+{% block ns_container %}ns-container-md{% endblock %}
+{% block contents %}
+
+<div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+  <h2 class="m-0">{{ _('Admin') }} · {{ _('Tags') }}</h2>
+  <div class="d-flex gap-2">
+    <a class="btn btn-primary btn-sm" href="{{ url_for('bl_tags.admin_new_tag') }}">+ {{ _('New tag') }}</a>
+    <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('bl_admin.dashboard') }}">{{ _('Dashboard') }}</a>
+  </div>
+</div>
+
+<!-- search bar -->
+<form class="row g-2 mb-3" method="get">
+  <div class="col">
+    <input class="form-control form-control-sm" name="q"
+           placeholder="{{ _('Search…') }}" value="{{ q or '' }}">
+  </div>
+  <div class="col-auto"><button class="btn btn-sm btn-primary">{{ _('Filter') }}</button></div>
+  <div class="col-auto"><a class="btn btn-sm btn-outline-secondary" href="{{ url_for('bl_tags.admin_list') }}">{{ _('Clear') }}</a></div>
+</form>
+
+<div class="table-responsive">
+  <table class="table table-sm align-middle">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>{{ _('Italian') }}</th>
+        <th>{{ _('English') }}</th>
+        <th>{{ _('Type') }}</th>
+        <th class="text-center">{{ _('Questions') }}</th>
+        <th class="text-center">{{ _('References') }}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for t in tags %}
+      <tr>
+        <td class="text-muted small">{{ t.tag_id }}</td>
+        <td class="fw-semibold">{{ t.tag_name_ita }}</td>
+        <td>{{ t.tag_name_eng }}</td>
+        <td class="small text-muted">{{ t.tag_type or '—' }}</td>
+        <td class="text-center small text-muted">{{ t.usage_questions }}</td>
+        <td class="text-center small text-muted">{{ t.usage_references }}</td>
+        <td class="text-end">
+          <a class="btn btn-sm btn-outline-primary"
+             href="{{ url_for('bl_tags.admin_edit_tag', tag_id=t.tag_id) }}">{{ _('Edit') }}</a>
+          <form method="post" class="d-inline"
+                action="{{ url_for('bl_tags.admin_delete_tag', tag_id=t.tag_id) }}">
+            <button class="btn btn-sm btn-outline-danger"
+                    data-confirm="{{ _('Delete this tag?') }}">{{ _('Delete') }}</button>
+          </form>
+        </td>
+      </tr>
+    {% else %}
+      <tr>
+        <td colspan="7" class="text-center text-muted py-4">{{ _('No tags found.') }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

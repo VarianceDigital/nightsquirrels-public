@@ -1,0 +1,24 @@
+{#
+  incl_library_subnav.html — shared sub-navigation for library section
+  Set before including:
+    active_tab  — 'library' | 'people' | 'leo_reading'
+    crucial     — boolean (only meaningful when active_tab == 'library')
+#}
+<div class="d-flex flex-wrap align-items-center gap-2 mb-4">
+  <a href="{{ url_for('bl_references.library') }}"
+     class="btn btn-sm {{ 'btn-secondary' if active_tab == 'library' and not (crucial | default(false)) else 'btn-outline-secondary' }}">
+    {{ _('All references') }}
+  </a>
+  <a href="{{ url_for('bl_references.people') }}"
+     class="btn btn-sm {{ 'btn-secondary' if active_tab == 'people' else 'btn-outline-secondary' }}">
+    {{ _('People') }}
+  </a>
+  <a href="{{ url_for('bl_references.leo_reading') }}"
+     class="btn btn-sm {{ 'btn-secondary' if active_tab == 'leo_reading' else 'btn-outline-secondary' }}">
+    <i class="bi bi-cup-hot-fill text-warning"></i> {{ _('Leo reads') }}
+  </a>
+  <a href="{{ url_for('bl_references.library', crucial='1') }}"
+     class="btn btn-sm {{ 'btn-danger' if (crucial | default(false)) else 'btn-outline-danger' }}">
+    <i class="bi bi-suit-heart-fill"></i> {{ _('Crucial') }}
+  </a>
+</div>

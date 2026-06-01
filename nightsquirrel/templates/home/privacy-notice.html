@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block metatags %}
+{% endblock %}
+
+{% block contents %}
+		<div>
+			<ol class="breadcrumb small">
+				<li class="breadcrumb-item"><a href="{{url_for('bl_home.index')}}">{{ _('Home') }}</a></li>
+				<li class="breadcrumb-item active" aria-current="page">{{ _('Privacy Notice') }}</li>
+			</ol>
+		</div>
+
+		{% if g.lang == 'en' %}
+			{% include 'home/privacy-notice-en.html' %}
+		{% else %}
+			{% include 'home/privacy-notice-it.html' %}
+		{% endif %}
+{% endblock %}

@@ -1,0 +1,1 @@
+web: gunicorn "nightsquirrel:create_app()"

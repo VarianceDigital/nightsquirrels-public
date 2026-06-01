@@ -1,0 +1,37 @@
+<!-- Formula Modal -->
+<div class="modal fade" id="formulaModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ _('Formula (LaTeX)') }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+  
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">{{ _('LaTeX') }}</label>
+              <textarea id="formulaInput" class="form-control" rows="5"
+                placeholder="{{ _('e.g.') }} \frac{a}{b}"></textarea>
+              <div class="form-text">
+                {{ _('Tip: use \\n for line breaks inside aligned environments, e.g. \\begin{aligned} ... \\end{aligned}') }}
+              </div>
+            </div>
+  
+            <div class="col-md-6">
+              <label class="form-label">{{ _('Preview') }}</label>
+              <div class="border rounded p-3 ns-quill-viewer-md">
+                <div id="formulaPreview" class="fs-5"></div>
+              </div>
+              <div id="formulaError" class="text-danger small mt-2" style="display:none;"></div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{ _('Cancel') }}</button>
+          <button type="button" class="btn btn-primary" id="formulaApplyBtn">{{ _('Apply') }}</button>
+        </div>
+      </div>
+    </div>
+  </div>

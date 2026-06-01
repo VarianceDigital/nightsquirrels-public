@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block metatags %}<title>{{ _('Admin') }} · {{ _('Persons') }} | Night Squirrels</title>{% endblock %}
+{% block ns_container %}ns-container-md{% endblock %}
+{% block contents %}
+
+<div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+  <h2 class="m-0">{{ _('Admin') }} · {{ _('Persons') }}</h2>
+  <div class="d-flex gap-2">
+    <a class="btn btn-primary btn-sm" href="{{ url_for('bl_references.admin_new_person') }}">+ {{ _('New person') }}</a>
+    <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('bl_references.admin_list') }}">{{ _('References') }}</a>
+  </div>
+</div>
+
+<form class="row g-2 mb-3" method="get">
+  <div class="col-md-6">
+    <input class="form-control form-control-sm" name="q" placeholder="{{ _('Search name…') }}" value="{{ q or '' }}">
+  </div>
+  {% if needs_enrich %}<input type="hidden" name="needs_enrich" value="1">{% endif %}
+  <div class="col-md-2 d-grid"><button class="btn btn-sm btn-primary">{{ _('Filter') }}</button></div>
+  <div class="col-md-2 d-grid">
+    {% if needs_enrich %}
+    <a class="btn btn-sm btn-warning" href="{{ url_for('bl_references.admin_persons', q=q or None) }}">{{ _('Needs enrichment') }} ×</a>
+    {% else %}
+    <a class="btn btn-sm btn-outline-warning" href="{{ url_for('bl_references.admin_persons', q=q or None, needs_enrich=1) }}">{{ _('Needs enrichment') }}</a>
+    {% endif %}
+  </div>
+  <div class="col-md-2 d-grid"><a class="btn btn-sm btn-outline-secondary" href="{{ url_for('bl_references.admin_persons') }}">{{ _('Clear') }}</a></div>
+</form>
+
+<div class="table-responsive">
+  <table class="table table-sm align-middle">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>{{ _('Family name') }}</th>
+        <th>{{ _('First name') }}</th>
+        <th>{{ _('Caption') }}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for r in rows %}
+      <tr>
+        <td class="text-muted small">{{ r.per_id }}</td>
+        <td class="fw-semibold">
+          <a href="{{ url_for('bl_references.person_page', per_id=r.per_id) }}"
+             class="text-decoration-none text-body">{{ r.per_familyname or '—' }}</a>
+          {% if r.per_won_nobel %}
+          <i class="bi bi-award-fill text-warning ms-1"
+             title="{{ r.per_won_nobel }}"></i>
+          {% endif %}
+        </td>
+        <td>{{ r.per_firstname or '' }}</td>
+        <td class="small text-muted">{{ r|localized_name('per_caption') or '' }}</td>
+        <td class="text-end">
+          {% set _needs_enrich = not r.per_caption_ita or not r.per_caption_eng %}
+          {% set _needs_retry  = not _needs_enrich and (r.per_caption_ita == 'n.a.' or r.per_caption_eng == 'n.a.') %}
+          <form method="post" class="d-inline"
+                action="{{ url_for('bl_references.admin_enrich_person', per_id=r.per_id) }}">
+            <input type="hidden" name="next" value="{{ request.path }}">
+            <button class="btn btn-sm {% if _needs_retry %}btn-outline-warning{% elif _needs_enrich %}btn-outline-success{% else %}btn-outline-secondary{% endif %}">
+              {{ _('Retry') if _needs_retry else (_('Enrich') if _needs_enrich else _('Re-enrich')) }}
+            </button>
+          </form>
+          <a class="btn btn-sm btn-outline-primary"
+             href="{{ url_for('bl_references.admin_edit_person', per_id=r.per_id) }}">{{ _('Edit') }}</a>
+          <form method="post" class="d-inline"
+                action="{{ url_for('bl_references.admin_delete_person', per_id=r.per_id) }}">
+            <button class="btn btn-sm btn-outline-danger"
+                    data-confirm="{{ _('Delete this person?') }}">{{ _('Delete') }}</button>
+          </form>
+        </td>
+      </tr>
+    {% else %}
+      <tr><td colspan="5" class="text-center text-muted py-4">{{ _('No persons found.') }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

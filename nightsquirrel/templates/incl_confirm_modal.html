@@ -1,0 +1,36 @@
+<!-- Alert modal — populated dynamically by custom.js / window.nsAlert() -->
+<div class="modal fade" id="nsAlertModal" tabindex="-1" aria-labelledby="nsAlertTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="nsAlertTitle">{{ _('Notice') }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p id="nsAlertBody" class="mb-0"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">{{ _('OK') }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm modal — populated dynamically by custom.js -->
+<div class="modal fade" id="nsConfirmModal" tabindex="-1" aria-labelledby="nsConfirmTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="nsConfirmTitle">{{ _('Confirm') }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p id="nsConfirmBody" class="mb-0"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{ _('Cancel') }}</button>
+        <button type="button" class="btn btn-danger" id="nsConfirmOk">{{ _('Confirm') }}</button>
+      </div>
+    </div>
+  </div>
+</div>

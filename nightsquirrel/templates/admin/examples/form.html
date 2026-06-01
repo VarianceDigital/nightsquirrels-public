@@ -1,0 +1,402 @@
+{% extends 'base.html' %}
+{% block metatags %}<title>{{ _('Admin') }} · {{ _('Example') }} | Night Squirrels</title>{% endblock %}
+{% block ns_container %}ns-container-md{% endblock %}
+{% block contents %}
+
+<div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+  <h2 class="m-0">{{ _('Edit example') if row else _('New example') }}</h2>
+  <a class="btn btn-outline-secondary btn-sm"
+     href="{{ url_for('bl_examples.admin_examples') }}">
+    <i class="bi bi-arrow-left"></i> {{ _('Back') }}
+  </a>
+</div>
+
+<form method="post" id="exampleForm">
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-5">
+      <label class="form-label">{{ _('Question type') }}</label>
+      <select class="form-select" name="qtp_id" required>
+        {% for t in qtypes %}
+        <option value="{{ t.qtp_id }}"
+          {% if row and row.qtp_id == t.qtp_id %}selected{% endif %}>
+          {{ t|localized_name('qtp_name') }}
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-2">
+      <label class="form-label">{{ _('Language') }}</label>
+      <select class="form-select" name="ex_lang">
+        <option value="it" {% if not row or row.ex_lang == 'it' %}selected{% endif %}>IT</option>
+        <option value="en" {% if row and row.ex_lang == 'en' %}selected{% endif %}>EN</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">{{ _('Subject') }}</label>
+      <input class="form-control" name="ex_subject"
+             value="{{ row.ex_subject or '' if row else '' }}">
+    </div>
+    <div class="col-md-2">
+      <label class="form-label">{{ _('Grade') }}</label>
+      <select class="form-select" name="ex_grade">
+        <option value="">—</option>
+        <option value="1" {% if row and row.ex_grade == '1' %}selected{% endif %}>1 · {{ _('Base') }}</option>
+        <option value="2" {% if row and row.ex_grade == '2' %}selected{% endif %}>2 · {{ _('Medium') }}</option>
+        <option value="3" {% if row and row.ex_grade == '3' %}selected{% endif %}>3 · {{ _('High School') }}</option>
+        <option value="4" {% if row and row.ex_grade == '4' %}selected{% endif %}>4 · {{ _('University') }}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">{{ _('Title') }}</label>
+    <input class="form-control" name="ex_title" required
+           value="{{ row.ex_title if row else '' }}">
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header fw-semibold">{{ _('Question body') }}</div>
+    <div class="card-body p-0">
+      <div id="q_editor" class="ns-quill-editor-xl"></div>
+    </div>
+  </div>
+  <input type="hidden" name="ex_q_delta" id="ex_q_delta">
+
+  <div class="card mb-3">
+    <div class="card-header fw-semibold">{{ _('Answer body') }}</div>
+    <div class="card-body p-0">
+      <div id="a_editor" class="ns-quill-editor-xl"></div>
+    </div>
+  </div>
+  <input type="hidden" name="ex_a_delta" id="ex_a_delta">
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-3">
+      <label class="form-label">{{ _('Sequence') }}</label>
+      <input class="form-control" type="number" name="ex_seqno"
+             value="{{ row.ex_seqno if row else 0 }}">
+    </div>
+    <div class="col-md-3 d-flex align-items-end">
+      <div class="form-check mb-2">
+        <input class="form-check-input" type="checkbox" name="ex_published" id="ex_published"
+               {% if row and row.ex_published %}checked{% endif %}>
+        <label class="form-check-label" for="ex_published">{{ _('Published') }}</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex gap-2">
+    <button class="btn btn-primary" type="submit">
+      <i class="bi bi-floppy"></i> {{ _('Save') }}
+    </button>
+    <a class="btn btn-outline-secondary"
+       href="{{ url_for('bl_examples.admin_examples') }}">{{ _('Cancel') }}</a>
+  </div>
+</form>
+
+{% include 'incl_formula_modal.html' %}
+{% include 'incl_quill_katex.html' %}
+
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+  if (!window.Quill) { console.error("Quill not loaded"); return; }
+  if (!window.katex) { console.warn("KaTeX not loaded; formula preview may fail"); }
+
+  const TOOLBAR = [
+    [{ header: [1, 2, 3, false] }],
+    ['bold', 'italic', 'underline'],
+    [{ list: 'ordered' }, { list: 'bullet' }],
+    [{ align: [] }],
+    ['link', 'code-block', 'formula', 'image'],
+    ['clean']
+  ];
+
+  const qQuill = new Quill('#q_editor', { theme: 'snow', modules: { toolbar: TOOLBAR } });
+  const aQuill = new Quill('#a_editor', { theme: 'snow', modules: { toolbar: TOOLBAR } });
+
+  // Load existing deltas
+  {% if row and row.ex_q_delta %}
+  try {
+    let d = {{ row.ex_q_delta | tojson }};
+    if (typeof d === 'string') d = JSON.parse(d);
+    if (d && Array.isArray(d.ops)) qQuill.setContents(d);
+  } catch(e) { console.warn('Failed to load Q delta:', e); }
+  {% endif %}
+  {% if row and row.ex_a_delta %}
+  try {
+    let d = {{ row.ex_a_delta | tojson }};
+    if (typeof d === 'string') d = JSON.parse(d);
+    if (d && Array.isArray(d.ops)) aQuill.setContents(d);
+  } catch(e) { console.warn('Failed to load A delta:', e); }
+  {% endif %}
+
+  // ── Active editor tracking ────────────────────────────────────────────────
+  // Formula modal and image upload always target whichever editor last had focus.
+  let activeQuill = qQuill;
+  qQuill.root.addEventListener('focus', () => { activeQuill = qQuill; });
+  aQuill.root.addEventListener('focus', () => { activeQuill = aQuill; });
+
+  // ── Formula modal plumbing ────────────────────────────────────────────────
+  const modalEl       = document.getElementById('formulaModal');
+  const formulaInput  = document.getElementById('formulaInput');
+  const formulaPreview= document.getElementById('formulaPreview');
+  const formulaError  = document.getElementById('formulaError');
+  const applyBtn      = document.getElementById('formulaApplyBtn');
+  const bsModal       = modalEl ? new bootstrap.Modal(modalEl) : null;
+
+  let formulaContext      = { mode: 'insert', index: null };
+  let formulaApplied      = false;
+  let formulaRestoreRange = null;
+
+  if (modalEl) {
+    modalEl.addEventListener('hidden.bs.modal', () => {
+      if (!formulaApplied && formulaRestoreRange) {
+        const y = window.scrollY;
+        try { activeQuill.focus(); } catch(e) {}
+        try { window.scrollTo(0, y); } catch(e) {}
+        try { activeQuill.setSelection(formulaRestoreRange.index, 0, 'silent'); } catch(e) {}
+      }
+      formulaApplied = false;
+      formulaRestoreRange = null;
+    });
+  }
+
+  function renderPreview(latex) {
+    formulaError.style.display = 'none';
+    formulaError.textContent   = '';
+    formulaPreview.innerHTML   = '';
+    if (!latex) return;
+    try {
+      if (!window.katex) throw new Error('KaTeX not available');
+      window.katex.render(latex, formulaPreview, { throwOnError: false, displayMode: true });
+    } catch(e) {
+      formulaError.style.display = 'block';
+      formulaError.textContent   = String(e);
+    }
+  }
+
+  function openFormulaModal({ latex = '', mode = 'insert', index = null, targetQuill }) {
+    if (targetQuill) activeQuill = targetQuill;
+    formulaApplied = false;
+    if (mode === 'insert') {
+      const r = activeQuill.getSelection(true) || { index: activeQuill.getLength(), length: 0 };
+      formulaRestoreRange = { index: r.index, length: 0 };
+    } else if (mode === 'edit' && typeof index === 'number') {
+      formulaRestoreRange = { index: index + 1, length: 0 };
+    }
+    formulaContext = { mode, index };
+    formulaInput.value = latex || '';
+    renderPreview(formulaInput.value);
+    bsModal.show();
+    setTimeout(() => formulaInput.focus(), 150);
+  }
+
+  formulaInput.addEventListener('input', () => renderPreview(formulaInput.value));
+
+  applyBtn.addEventListener('click', () => {
+    const latex = (formulaInput.value || '').trim();
+    if (!latex) { bsModal.hide(); return; }
+    formulaApplied = true;
+    if (formulaContext.mode === 'insert') {
+      const range = activeQuill.getSelection(true) || { index: activeQuill.getLength() };
+      activeQuill.insertEmbed(range.index, 'formula', latex, 'user');
+      activeQuill.setSelection(range.index + 1, 0, 'silent');
+    } else if (formulaContext.mode === 'edit' && typeof formulaContext.index === 'number') {
+      activeQuill.deleteText(formulaContext.index, 1, 'user');
+      activeQuill.insertEmbed(formulaContext.index, 'formula', latex, 'user');
+      activeQuill.setSelection(formulaContext.index + 1, 0, 'silent');
+    }
+    bsModal.hide();
+  });
+
+  // Toolbar formula button handler for each editor
+  [qQuill, aQuill].forEach(q => {
+    const tb = q.getModule('toolbar');
+    if (tb) tb.addHandler('formula', () => openFormulaModal({ mode: 'insert', targetQuill: q }));
+
+    // Click-to-edit existing formula embeds
+    q.root.addEventListener('click', (e) => {
+      const blot  = Quill.find(e.target, true);
+      if (!blot || !blot.domNode) return;
+      const latex = blot.domNode.getAttribute && blot.domNode.getAttribute('data-value');
+      if (!latex) return;
+      const index = q.getIndex(blot);
+      if (index < 0) return;
+      openFormulaModal({ latex, mode: 'edit', index, targetQuill: q });
+    });
+  });
+
+  // ── Image upload + resize (applied to each editor) ────────────────────────
+  function attachImageFeatures(q) {
+    const UPLOAD_URL = {{ url_for('bl_question.upload_image') | tojson }};
+    const MAX_PX     = 1200;
+    const MAX_BYTES  = 5 * 1024 * 1024;
+
+    async function resizeAndUpload(file) {
+      if (file.size > MAX_BYTES) throw new Error('Image too large (max 5 MB)');
+      return new Promise((resolve, reject) => {
+        const img  = new Image();
+        const bUrl = URL.createObjectURL(file);
+        img.onload = () => {
+          URL.revokeObjectURL(bUrl);
+          let w = img.naturalWidth, h = img.naturalHeight;
+          if (w > MAX_PX || h > MAX_PX) {
+            const s = Math.min(MAX_PX / w, MAX_PX / h);
+            w = Math.round(w * s); h = Math.round(h * s);
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = w; canvas.height = h;
+          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+          const mime = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+          const qual = mime === 'image/jpeg' ? 0.88 : undefined;
+          const name = mime === 'image/png'  ? 'image.png' : 'image.jpg';
+          canvas.toBlob(async (blob) => {
+            const fd = new FormData();
+            fd.append('image', blob, name);
+            try {
+              const res = await fetch(UPLOAD_URL, { method: 'POST', body: fd });
+              if (!res.ok) throw new Error('Upload failed (' + res.status + ')');
+              const data = await res.json();
+              if (data.error) throw new Error(data.error);
+              resolve(data.url);
+            } catch(e) { reject(e); }
+          }, mime, qual);
+        };
+        img.onerror = () => { URL.revokeObjectURL(bUrl); reject(new Error('Could not load image')); };
+        img.src = bUrl;
+      });
+    }
+
+    async function uploadAndInsert(file, index) {
+      try {
+        const url = await resizeAndUpload(file);
+        q.insertEmbed(index, 'image', url, 'user');
+        q.setSelection(index + 1, 0, 'silent');
+      } catch(err) { console.error('Image upload failed:', err); }
+    }
+
+    const tb = q.getModule('toolbar');
+    if (tb) {
+      tb.addHandler('image', () => {
+        const inp = document.createElement('input');
+        inp.type = 'file';
+        inp.accept = 'image/jpeg,image/png,image/gif,image/webp';
+        inp.onchange = async () => {
+          const file = inp.files[0];
+          if (!file) return;
+          const range = q.getSelection(true) || { index: q.getLength() };
+          await uploadAndInsert(file, range.index);
+        };
+        inp.click();
+      });
+    }
+
+    q.root.addEventListener('paste', async (e) => {
+      const imgItem = Array.from(e.clipboardData?.items || [])
+                           .find(it => it.type.startsWith('image/'));
+      if (!imgItem) return;
+      e.stopImmediatePropagation();
+      e.preventDefault();
+      const file = imgItem.getAsFile();
+      if (!file) return;
+      const range = q.getSelection(true) || { index: q.getLength() };
+      await uploadAndInsert(file, range.index);
+    }, true);
+
+    q.root.addEventListener('dragover', (e) => e.preventDefault());
+    q.root.addEventListener('drop', async (e) => {
+      const file = Array.from(e.dataTransfer?.files || [])
+                       .find(f => f.type.startsWith('image/'));
+      if (!file) return;
+      e.preventDefault();
+      const range = q.getSelection() || { index: q.getLength() };
+      await uploadAndInsert(file, range.index);
+    });
+
+    q.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
+      delta.ops = delta.ops.filter(op =>
+        !(op.insert && op.insert.image && String(op.insert.image).startsWith('data:'))
+      );
+      return delta;
+    });
+
+    // Image resize handles
+    (function () {
+      const container = q.root.parentElement;
+      const overlay   = document.createElement('div');
+      overlay.style.cssText = 'position:absolute;pointer-events:none;display:none;' +
+                              'border:2px solid #0d6efd;box-sizing:border-box;z-index:100;';
+      const handle = document.createElement('div');
+      handle.title = 'Drag to resize';
+      handle.style.cssText = 'position:absolute;right:-5px;bottom:-5px;width:10px;height:10px;' +
+                             'background:#0d6efd;cursor:se-resize;pointer-events:all;border-radius:2px;';
+      overlay.appendChild(handle);
+      container.appendChild(overlay);
+
+      let activeImg = null, drag = null;
+
+      function positionOverlay(img) {
+        const cRect = container.getBoundingClientRect();
+        const iRect = img.getBoundingClientRect();
+        overlay.style.left   = (iRect.left - cRect.left + q.root.scrollLeft) + 'px';
+        overlay.style.top    = (iRect.top  - cRect.top  + q.root.scrollTop)  + 'px';
+        overlay.style.width  = iRect.width  + 'px';
+        overlay.style.height = iRect.height + 'px';
+        overlay.style.display = 'block';
+      }
+
+      q.root.addEventListener('click', (e) => {
+        if (e.target.tagName === 'IMG') { activeImg = e.target; positionOverlay(e.target); }
+        else { overlay.style.display = 'none'; activeImg = null; }
+      });
+      document.addEventListener('click', (e) => {
+        if (!container.contains(e.target)) { overlay.style.display = 'none'; activeImg = null; }
+      });
+      q.on('text-change', () => {
+        if (!activeImg) return;
+        if (!q.root.contains(activeImg)) { overlay.style.display = 'none'; activeImg = null; }
+        else positionOverlay(activeImg);
+      });
+
+      handle.addEventListener('mousedown', (e) => {
+        e.preventDefault(); e.stopPropagation();
+        if (!activeImg) return;
+        drag = { startX: e.clientX, startW: activeImg.getBoundingClientRect().width };
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup',   onUp);
+      });
+
+      function onMove(e) {
+        if (!drag || !activeImg) return;
+        activeImg.setAttribute('width', Math.max(40, Math.round(drag.startW + (e.clientX - drag.startX))));
+        positionOverlay(activeImg);
+      }
+
+      function onUp() {
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup',   onUp);
+        if (!drag || !activeImg) { drag = null; return; }
+        const finalW = Math.round(activeImg.getBoundingClientRect().width);
+        const blot   = Quill.find(activeImg, true);
+        if (blot) {
+          const idx = q.getIndex(blot);
+          if (idx >= 0) q.formatText(idx, 1, { width: String(finalW) }, 'user');
+        }
+        drag = null;
+        positionOverlay(activeImg);
+      }
+    }());
+  }
+
+  attachImageFeatures(qQuill);
+  attachImageFeatures(aQuill);
+
+  // ── Form submit ───────────────────────────────────────────────────────────
+  document.getElementById('exampleForm').addEventListener('submit', () => {
+    document.getElementById('ex_q_delta').value = JSON.stringify(qQuill.getContents());
+    document.getElementById('ex_a_delta').value = JSON.stringify(aQuill.getContents());
+  });
+});
+</script>
+{% endblock %}

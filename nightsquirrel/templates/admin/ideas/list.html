@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block metatags %}<title>{{ _('Admin') }} · {{ _('Ideas') }} | Night Squirrels</title>{% endblock %}
+{% block ns_container %}ns-container-wide{% endblock %}
+{% block contents %}
+
+<div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+  <h2 class="m-0">{{ _('Admin') }} · {{ _('Ideas') }}</h2>
+  <div class="d-flex gap-2">
+    <a class="btn btn-primary btn-sm"
+       href="{{ url_for('bl_ideas.admin_new_idea') }}">+ {{ _('New idea') }}</a>
+    <a class="btn btn-outline-secondary btn-sm"
+       href="{{ url_for('bl_admin.dashboard') }}">{{ _('Dashboard') }}</a>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-sm align-middle">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>{{ _('Lang') }}</th>
+        <th>{{ _('Title') }}</th>
+        <th>{{ _('Owner') }}</th>
+        <th>{{ _('Whiteboard') }}</th>
+        <th>{{ _('Published') }}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for r in ideas %}
+      <tr>
+        <td class="text-muted small">{{ r.idea_id }}</td>
+        <td><span class="badge bg-secondary">{{ r.idea_lang|upper }}</span></td>
+        <td>
+          <span class="fw-semibold">{{ r.idea_title }}</span>
+          {% if r.idea_subtitle %}
+          <span class="text-muted small ms-1">· {{ r.idea_subtitle }}</span>
+          {% endif %}
+        </td>
+        <td class="small text-muted">{{ r.usr_name or '—' }}</td>
+        <td>
+          {% if r.idea_body_delta %}
+          <span class="badge bg-success-subtle text-success border border-success-subtle">{{ _('Yes') }}</span>
+          {% else %}
+          <span class="badge bg-light text-muted border">{{ _('Empty') }}</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if r.idea_is_published %}
+          <span class="badge bg-success">{{ _('Yes') }}</span>
+          {% else %}
+          <span class="badge bg-light text-muted border">{{ _('No') }}</span>
+          {% endif %}
+        </td>
+        <td class="text-end">
+          <a class="btn btn-sm btn-outline-secondary"
+             href="{{ url_for('bl_ideas.admin_idea_whiteboard', idea_id=r.idea_id) }}">
+            <i class="bi bi-grid-1x2"></i> {{ _('Whiteboard') }}</a>
+          <a class="btn btn-sm btn-outline-primary"
+             href="{{ url_for('bl_ideas.admin_edit_idea', idea_id=r.idea_id) }}">{{ _('Edit') }}</a>
+          <form method="post" class="d-inline"
+                action="{{ url_for('bl_ideas.admin_delete_idea', idea_id=r.idea_id) }}">
+            <button class="btn btn-sm btn-outline-danger"
+                    data-confirm="{{ _('Delete this idea?') }}">{{ _('Delete') }}</button>
+          </form>
+        </td>
+      </tr>
+    {% else %}
+      <tr><td colspan="7" class="text-center text-muted py-4">{{ _('No ideas yet.') }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

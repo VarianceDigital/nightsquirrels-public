@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+{% block metatags %}<title>{{ _('Answer editor') }} | Night Squirrels</title>{% endblock %}
+
+{% block ns_container %}ns-container-md{% endblock %}
+{% block contents %}
+  <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mt-3 mb-3">
+    <h2 class="m-0">
+      {% if mode == 'create' %}{{ _('Create answer') }}{% else %}{{ _('Edit answer') }}{% endif %}
+      (ticket #{{ ticket.tkt_id }})
+    </h2>
+    <a class="btn btn-outline-secondary" href="{{ url_for('bl_tutor.ticket_detail', tkt_id=ticket.tkt_id) }}"><i class="bi bi-arrow-left"></i> {{ _('Back') }}</a>
+  </div>
+
+  <div class="mb-2">
+    <div class="small text-muted">{{ _('Question:') }} #{{ ticket.qtn_id }} · {{ ticket.qtn_title }}</div>
+  </div>
+
+  <form method="post" id="answerForm">
+    <div class="card mb-3">
+      <div class="card-header">{{ _('Answer editor') }}</div>
+      <div class="card-body">
+        <div id="editor" class="ns-quill-editor-xl"></div>
+      </div>
+    </div>
+
+    <input type="hidden" name="ctx_delta" id="ctx_delta" />
+    <input type="hidden" name="ctx_plaintext" id="ctx_plaintext" />
+
+    <div class="d-flex gap-2">
+      <button class="btn btn-primary" type="submit" name="btn_save"><i class="bi bi-floppy"></i> {{ _('Save') }}</button>
+      <button class="btn btn-success" type="submit" name="btn_deliver"
+              data-confirm="{{ _('Deliver the answer to the student?') }}">
+        <i class="bi bi-send"></i> {{ _('Deliver') }}
+      </button>
+      <a class="btn btn-outline-secondary" href="{{ url_for('bl_tutor.ticket_detail', tkt_id=ticket.tkt_id) }}"><i class="bi bi-x"></i> {{ _('Cancel') }}</a>
+      {% if mode == 'edit' and ans and ans.ans_id %}
+      <a class="btn btn-outline-secondary"
+         href="{{ url_for('bl_references.manage_answer_refs', ans_id=ans.ans_id) }}">
+        <i class="bi bi-journal-bookmark"></i> {{ _('References') }}
+      </a>
+      {% endif %}
+    </div>
+    {% if mode == 'create' %}
+    <p class="text-muted small mt-2 mb-0">
+      <i class="bi bi-info-circle me-1"></i>{{ _('You can attach') }} <strong>{{ _('references') }}</strong> {{ _('to your answer after saving.') }}
+    </p>
+    {% endif %}
+  </form>
+
+{% include 'incl_formula_modal.html' %}
+
+{% include 'incl_quill_katex.html' %}
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    
+    if (!window.Quill) { console.error("Quill missing"); return; }
+    if (!window.katex) { console.warn("KaTeX not loaded; formula preview may fail"); }
+      
+    const quill = new Quill('#editor', {
+      theme: 'snow',
+      modules: {
+        toolbar: [
+          [{ header: [1, 2, 3, false] }],
+          ['bold', 'italic', 'underline'],
+          [{ list: 'ordered' }, { list: 'bullet' }],
+          [{ align: [] }],
+          ['link', 'code-block', 'formula', 'image'],
+          ['clean']
+        ]
+      }
+    });
+
+    // Load existing answer delta
+    let initialDelta = {{ (ans.ans_ctx_delta_text or '{"ops":[]}') | tojson }};
+    try {
+      if (typeof initialDelta === 'string') initialDelta = JSON.parse(initialDelta);
+      if (initialDelta && Array.isArray(initialDelta.ops)) quill.setContents(initialDelta);
+    } catch (e) {
+      console.warn("Failed to load answer delta:", e, initialDelta);
+    }
+
+    // --- Modal plumbing ---
+    const modalEl = document.getElementById('formulaModal');
+    const formulaInput = document.getElementById('formulaInput');
+    const formulaPreview = document.getElementById('formulaPreview');
+    const formulaError = document.getElementById('formulaError');
+    const applyBtn = document.getElementById('formulaApplyBtn');
+    const bsModal = modalEl ? new bootstrap.Modal(modalEl) : null;
+  
+    let formulaContext = { mode: 'insert', index: null }; // mode: insert|edit
+
+    // Preserve caret position when the formula modal closes WITHOUT applying.
+    // Otherwise Quill often resets the selection to index 0.
+    let formulaApplied = false;
+    let formulaRestoreRange = null;
+
+    function restoreCaretAfterCancel() {
+      if (!formulaRestoreRange) return;
+      // Keep the viewport stable (no scroll-to-top) while refocusing the editor.
+      const y = window.scrollY;
+      try { quill.focus(); } catch (e) {}
+      try { window.scrollTo(0, y); } catch (e) {}
+      try { quill.setSelection(formulaRestoreRange.index, 0, 'silent'); } catch (e) {}
+    }
+
+    if (modalEl) {
+      modalEl.addEventListener('hidden.bs.modal', () => {
+        if (!formulaApplied) restoreCaretAfterCancel();
+        // reset
+        formulaApplied = false;
+        formulaRestoreRange = null;
+      });
+    }
+  
+    function renderPreview(latex) {
+      formulaError.style.display = 'none';
+      formulaError.textContent = '';
+      formulaPreview.innerHTML = '';
+  
+      if (!latex) return;
+  
+      try {
+        if (!window.katex) throw new Error("KaTeX is not available");
+        window.katex.render(latex, formulaPreview, { throwOnError: false, displayMode: true });
+      } catch (e) {
+        formulaError.style.display = 'block';
+        formulaError.textContent = String(e);
+      }
+    }
+  
+    function openFormulaModal({ latex = '', mode = 'insert', index = null }) {
+      formulaApplied = false;
+      if (mode === 'insert') {
+        const r = quill.getSelection(true) || { index: quill.getLength(), length: 0 };
+        formulaRestoreRange = { index: r.index, length: 0 };
+      } else if (mode === 'edit' && typeof index === 'number') {
+        // if the user cancels while editing an existing embed, put the caret after it
+        formulaRestoreRange = { index: index + 1, length: 0 };
+      }
+      formulaContext = { mode, index };
+      formulaInput.value = latex || '';
+      renderPreview(formulaInput.value);
+      bsModal.show();
+      setTimeout(() => formulaInput.focus(), 150);
+    }
+  
+    formulaInput.addEventListener('input', () => renderPreview(formulaInput.value));
+  
+    applyBtn.addEventListener('click', () => {
+      const latex = (formulaInput.value || '').trim();
+      if (!latex) { bsModal.hide(); return; }
+
+      // mark as applied so the 'hidden' handler doesn't restore an old caret
+      formulaApplied = true;
+  
+      if (formulaContext.mode === 'insert') {
+        const range = quill.getSelection(true) || { index: quill.getLength() };
+        quill.insertEmbed(range.index, 'formula', latex, 'user');
+        quill.setSelection(range.index + 1, 0, 'silent');
+      } else if (formulaContext.mode === 'edit' && typeof formulaContext.index === 'number') {
+        quill.deleteText(formulaContext.index, 1, 'user');
+        quill.insertEmbed(formulaContext.index, 'formula', latex, 'user');
+        quill.setSelection(formulaContext.index + 1, 0, 'silent');
+      }
+  
+      bsModal.hide();
+    });
+  
+    // Toolbar formula button -> modal insert
+    const toolbar = quill.getModule('toolbar');
+    if (toolbar) {
+      toolbar.addHandler('formula', () => openFormulaModal({ mode: 'insert' }));
+    }
+  
+    // Click-to-edit existing formula embeds
+    quill.root.addEventListener('click', (e) => {
+      const blot = Quill.find(e.target, true);
+      if (!blot || !blot.domNode) return;
+  
+      const el = blot.domNode;
+      const latex = el.getAttribute && el.getAttribute('data-value');
+      if (!latex) return;
+  
+      const index = quill.getIndex(blot);
+      if (index < 0) return;
+  
+      openFormulaModal({ latex, mode: 'edit', index });
+    });
+
+    // submit serialization + disable buttons to prevent double-submit
+    const form = document.getElementById('answerForm');
+    form.addEventListener('submit', (e) => {
+      const plaintext = quill.getText().trim();
+      if (e.submitter?.name === 'btn_deliver' && !plaintext) {
+        e.preventDefault();
+        nsAlert({{ _('Cannot deliver an empty answer.')|tojson }});
+        return;
+      }
+      document.getElementById('ctx_delta').value = JSON.stringify(quill.getContents());
+      document.getElementById('ctx_plaintext').value = quill.getText();
+      form.querySelectorAll('[type=submit]').forEach(btn => { btn.disabled = true; });
+      if (e.submitter) {
+        const orig = e.submitter.textContent.trim();
+        e.submitter.innerHTML = '<span class="spinner-border spinner-border-sm me-1"' +
+                                ' role="status" aria-hidden="true"></span>' + orig;
+      }
+    });
+
+    {% include 'incl_quill_image_upload.html' %}
+    {% include 'incl_quill_image_resize.html' %}
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,514 @@
+{% extends 'base.html' %}
+
+{% block metatags %}<title>{{ _('Edit question') }} | Night Squirrels</title>{% endblock %}
+
+{% block ns_container %}ns-container-md{% endblock %}
+{% block contents %}
+  <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mt-3 mb-3">
+    <h2 class="m-0">{{ _('Edit question') }}</h2>
+    <a class="btn btn-outline-secondary" href="{{ url_for('bl_question.question_detail', qtn_id=row.qtn_id) }}">{{ _('Back') }}</a>
+  </div>
+
+  <form method="post" enctype="multipart/form-data" id="questionEditForm">
+    <div class="mb-3">
+      <label class="form-label">{{ _('Title') }} *</label>
+      <input class="form-control" name="qtn_title" id="qtn_title"
+             value="{{ (form.get('qtn_title') or row.qtn_title or '') }}">
+      <div class="invalid-feedback">{{ _('Title is required.') }}</div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">{{ _('Subject') }}</label>
+        {% set current_sbj = (form.get('sbj_id') if form.get('sbj_id') is not none else row.sbj_id) %}
+        <select class="form-select" name="sbj_id">
+          <option value="">{{ _('(optional)') }}</option>
+          {% for s in subjects %}
+            <option value="{{s.sbj_id}}" {% if current_sbj is not none and current_sbj|int == s.sbj_id %}selected{% endif %}>
+              {{ s|localized_name('sbj_name') }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label class="form-label">{{ _('Question type') }}</label>
+        {% set current_qtp = (form.get('qtp_id') if form.get('qtp_id') is not none else row.qtp_id) %}
+        <select class="form-select" name="qtp_id">
+          <option value="">{{ _('(optional)') }}</option>
+          {% for t in qtypes %}
+            <option value="{{t.qtp_id}}" {% if current_qtp is not none and current_qtp|int == t.qtp_id %}selected{% endif %}>
+              {{ t|localized_name('qtp_name') }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">{{ _('Attached document') }}</label>
+      {% if documents %}
+        {% for doc in documents %}
+          <div class="mb-2">
+            {% if doc.doc_content_type.startswith('image/') %}
+              <img src="{{ s3docsurl }}{{ doc.doc_s3_key }}" alt="{{ doc.doc_filename }}"
+                   class="img-fluid mb-1 ns-doc-preview">
+            {% else %}
+              <a href="{{ s3docsurl }}{{ doc.doc_s3_key }}" target="_blank">{{ doc.doc_filename }} (PDF)</a>
+            {% endif %}
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="remove_doc_{{ doc.doc_id }}" id="remove_doc_{{ doc.doc_id }}">
+              <label class="form-check-label" for="remove_doc_{{ doc.doc_id }}">{{ _('Remove this document') }}</label>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+      <input type="file" class="form-control mt-2" name="document"
+             accept="image/jpeg,image/png,image/heic,application/pdf">
+      <div class="form-text">{{ _('JPG, PNG, HEIC or PDF. Max 10 MB. Replaces any existing document.') }}</div>
+      <div id="imgPreviewWrap" class="mt-2 d-none">
+        <div class="d-flex align-items-center gap-3">
+          <img id="imgPreviewThumb" src="" alt=""
+               style="max-height:100px;max-width:180px;border-radius:4px;border:1px solid #dee2e6;">
+          <div class="d-flex flex-column gap-1">
+            <button type="button" class="btn btn-sm btn-outline-secondary" id="imgReCropBtn">
+              ✂ {{ _('Re-crop') }}
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-info" id="imgExtractBtn">
+              <i class="bi bi-stars"></i> {{ _('Extract text from image') }}
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-danger" id="imgRemoveBtn">
+              {{ _('Remove') }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-2">
+      <label class="form-label">{{ _('Describe your question') }}</label>
+      <div id="editor" class="ns-quill-editor-lg"></div>
+      <div id="extractedNotice" class="alert alert-info py-2 px-3 mt-2 mb-0 d-none small">
+        <i class="bi bi-stars me-1"></i>{{ _('Content extracted from your image — please review and correct if needed.') }}
+      </div>
+    </div>
+
+    <input type="hidden" name="ctx_delta" id="ctx_delta" />
+    <input type="hidden" name="ctx_plaintext" id="ctx_plaintext" />
+
+    <hr class="my-4"/>
+
+    <div class="d-flex flex-wrap gap-2 mb-3">
+      <a class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse"
+         href="#academicDetails" role="button"
+         aria-expanded="{% if not g.student_profile_complete %}true{% else %}false{% endif %}"
+         aria-controls="academicDetails">
+        <i class="bi bi-mortarboard me-1"></i>{{ _('Academic details') }}
+      </a>
+      <a class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse"
+         href="#additionalDetails" role="button"
+         aria-expanded="false" aria-controls="additionalDetails">
+        <i class="bi bi-sliders me-1"></i>{{ _('Additional details') }}
+      </a>
+      <a class="btn btn-sm btn-outline-secondary"
+         href="{{ url_for('bl_references.manage_question_refs', qtn_id=row.qtn_id) }}">
+        <i class="bi bi-journal-bookmark me-1"></i>{{ _('References') }}
+      </a>
+    </div>
+
+    <div class="collapse {% if not g.student_profile_complete %}show{% endif %}" id="academicDetails">
+      <div class="card card-body mb-3">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">{{ _('School type') }}</label>
+            {% set current_sct = (form.get('sct_id') if form.get('sct_id') is not none else row.sct_id) %}
+            <select class="form-select" name="sct_id">
+              <option value="">{{ _('(optional)') }}</option>
+              {% for st in schooltypes %}
+                <option value="{{st.sct_id}}" {% if current_sct is not none and current_sct|int == st.sct_id %}selected{% endif %}>
+                  {{ st|localized_name('sct_name') }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">{{ _('Grade / Year') }}</label>
+            <input class="form-control" type="number" min="1" max="20" name="qtn_grade"
+                   value="{{ form.get('qtn_grade') or row.qtn_grade or '' }}">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="collapse" id="additionalDetails">
+      <div class="card card-body mb-3">
+        <div class="mb-3">
+          <label class="form-label">{{ _('Difficulty (1-5)') }}</label>
+          <input class="form-control" type="number" min="1" max="5" name="qtn_difficulty"
+                 value="{{ form.get('qtn_difficulty') or row.qtn_difficulty or '' }}">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">{{ _('Notes (optional)') }}</label>
+          <textarea class="form-control" name="qtn_notes" rows="2">{{ form.get('qtn_notes') or row.qtn_notes or '' }}</textarea>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary mt-3" type="submit">{{ _('Save') }}</button>
+    <a class="btn btn-outline-secondary mt-3" href="{{ url_for('bl_question.question_detail', qtn_id=row.qtn_id) }}">{{ _('Cancel') }}</a>
+  </form>
+
+{% include 'incl_formula_modal.html' %}
+
+<div class="modal fade" id="cropModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header py-2">
+        <h6 class="modal-title mb-0">{{ _('Crop & Rotate') }}</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-1" style="max-height:65vh;overflow:hidden;background:#222">
+        <img id="cropImg" src="" style="display:block;max-width:100%;max-height:60vh;margin:auto">
+      </div>
+      <div class="modal-footer py-2 justify-content-between">
+        <div class="d-flex gap-2">
+          <button type="button" class="btn btn-outline-secondary btn-sm" id="cropRotateLeft">↺ {{ _('Rotate left') }}</button>
+          <button type="button" class="btn btn-outline-secondary btn-sm" id="cropRotateRight">↻ {{ _('Rotate right') }}</button>
+        </div>
+        <div class="d-flex gap-2">
+          <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">{{ _('Cancel') }}</button>
+          <button type="button" class="btn btn-primary btn-sm" id="cropApplyBtn">{{ _('Apply') }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include 'incl_quill_katex.html' %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+
+    if (!window.Quill) { console.error("Quill not loaded"); return; }
+    if (!window.katex) { console.warn("KaTeX not loaded; formula preview may fail"); }
+  
+    const quill = new Quill('#editor', {
+      theme: 'snow',
+      modules: {
+        toolbar: [
+          [{ header: [1, 2, 3, false] }],
+          ['bold', 'italic', 'underline'],
+          [{ list: 'ordered' }, { list: 'bullet' }],
+          [{ align: [] }],
+          ['link', 'code-block', 'formula', 'image'],
+          ['clean']
+        ]
+      }
+    });
+  
+    // --- Load delta: prefer re-submitted form data, then DB content, then image extraction ---
+    {% set _raw_delta = form.get('ctx_delta') or row.ctx_delta_text or '' %}
+    {% set _init_delta = _raw_delta if (_raw_delta and _raw_delta != '{"ops":[]}') else None %}
+    {% set _ns = namespace(extracted_delta=None) %}
+    {% if not _init_delta %}
+      {% for doc in documents %}
+        {% if doc.doc_extracted_delta and not _ns.extracted_delta %}
+          {% set _ns.extracted_delta = doc.doc_extracted_delta %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+    {% if _init_delta %}
+    try {
+      let initialDelta = {{ _init_delta | tojson }};
+      if (typeof initialDelta === 'string') initialDelta = JSON.parse(initialDelta);
+      if (initialDelta && typeof initialDelta === 'object' && Array.isArray(initialDelta.ops)) {
+        quill.setContents(initialDelta);
+      }
+    } catch (e) {
+      console.warn("Failed to load initial delta:", e);
+    }
+    {% elif _ns.extracted_delta %}
+    try {
+      let extractedDelta = {{ _ns.extracted_delta | tojson }};
+      if (typeof extractedDelta === 'string') extractedDelta = JSON.parse(extractedDelta);
+      if (extractedDelta && typeof extractedDelta === 'object' && Array.isArray(extractedDelta.ops)) {
+        quill.setContents(extractedDelta);
+        document.getElementById('extractedNotice').classList.remove('d-none');
+      }
+    } catch (e) {
+      console.warn('Failed to load extracted content:', e);
+    }
+    {% endif %}
+  
+    // --- Modal plumbing ---
+    const modalEl = document.getElementById('formulaModal');
+    const formulaInput = document.getElementById('formulaInput');
+    const formulaPreview = document.getElementById('formulaPreview');
+    const formulaError = document.getElementById('formulaError');
+    const applyBtn = document.getElementById('formulaApplyBtn');
+    const bsModal = modalEl ? new bootstrap.Modal(modalEl) : null;
+  
+    let formulaContext = { mode: 'insert', index: null }; // mode: insert|edit
+
+    // Preserve caret position when the formula modal closes WITHOUT applying.
+    // Otherwise Quill often resets the selection to index 0.
+    let formulaApplied = false;
+    let formulaRestoreRange = null;
+
+    function restoreCaretAfterCancel() {
+      if (!formulaRestoreRange) return;
+      // Keep the viewport stable (no scroll-to-top) while refocusing the editor.
+      const y = window.scrollY;
+      try { quill.focus(); } catch (e) {}
+      try { window.scrollTo(0, y); } catch (e) {}
+      try { quill.setSelection(formulaRestoreRange.index, 0, 'silent'); } catch (e) {}
+    }
+
+    if (modalEl) {
+      modalEl.addEventListener('hidden.bs.modal', () => {
+        if (!formulaApplied) restoreCaretAfterCancel();
+        // reset
+        formulaApplied = false;
+        formulaRestoreRange = null;
+      });
+    }
+  
+    function renderPreview(latex) {
+      formulaError.style.display = 'none';
+      formulaError.textContent = '';
+      formulaPreview.innerHTML = '';
+  
+      if (!latex) return;
+  
+      try {
+        if (!window.katex) throw new Error("KaTeX is not available");
+        window.katex.render(latex, formulaPreview, { throwOnError: false, displayMode: true });
+      } catch (e) {
+        formulaError.style.display = 'block';
+        formulaError.textContent = String(e);
+      }
+    }
+  
+    function openFormulaModal({ latex = '', mode = 'insert', index = null }) {
+      formulaApplied = false;
+      if (mode === 'insert') {
+        const r = quill.getSelection(true) || { index: quill.getLength(), length: 0 };
+        formulaRestoreRange = { index: r.index, length: 0 };
+      } else if (mode === 'edit' && typeof index === 'number') {
+        // if the user cancels while editing an existing embed, put the caret after it
+        formulaRestoreRange = { index: index + 1, length: 0 };
+      }
+      formulaContext = { mode, index };
+      formulaInput.value = latex || '';
+      renderPreview(formulaInput.value);
+      bsModal.show();
+      setTimeout(() => formulaInput.focus(), 150);
+    }
+  
+    formulaInput.addEventListener('input', () => renderPreview(formulaInput.value));
+  
+    applyBtn.addEventListener('click', () => {
+      const latex = (formulaInput.value || '').trim();
+      if (!latex) { bsModal.hide(); return; }
+
+      // mark as applied so the 'hidden' handler doesn't restore an old caret
+      formulaApplied = true;
+  
+      if (formulaContext.mode === 'insert') {
+        const range = quill.getSelection(true) || { index: quill.getLength() };
+        quill.insertEmbed(range.index, 'formula', latex, 'user');
+        quill.setSelection(range.index + 1, 0, 'silent');
+      } else if (formulaContext.mode === 'edit' && typeof formulaContext.index === 'number') {
+        quill.deleteText(formulaContext.index, 1, 'user');
+        quill.insertEmbed(formulaContext.index, 'formula', latex, 'user');
+        quill.setSelection(formulaContext.index + 1, 0, 'silent');
+      }
+  
+      bsModal.hide();
+    });
+  
+    // Toolbar formula button -> modal insert
+    const toolbar = quill.getModule('toolbar');
+    if (toolbar) {
+      toolbar.addHandler('formula', () => openFormulaModal({ mode: 'insert' }));
+    }
+  
+    // Click-to-edit existing formula embeds
+    quill.root.addEventListener('click', (e) => {
+      const blot = Quill.find(e.target, true);
+      if (!blot || !blot.domNode) return;
+  
+      const el = blot.domNode;
+      const latex = el.getAttribute && el.getAttribute('data-value');
+      if (!latex) return;
+  
+      const index = quill.getIndex(blot);
+      if (index < 0) return;
+  
+      openFormulaModal({ latex, mode: 'edit', index });
+    });
+  
+    // On submit: save delta + plaintext, disable button to prevent double-submit
+    const form = document.getElementById('questionEditForm');
+
+    form.addEventListener('submit', (e) => {
+      document.getElementById('ctx_delta').value = JSON.stringify(quill.getContents());
+      document.getElementById('ctx_plaintext').value = quill.getText();
+      const btn = form.querySelector('[type=submit]');
+      if (btn && !btn.disabled) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"' +
+                        ' role="status" aria-hidden="true"></span>' + btn.textContent.trim();
+      }
+    });
+
+    {% include 'incl_quill_image_upload.html' %}
+    {% include 'incl_quill_image_resize.html' %}
+
+    // === Image crop / rotate (Cropper.js) ===
+    (function () {
+      let cropper = null;
+      let croppedBlob = null;
+      let originalDataUrl = null;
+
+      const fileInput    = document.querySelector('input[name="document"]');
+      const cropImg      = document.getElementById('cropImg');
+      const cropModalEl  = document.getElementById('cropModal');
+      const bsCropModal  = new bootstrap.Modal(cropModalEl);
+      const previewWrap  = document.getElementById('imgPreviewWrap');
+      const previewThumb = document.getElementById('imgPreviewThumb');
+
+      const SKIP_TYPES = new Set(['image/heic', 'image/heif', 'application/pdf']);
+
+      function openCropper(dataUrl) {
+        cropImg.src = dataUrl;
+        bsCropModal.show();
+      }
+
+      fileInput.addEventListener('change', () => {
+        const file = fileInput.files[0];
+        if (!file || SKIP_TYPES.has(file.type) || !file.type.startsWith('image/')) {
+          croppedBlob = null;
+          originalDataUrl = null;
+          previewWrap.classList.add('d-none');
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = (e) => { originalDataUrl = e.target.result; openCropper(originalDataUrl); };
+        reader.readAsDataURL(file);
+      });
+
+      cropModalEl.addEventListener('shown.bs.modal', () => {
+        if (cropper) { cropper.destroy(); cropper = null; }
+        cropper = new Cropper(cropImg, { viewMode: 1, autoCropArea: 1, responsive: true, background: false });
+      });
+
+      cropModalEl.addEventListener('hidden.bs.modal', () => {
+        if (!croppedBlob) { fileInput.value = ''; previewWrap.classList.add('d-none'); }
+      });
+
+      document.getElementById('cropRotateLeft').addEventListener('click',  () => cropper?.rotate(-90));
+      document.getElementById('cropRotateRight').addEventListener('click', () => cropper?.rotate(90));
+
+      const extractNotice = document.getElementById('extractedNotice');
+      const extractBtn    = document.getElementById('imgExtractBtn');
+
+      async function runExtraction() {
+        if (!croppedBlob) return;
+        extractNotice.textContent = {{ _("Extracting content from image…") | tojson }};
+        extractNotice.classList.remove('d-none');
+        extractBtn.disabled = true;
+        try {
+          const fd = new FormData();
+          fd.append('image', croppedBlob, 'image.jpg');
+          const res = await fetch('{{ url_for("bl_question.extract_image_endpoint") }}',
+                                  { method: 'POST', body: fd });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.delta && Array.isArray(data.delta.ops)) {
+              quill.setContents(data.delta);
+              extractNotice.innerHTML = '<i class="bi bi-stars me-1"></i>' +
+                {{ _("Content extracted from your image — please review and correct if needed.") | tojson }};
+            } else {
+              extractNotice.classList.add('d-none');
+            }
+          } else {
+            extractNotice.classList.add('d-none');
+          }
+        } catch (err) {
+          console.warn('Image extraction failed:', err);
+          extractNotice.classList.add('d-none');
+        } finally {
+          extractBtn.disabled = false;
+        }
+      }
+
+      document.getElementById('cropApplyBtn').addEventListener('click', () => {
+        if (!cropper) return;
+        cropper.getCroppedCanvas({ maxWidth: 2048, maxHeight: 2048 }).toBlob(async (blob) => {
+          croppedBlob = blob;
+          previewThumb.src = URL.createObjectURL(blob);
+          previewWrap.classList.remove('d-none');
+          bsCropModal.hide();
+          // Auto-extract only when editor is empty
+          if (quill.getText().trim() === '') await runExtraction();
+        }, 'image/jpeg', 0.92);
+      });
+
+      extractBtn.addEventListener('click', runExtraction);
+
+      document.getElementById('imgReCropBtn').addEventListener('click', () => {
+        if (originalDataUrl) openCropper(originalDataUrl);
+      });
+
+      document.getElementById('imgRemoveBtn').addEventListener('click', () => {
+        croppedBlob = null; originalDataUrl = null;
+        fileInput.value = ''; previewThumb.src = '';
+        previewWrap.classList.add('d-none');
+      });
+
+      const submitBtn   = form.querySelector('[type=submit]');
+      const origBtnText = submitBtn.textContent.trim();
+
+      form.addEventListener('submit', async (e) => {
+        if (!croppedBlob) return;
+        e.preventDefault();
+
+        // Client-side title validation — keep the user on the page with all content intact
+        const titleInput = document.getElementById('qtn_title');
+        if (!titleInput.value.trim()) {
+          titleInput.classList.add('is-invalid');
+          titleInput.focus();
+          submitBtn.disabled = false;
+          submitBtn.textContent = origBtnText;
+          return;
+        }
+        titleInput.classList.remove('is-invalid');
+
+        const fd = new FormData(form);
+        fd.set('document', croppedBlob, 'cropped.jpg');
+        fd.set('ctx_delta', JSON.stringify(quill.getContents()));
+        fd.set('ctx_plaintext', quill.getText());
+
+        try {
+          const res = await fetch(form.action || window.location.href, { method: 'POST', body: fd });
+          if (res.redirected) {
+            window.location.href = res.url;
+          } else {
+            // Server re-rendered (unexpected error) — reload in place to show flash messages
+            window.location.reload();
+          }
+        } catch (err) {
+          console.error('Upload error:', err);
+          submitBtn.disabled = false;
+          submitBtn.textContent = origBtnText;
+        }
+      });
+    }());
+  });
+</script>
+    
+  {% endblock %}

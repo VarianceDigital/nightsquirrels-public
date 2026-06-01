@@ -1,0 +1,5710 @@
+# Italian translations for Night Squirrels.
+# Copyright (C) 2026 Night Squirrels
+# This file is distributed under the same license as the PROJECT project.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-05-07 20:29+0200\n"
+"PO-Revision-Date: 2026-03-08 14:30+0100\n"
+"Last-Translator: \n"
+"Language: it\n"
+"Language-Team: it <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: nightsquirrel/__init__.py:14
+msgid "Please log in to access this page."
+msgstr "Effettua il login per accedere a questa pagina."
+
+#: nightsquirrel/bl_admin.py:46
+#, python-format
+msgid "User #%(id)s updated."
+msgstr "Utente #%(id)s aggiornato."
+
+#: nightsquirrel/bl_admin.py:48
+msgid "User not found."
+msgstr "Utente non trovato."
+
+#: nightsquirrel/bl_admin.py:88
+msgid "Enter a valid price (e.g. 7.50)."
+msgstr "Inserisci un prezzo valido (es. 7,50)."
+
+#: nightsquirrel/bl_admin.py:94
+#, python-format
+msgid "Manual quote set: %(amount)s EUR."
+msgstr "Preventivo manuale impostato: %(amount)s EUR."
+
+#: nightsquirrel/bl_admin.py:96
+msgid "Could not set quote (ticket not in review state?)."
+msgstr "Impossibile impostare il preventivo (ticket non in stato di revisione?)."
+
+#: nightsquirrel/bl_admin.py:111
+msgid "Tutor assigned."
+msgstr "Tutor assegnato."
+
+#: nightsquirrel/bl_admin.py:113
+msgid "Assignment failed."
+msgstr "Assegnazione fallita."
+
+#: nightsquirrel/bl_admin.py:147
+#, python-format
+msgid "Deleted %(n)s orphaned image(s) from S3."
+msgstr "Eliminati %(n)s oggetti orfani da S3."
+
+#: nightsquirrel/bl_admin.py:198
+msgid "Payment not found or not in failed state."
+msgstr "Pagamento non trovato o non in stato di errore."
+
+#: nightsquirrel/bl_admin.py:202
+#, python-format
+msgid "Payment #%(id)s retried successfully. Ticket delivered."
+msgstr "Pagamento #%(id)s ritentato con successo. Ticket consegnato."
+
+#: nightsquirrel/bl_admin.py:204
+#, python-format
+msgid "Payment #%(id)s retry failed. Check error details."
+msgstr "Tentativo di pagamento #%(id)s fallito. Controlla i dettagli dell'errore."
+
+#: nightsquirrel/bl_auth.py:39 nightsquirrel/bl_auth.py:152
+msgid "Invalid email"
+msgstr "Email non valida"
+
+#: nightsquirrel/bl_auth.py:41 nightsquirrel/bl_auth.py:154
+msgid "Email already used for a subscription"
+msgstr "Email già utilizzata per un'iscrizione"
+
+#: nightsquirrel/bl_auth.py:67
+msgid "Welcome to Night Squirrels!"
+msgstr "Benvenuto su Night Squirrels!"
+
+#: nightsquirrel/bl_auth.py:68
+msgid ""
+"We sent you an email containing a link: please click the link and confirm"
+" your subscription."
+msgstr ""
+"Ti abbiamo inviato un'email con un link: clicca il link per confermare la"
+" tua iscrizione."
+
+#: nightsquirrel/bl_auth.py:69
+#, python-format
+msgid "We assigned you a nickname: %(name)s; you can change it in your profile."
+msgstr ""
+"Ti abbiamo assegnato un nickname: %(name)s; puoi cambiarlo nel tuo "
+"profilo."
+
+#: nightsquirrel/bl_auth.py:70
+msgid "We created you a profile icon — hope you like it!"
+msgstr "Ti abbiamo creato un'icona profilo — speriamo ti piaccia!"
+
+#: nightsquirrel/bl_auth.py:87
+msgid "Could not login!"
+msgstr "Accesso non riuscito!"
+
+#: nightsquirrel/bl_auth.py:91
+msgid "You are logged in :)"
+msgstr "Accesso effettuato :)"
+
+#: nightsquirrel/bl_auth.py:101
+msgid "See you soon!"
+msgstr "A presto!"
+
+#: nightsquirrel/bl_auth.py:119
+msgid "User name too short"
+msgstr "Nome utente troppo corto"
+
+#: nightsquirrel/bl_auth.py:121
+msgid "User name too logn"
+msgstr "Nome utente troppo lungo"
+
+#: nightsquirrel/bl_auth.py:123
+msgid "User name already in use"
+msgstr "Nome utente già in uso"
+
+#: nightsquirrel/bl_auth.py:128
+msgid "User name updated!"
+msgstr "Nome utente aggiornato!"
+
+#: nightsquirrel/bl_auth.py:143 nightsquirrel/bl_auth.py:274
+msgid "Access key updated!"
+msgstr "Chiave d'accesso aggiornata!"
+
+#: nightsquirrel/bl_auth.py:167
+msgid "Your email has been updated."
+msgstr "La tua email è stata aggiornata."
+
+#: nightsquirrel/bl_auth.py:168
+msgid ""
+"We sent you a new email containing a link: please click the link and "
+"confirm your change."
+msgstr ""
+"Ti abbiamo inviato una nuova email con un link: clicca il link per "
+"confermare la modifica."
+
+#: nightsquirrel/bl_auth.py:169
+msgid "WARNING: your access key has been changed!"
+msgstr "ATTENZIONE: la tua chiave d'accesso è stata cambiata!"
+
+#: nightsquirrel/bl_auth.py:188
+msgid "Academic profile updated!"
+msgstr "Profilo scolastico aggiornato!"
+
+#: nightsquirrel/bl_auth.py:237
+msgid "We sent you an email. Use the OTP code inside to reset your access key."
+msgstr ""
+"Ti abbiamo inviato un'email. Usa il codice OTP al suo interno per "
+"reimpostare la tua chiave di accesso."
+
+#: nightsquirrel/bl_auth.py:240
+msgid "Email not found"
+msgstr "Email non trovata"
+
+#: nightsquirrel/bl_auth.py:275
+msgid "Use your new access key to login"
+msgstr "Usa la tua nuova chiave d'accesso per accedere"
+
+#: nightsquirrel/bl_auth.py:292
+msgid "Account deleted"
+msgstr "Account eliminato"
+
+#: nightsquirrel/bl_email_confirm.py:26
+msgid "Your email is confirmed, have fun"
+msgstr "La tua email è confermata, buon divertimento"
+
+#: nightsquirrel/bl_email_confirm.py:28
+msgid "Problems with your confirmation email"
+msgstr "Problemi con l'email di conferma"
+
+#: nightsquirrel/bl_examples.py:79
+#, fuzzy
+msgid "Example created."
+msgstr "Tag creato."
+
+#: nightsquirrel/bl_examples.py:82 nightsquirrel/bl_examples.py:113
+#: nightsquirrel/bl_examples.py:138 nightsquirrel/bl_ideas.py:97
+#: nightsquirrel/bl_ideas.py:127 nightsquirrel/bl_ideas.py:149
+#: nightsquirrel/bl_ideas.py:166 nightsquirrel/bl_references.py:254
+#: nightsquirrel/bl_references.py:275 nightsquirrel/bl_references.py:408
+#: nightsquirrel/bl_references.py:440 nightsquirrel/bl_references.py:538
+#: nightsquirrel/bl_references.py:632 nightsquirrel/bl_references.py:736
+#: nightsquirrel/bl_references.py:1136 nightsquirrel/bl_references.py:1579
+#: nightsquirrel/bl_references.py:1671 nightsquirrel/bl_references.py:1715
+#: nightsquirrel/bl_references.py:1739 nightsquirrel/bl_tags.py:66
+#: nightsquirrel/bl_tags.py:102 nightsquirrel/bl_tags.py:119
+#, python-format
+msgid "Database error: %(msg)s"
+msgstr "Errore database: %(msg)s"
+
+#: nightsquirrel/bl_examples.py:94
+#, fuzzy
+msgid "Example not found."
+msgstr "Email non trovata"
+
+#: nightsquirrel/bl_examples.py:110
+#, fuzzy
+msgid "Example updated."
+msgstr "Tag aggiornato."
+
+#: nightsquirrel/bl_examples.py:136
+#, fuzzy
+msgid "Example deleted."
+msgstr "Tag eliminato."
+
+#: nightsquirrel/bl_ideas.py:82 nightsquirrel/bl_ideas.py:114
+#: nightsquirrel/bl_question.py:113 nightsquirrel/bl_question.py:546
+#: nightsquirrel/templates/question/new_question.html:50
+#: nightsquirrel/templates/question/question_edit.html:17
+msgid "Title is required."
+msgstr "Il titolo è obbligatorio."
+
+#: nightsquirrel/bl_ideas.py:94
+msgid "Idea created."
+msgstr "Idea creata."
+
+#: nightsquirrel/bl_ideas.py:108 nightsquirrel/bl_ideas.py:139
+#: nightsquirrel/bl_ideas.py:159 nightsquirrel/bl_ideas.py:177
+#: nightsquirrel/bl_ideas.py:216 nightsquirrel/bl_ideas.py:255
+msgid "Idea not found."
+msgstr "Idea non trovata."
+
+#: nightsquirrel/bl_ideas.py:124
+msgid "Idea updated."
+msgstr "Idea aggiornata."
+
+#: nightsquirrel/bl_ideas.py:145
+msgid "Whiteboard saved."
+msgstr "Lavagna salvata."
+
+#: nightsquirrel/bl_ideas.py:164
+msgid "Idea deleted."
+msgstr "Idea eliminata."
+
+#: nightsquirrel/bl_payer.py:46 nightsquirrel/bl_payer.py:65
+msgid "PayPal email is required."
+msgstr "L'email PayPal è obbligatoria."
+
+#: nightsquirrel/bl_payer.py:62
+msgid "Payer email is required."
+msgstr "L'email del pagante è obbligatoria."
+
+#: nightsquirrel/bl_payer.py:72
+msgid "Invalid payer email."
+msgstr "Email del pagante non valida."
+
+#: nightsquirrel/bl_payer.py:89
+msgid "Could not find the payer account."
+msgstr "Account del pagante non trovato."
+
+#: nightsquirrel/bl_payer.py:120
+#, python-format
+msgid "Error creating payer account: %(error)s"
+msgstr "Errore nella creazione dell'account pagante: %(error)s"
+
+#: nightsquirrel/bl_payer.py:135
+msgid "You already have a payment setup. Complete the PayPal connection below."
+msgstr ""
+"Hai già un metodo di pagamento configurato. Completa la connessione "
+"PayPal qui sotto."
+
+#: nightsquirrel/bl_payer.py:137
+msgid ""
+"You already have a payer registered. They need to complete the PayPal "
+"setup from their own account."
+msgstr ""
+"Hai già un pagante registrato. Deve completare la configurazione PayPal "
+"dal proprio account."
+
+#: nightsquirrel/bl_payer.py:153
+msgid "Payment setup removed."
+msgstr "Configurazione di pagamento rimossa."
+
+#: nightsquirrel/bl_payer.py:155
+msgid "No active payer to unlink."
+msgstr "Nessun pagante attivo da scollegare."
+
+#: nightsquirrel/bl_payer.py:173
+#, python-format
+msgid "Could not start PayPal setup: %(error)s"
+msgstr "Impossibile avviare la configurazione PayPal: %(error)s"
+
+#: nightsquirrel/bl_payer.py:189
+msgid "PayPal did not return an approval link."
+msgstr "PayPal non ha restituito un link di approvazione."
+
+#: nightsquirrel/bl_payer.py:203
+msgid "Missing vault setup token."
+msgstr "Token di configurazione vault mancante."
+
+#: nightsquirrel/bl_payer.py:210
+#, python-format
+msgid "Could not finalize PayPal setup: %(error)s"
+msgstr "Impossibile completare la configurazione PayPal: %(error)s"
+
+#: nightsquirrel/bl_payer.py:215
+msgid "PayPal did not return a vault ID."
+msgstr "PayPal non ha restituito un ID vault."
+
+#: nightsquirrel/bl_payer.py:223
+msgid "PayPal connected successfully."
+msgstr "PayPal collegato con successo."
+
+#: nightsquirrel/bl_payer.py:232
+msgid "PayPal setup was cancelled."
+msgstr "La configurazione PayPal è stata annullata."
+
+#: nightsquirrel/bl_payer.py:244
+msgid "PayPal disconnected."
+msgstr "PayPal scollegato."
+
+#: nightsquirrel/bl_payer.py:246
+msgid "No payment method to disconnect."
+msgstr "Nessun metodo di pagamento da scollegare."
+
+#: nightsquirrel/bl_question.py:107
+msgid "Your account is suspended. You cannot create questions."
+msgstr "Il tuo account è sospeso. Non puoi creare domande."
+
+#: nightsquirrel/bl_question.py:155 nightsquirrel/bl_question.py:598
+msgid "Invalid file type. Allowed: JPG, PNG, HEIC, PDF."
+msgstr "Tipo di file non valido. Consentiti: JPG, PNG, HEIC, PDF."
+
+#: nightsquirrel/bl_question.py:161 nightsquirrel/bl_question.py:604
+msgid "File too large. Max 10 MB."
+msgstr "File troppo grande. Massimo 10 MB."
+
+#: nightsquirrel/bl_question.py:200 nightsquirrel/bl_question.py:650
+msgid "Please review the feedback and update your question."
+msgstr "Controlla il feedback e aggiorna la tua domanda."
+
+#: nightsquirrel/bl_question.py:248
+msgid "Question submitted!"
+msgstr "Domanda inviata!"
+
+#: nightsquirrel/bl_question.py:251
+#, python-format
+msgid "Error while saving the question: %(error)s"
+msgstr "Errore durante il salvataggio della domanda: %(error)s"
+
+#: nightsquirrel/bl_question.py:321 nightsquirrel/bl_question.py:352
+msgid "Question not found (or not yours)."
+msgstr "Domanda non trovata (o non è tua)."
+
+#: nightsquirrel/bl_question.py:331
+msgid "Question archived."
+msgstr "Domanda archiviata."
+
+#: nightsquirrel/bl_question.py:333
+msgid "Could not archive question."
+msgstr "Impossibile archiviare la domanda."
+
+#: nightsquirrel/bl_question.py:350
+msgid "Question deleted."
+msgstr "Domanda eliminata."
+
+#: nightsquirrel/bl_question.py:354
+#, python-format
+msgid "Delete failed: %(error)s"
+msgstr "Eliminazione fallita: %(error)s"
+
+#: nightsquirrel/bl_question.py:367
+msgid "Your account is suspended. You cannot accept quotes."
+msgstr "Il tuo account è sospeso. Non puoi accettare preventivi."
+
+#: nightsquirrel/bl_question.py:372
+msgid "You must register a payer before accepting a quote."
+msgstr "Devi registrare un pagante prima di accettare un preventivo."
+
+#: nightsquirrel/bl_question.py:380
+msgid ""
+"Your payer's PayPal is not connected yet. Payment must be set up before "
+"accepting."
+msgstr ""
+"Il PayPal del tuo pagante non è ancora collegato. Il pagamento deve "
+"essere configurato prima di accettare."
+
+#: nightsquirrel/bl_question.py:391
+msgid "Invalid option selected."
+msgstr "Opzione selezionata non valida."
+
+#: nightsquirrel/bl_question.py:404
+msgid "No quote options available."
+msgstr "Nessuna opzione di preventivo disponibile."
+
+#: nightsquirrel/bl_question.py:421
+msgid "Quote accepted. A tutor will work on your question."
+msgstr "Preventivo accettato. Un tutor lavorerà alla tua domanda."
+
+#: nightsquirrel/bl_question.py:423
+msgid "Could not accept quote (wrong state or not yours)."
+msgstr "Impossibile accettare il preventivo (stato non valido o non è tuo)."
+
+#: nightsquirrel/bl_question.py:437
+msgid "Quote declined."
+msgstr "Preventivo rifiutato."
+
+#: nightsquirrel/bl_question.py:439
+msgid "Could not decline quote (wrong state or not yours)."
+msgstr "Impossibile rifiutare il preventivo (stato non valido o non è tuo)."
+
+#: nightsquirrel/bl_question.py:454
+msgid "Delivery accepted. Ticket closed."
+msgstr "Consegna accettata. Ticket chiuso."
+
+#: nightsquirrel/bl_question.py:456
+msgid "Could not close ticket (wrong state or not yours)."
+msgstr "Impossibile chiudere il ticket (stato non valido o non è tuo)."
+
+#: nightsquirrel/bl_question.py:469
+msgid "Question not found."
+msgstr "Domanda non trovata."
+
+#: nightsquirrel/bl_question.py:473 nightsquirrel/bl_question.py:474
+msgid "Comments are not available for this ticket state."
+msgstr "I commenti non sono disponibili per questo stato del ticket."
+
+#: nightsquirrel/bl_question.py:481 nightsquirrel/bl_question.py:482
+#: nightsquirrel/bl_tutor.py:267 nightsquirrel/bl_tutor.py:268
+#: nightsquirrel/templates/question/question_detail.html:430
+#: nightsquirrel/templates/tutor/ticket_detail.html:187
+msgid "Cannot post an empty comment."
+msgstr "Non è possibile pubblicare un commento vuoto."
+
+#: nightsquirrel/bl_question.py:514 nightsquirrel/bl_tutor.py:300
+msgid "Comment posted."
+msgstr "Commento pubblicato."
+
+#: nightsquirrel/bl_question.py:518 nightsquirrel/bl_tutor.py:304
+#, python-format
+msgid "Error posting comment: %(error)s"
+msgstr "Errore nella pubblicazione del commento: %(error)s"
+
+#: nightsquirrel/bl_question.py:539
+msgid "Your account is suspended. You cannot edit questions."
+msgstr "Il tuo account è sospeso. Non puoi modificare le domande."
+
+#: nightsquirrel/bl_question.py:683
+msgid "Question updated."
+msgstr "Domanda aggiornata."
+
+#: nightsquirrel/bl_question.py:686
+msgid "Update failed."
+msgstr "Aggiornamento fallito."
+
+#: nightsquirrel/bl_references.py:251
+msgid "Person added."
+msgstr "Persona aggiunta."
+
+#: nightsquirrel/bl_references.py:272
+msgid "Publisher added."
+msgstr "Editore aggiunto."
+
+#: nightsquirrel/bl_references.py:405 nightsquirrel/bl_references.py:733
+msgid "Reference created."
+msgstr "Riferimento creato."
+
+#: nightsquirrel/bl_references.py:437 nightsquirrel/bl_references.py:1133
+msgid "Reference updated."
+msgstr "Riferimento aggiornato."
+
+#: nightsquirrel/bl_references.py:471 nightsquirrel/bl_references.py:1170
+msgid "Reference deleted."
+msgstr "Riferimento eliminato."
+
+#: nightsquirrel/bl_references.py:473 nightsquirrel/bl_references.py:1172
+#, python-format
+msgid "Cannot delete reference: %(msg)s"
+msgstr "Impossibile eliminare il riferimento: %(msg)s"
+
+#: nightsquirrel/bl_references.py:535 nightsquirrel/bl_references.py:629
+msgid "Reference created and attached."
+msgstr "Riferimento creato e allegato."
+
+#: nightsquirrel/bl_references.py:559 nightsquirrel/bl_references.py:571
+#: nightsquirrel/bl_references.py:653 nightsquirrel/bl_references.py:665
+#: nightsquirrel/bl_references.py:1191 nightsquirrel/bl_references.py:1253
+#: nightsquirrel/bl_references.py:1401 nightsquirrel/bl_references.py:1544
+#, python-format
+msgid "Error: %(msg)s"
+msgstr "Errore: %(msg)s"
+
+#: nightsquirrel/bl_references.py:872
+msgid "Draft saved."
+msgstr "Bozza salvata."
+
+#: nightsquirrel/bl_references.py:1069
+msgid "Draft processed."
+msgstr "Bozza elaborata."
+
+#: nightsquirrel/bl_references.py:1072
+#, python-format
+msgid "Processing failed: %(msg)s"
+msgstr "Elaborazione fallita: %(msg)s"
+
+#: nightsquirrel/bl_references.py:1091
+msgid "Draft deleted."
+msgstr "Bozza eliminata."
+
+#: nightsquirrel/bl_references.py:1099
+#, python-format
+msgid "%(n)d completed draft(s) deleted."
+msgstr "%(n)d bozza/e completata/e eliminata/e."
+
+#: nightsquirrel/bl_references.py:1251 nightsquirrel/bl_references.py:1399
+msgid "Image removed."
+msgstr "Immagine rimossa."
+
+#: nightsquirrel/bl_references.py:1274 nightsquirrel/bl_references.py:1353
+msgid "Cover image updated."
+msgstr "Immagine di copertina aggiornata."
+
+#: nightsquirrel/bl_references.py:1276 nightsquirrel/bl_references.py:1299
+#: nightsquirrel/bl_references.py:1355 nightsquirrel/bl_references.py:1378
+#: nightsquirrel/bl_references.py:1514 nightsquirrel/bl_references.py:1526
+#, python-format
+msgid "Upload failed: %(msg)s"
+msgstr "Caricamento fallito: %(msg)s"
+
+#: nightsquirrel/bl_references.py:1297 nightsquirrel/bl_references.py:1376
+msgid "Thumbnail image updated."
+msgstr "Miniatura aggiornata."
+
+#: nightsquirrel/bl_references.py:1316 nightsquirrel/bl_references.py:1424
+#: nightsquirrel/bl_references.py:1470
+msgid "No file selected."
+msgstr "Nessun file selezionato."
+
+#: nightsquirrel/bl_references.py:1320
+msgid "Only JPEG, PNG, and WebP images are accepted."
+msgstr "Sono accettate solo immagini JPEG, PNG e WebP."
+
+#: nightsquirrel/bl_references.py:1512
+msgid "Cover saved."
+msgstr "Copertina salvata."
+
+#: nightsquirrel/bl_references.py:1524
+msgid "Thumbnail saved."
+msgstr "Miniatura salvata."
+
+#: nightsquirrel/bl_references.py:1542
+msgid "Cover removed."
+msgstr "Copertina rimossa."
+
+#: nightsquirrel/bl_references.py:1576
+msgid "Person created."
+msgstr "Persona creata."
+
+#: nightsquirrel/bl_references.py:1633
+msgid "Captions generated — please review."
+msgstr "Didascalie generate — verificare prima di procedere."
+
+#: nightsquirrel/bl_references.py:1635
+msgid "Nobel Prize data updated."
+msgstr "Dati Premio Nobel aggiornati."
+
+#: nightsquirrel/bl_references.py:1642
+#, python-format
+msgid "Could not generate captions for %(name)s."
+msgstr "Impossibile generare le didascalie per %(name)s."
+
+#: nightsquirrel/bl_references.py:1647
+msgid "No new data found."
+msgstr "Nessun nuovo dato trovato."
+
+#: nightsquirrel/bl_references.py:1668
+msgid "Person updated."
+msgstr "Persona aggiornata."
+
+#: nightsquirrel/bl_references.py:1682
+msgid "Person deleted."
+msgstr "Persona eliminata."
+
+#: nightsquirrel/bl_references.py:1684
+#, python-format
+msgid "Cannot delete person (still in use): %(msg)s"
+msgstr "Impossibile eliminare la persona (ancora in uso): %(msg)s"
+
+#: nightsquirrel/bl_references.py:1712
+msgid "Publisher created."
+msgstr "Editore creato."
+
+#: nightsquirrel/bl_references.py:1736
+msgid "Publisher updated."
+msgstr "Editore aggiornato."
+
+#: nightsquirrel/bl_references.py:1750
+msgid "Publisher deleted."
+msgstr "Editore eliminato."
+
+#: nightsquirrel/bl_references.py:1752
+#, python-format
+msgid "Cannot delete publisher: %(msg)s"
+msgstr "Impossibile eliminare l'editore: %(msg)s"
+
+#: nightsquirrel/bl_tags.py:46 nightsquirrel/bl_tags.py:89
+msgid "Both Italian and English names are required."
+msgstr "I nomi in italiano e in inglese sono obbligatori."
+
+#: nightsquirrel/bl_tags.py:53
+msgid "Tag created."
+msgstr "Tag creato."
+
+#: nightsquirrel/bl_tags.py:64 nightsquirrel/bl_tags.py:100
+msgid "A tag with that name already exists."
+msgstr "Esiste già un tag con questo nome."
+
+#: nightsquirrel/bl_tags.py:79 nightsquirrel/bl_tags.py:117
+msgid "Tag not found."
+msgstr "Tag non trovato."
+
+#: nightsquirrel/bl_tags.py:95
+msgid "Tag updated."
+msgstr "Tag aggiornato."
+
+#: nightsquirrel/bl_tags.py:115
+msgid "Tag deleted."
+msgstr "Tag eliminato."
+
+#: nightsquirrel/bl_tutor.py:44
+msgid "Your account is suspended. You cannot claim tickets."
+msgstr "Il tuo account è sospeso. Non puoi richiedere ticket."
+
+#: nightsquirrel/bl_tutor.py:47
+msgid "Ticket claimed."
+msgstr "Ticket richiesto."
+
+#: nightsquirrel/bl_tutor.py:47
+msgid "Could not claim ticket (maybe already taken)."
+msgstr "Impossibile richiedere il ticket (forse già assegnato)."
+
+#: nightsquirrel/bl_tutor.py:56
+msgid "Ticket released."
+msgstr "Ticket rilasciato."
+
+#: nightsquirrel/bl_tutor.py:56
+msgid "Could not release ticket."
+msgstr "Impossibile rilasciare il ticket."
+
+#: nightsquirrel/bl_tutor.py:65
+msgid "Your account is suspended."
+msgstr "Il tuo account è sospeso."
+
+#: nightsquirrel/bl_tutor.py:68
+msgid "Ticket set to in progress."
+msgstr "Ticket impostato come in lavorazione."
+
+#: nightsquirrel/bl_tutor.py:68
+msgid "State change not allowed."
+msgstr "Cambio di stato non consentito."
+
+#: nightsquirrel/bl_tutor.py:77
+msgid "Your account is suspended. You cannot deliver tickets."
+msgstr "Il tuo account è sospeso. Non puoi consegnare ticket."
+
+#: nightsquirrel/bl_tutor.py:81
+msgid "Cannot deliver: no answer has been created yet."
+msgstr "Impossibile consegnare: non è ancora stata creata una risposta."
+
+#: nightsquirrel/bl_tutor.py:88
+msgid "Ticket delivered and payment captured."
+msgstr "Ticket consegnato e pagamento acquisito."
+
+#: nightsquirrel/bl_tutor.py:92
+msgid "Ticket delivered but payment failed. Admin notified."
+msgstr "Ticket consegnato ma pagamento fallito. Amministratore avvisato."
+
+#: nightsquirrel/bl_tutor.py:94
+msgid "Cannot deliver this ticket (not yours or wrong state)."
+msgstr "Impossibile consegnare questo ticket (non è tuo o stato non valido)."
+
+#: nightsquirrel/bl_tutor.py:150
+msgid "No answer exists yet. Create one first."
+msgstr "Non esiste ancora una risposta. Creane una prima."
+
+#: nightsquirrel/bl_tutor.py:159
+#: nightsquirrel/templates/tutor/answer_edit.html:197
+msgid "Cannot deliver an empty answer."
+msgstr "Non è possibile consegnare una risposta vuota."
+
+#: nightsquirrel/bl_tutor.py:172 nightsquirrel/bl_tutor.py:225
+msgid "Your account is suspended. You cannot deliver."
+msgstr "Il tuo account è sospeso. Non puoi effettuare consegne."
+
+#: nightsquirrel/bl_tutor.py:178
+msgid "Answer delivered and payment captured."
+msgstr "Risposta consegnata e pagamento acquisito."
+
+#: nightsquirrel/bl_tutor.py:182 nightsquirrel/bl_tutor.py:235
+msgid "Answer delivered but payment failed. Admin notified."
+msgstr "Risposta consegnata ma pagamento fallito. Amministratore avvisato."
+
+#: nightsquirrel/bl_tutor.py:184 nightsquirrel/bl_tutor.py:237
+msgid "Deliver failed (is the ticket assigned + answer created?)."
+msgstr "Consegna fallita (il ticket è assegnato e la risposta è stata creata?)."
+
+#: nightsquirrel/bl_tutor.py:186
+msgid "Answer saved."
+msgstr "Risposta salvata."
+
+#: nightsquirrel/bl_tutor.py:189
+msgid "Could not save answer."
+msgstr "Impossibile salvare la risposta."
+
+#: nightsquirrel/bl_tutor.py:209
+msgid "Answer already exists. Editing it instead."
+msgstr "La risposta esiste già. Verrà modificata."
+
+#: nightsquirrel/bl_tutor.py:231
+msgid "Answer created and delivered. Payment captured."
+msgstr "Risposta creata e consegnata. Pagamento acquisito."
+
+#: nightsquirrel/bl_tutor.py:240
+#, python-format
+msgid "Answer created (#%(id)s)."
+msgstr "Risposta creata (#%(id)s)."
+
+#: nightsquirrel/bl_tutor.py:256
+msgid "Ticket not found."
+msgstr "Ticket non trovato."
+
+#: nightsquirrel/bl_tutor.py:260
+msgid "Not your ticket."
+msgstr "Non è il tuo ticket."
+
+#: nightsquirrel/jinjafilters.py:28
+msgid "New"
+msgstr "Nuovo"
+
+#: nightsquirrel/jinjafilters.py:29
+msgid "Needs clarification"
+msgstr "Richiede chiarimenti"
+
+#: nightsquirrel/jinjafilters.py:30
+msgid "Quoted"
+msgstr "Preventivato"
+
+#: nightsquirrel/jinjafilters.py:31
+#: nightsquirrel/templates/admin/references/list.html:36
+#: nightsquirrel/templates/admin/references/ref_form.html:39
+msgid "Needs review"
+msgstr "In revisione"
+
+#: nightsquirrel/jinjafilters.py:32
+msgid "Rejected"
+msgstr "Rifiutato"
+
+#: nightsquirrel/jinjafilters.py:33
+msgid "Accepted"
+msgstr "Accettato"
+
+#: nightsquirrel/jinjafilters.py:34
+#: nightsquirrel/templates/admin/questions.html:27
+msgid "Assigned"
+msgstr "Assegnato"
+
+#: nightsquirrel/jinjafilters.py:35
+#: nightsquirrel/templates/admin/dashboard.html:46
+#: nightsquirrel/templates/tutor/dashboard.html:87
+msgid "In progress"
+msgstr "In lavorazione"
+
+#: nightsquirrel/jinjafilters.py:36
+#: nightsquirrel/templates/admin/dashboard.html:60
+msgid "Pending payment"
+msgstr "In attesa di pagamento"
+
+#: nightsquirrel/jinjafilters.py:37
+#: nightsquirrel/templates/tutor/dashboard.html:93
+msgid "Delivered"
+msgstr "Consegnato"
+
+#: nightsquirrel/jinjafilters.py:38
+msgid "Closed"
+msgstr "Chiuso"
+
+#: nightsquirrel/jinjafilters.py:39
+msgid "Cancelled"
+msgstr "Annullato"
+
+#: nightsquirrel/jinjafilters.py:43 nightsquirrel/jinjafilters.py:61
+msgid "Unknown"
+msgstr "Sconosciuto"
+
+#: nightsquirrel/templates/base.html:36
+msgid "Your account is currently suspended. Some actions are restricted."
+msgstr "Il tuo account è attualmente sospeso. Alcune azioni sono limitate."
+
+#: nightsquirrel/templates/incl_confirm_modal.html:6
+msgid "Notice"
+msgstr "Avviso"
+
+#: nightsquirrel/templates/incl_confirm_modal.html:13
+#: nightsquirrel/templates/incl_modal.html:20
+msgid "OK"
+msgstr "OK"
+
+#: nightsquirrel/templates/incl_confirm_modal.html:24
+#: nightsquirrel/templates/incl_confirm_modal.html:32
+msgid "Confirm"
+msgstr "Conferma"
+
+#: nightsquirrel/templates/admin/examples/form.html:94
+#: nightsquirrel/templates/admin/ideas/form.html:68
+#: nightsquirrel/templates/admin/ideas/whiteboard.html:40
+#: nightsquirrel/templates/admin/references/person_form.html:41
+#: nightsquirrel/templates/admin/references/publisher_form.html:33
+#: nightsquirrel/templates/admin/references/ref_form.html:444
+#: nightsquirrel/templates/admin/tags/tag_form.html:44
+#: nightsquirrel/templates/auth/forgot_frm.html:40
+#: nightsquirrel/templates/auth/profile.html:34
+#: nightsquirrel/templates/auth/profile.html:60
+#: nightsquirrel/templates/auth/profile.html:245
+#: nightsquirrel/templates/incl_confirm_modal.html:31
+#: nightsquirrel/templates/incl_formula_modal.html:32
+#: nightsquirrel/templates/question/new_question.html:179
+#: nightsquirrel/templates/question/new_question.html:207
+#: nightsquirrel/templates/question/question_edit.html:158
+#: nightsquirrel/templates/question/question_edit.html:179
+#: nightsquirrel/templates/references/ref_cover.html:122
+#: nightsquirrel/templates/tutor/answer_edit.html:35
+msgid "Cancel"
+msgstr "Annulla"
+
+#: nightsquirrel/templates/incl_cookie_alert.html:5
+#: nightsquirrel/templates/incl_footer.html:8
+msgid "Cookie Settings"
+msgstr "Impostazioni cookie"
+
+#: nightsquirrel/templates/home/faq.html:198
+#: nightsquirrel/templates/home/privacy-notice.html:10
+#: nightsquirrel/templates/incl_cookie_alert.html:13
+#: nightsquirrel/templates/incl_footer.html:6
+msgid "Privacy Notice"
+msgstr "Informativa sulla privacy"
+
+#: nightsquirrel/templates/incl_cookie_alert.html:14
+msgid "My Settings"
+msgstr "Le mie impostazioni"
+
+#: nightsquirrel/templates/incl_cookie_alert.html:20
+msgid "Necessary"
+msgstr "Necessari"
+
+#: nightsquirrel/templates/incl_cookie_alert.html:23
+msgid "Required to run the website"
+msgstr "Necessari per il funzionamento del sito"
+
+#: nightsquirrel/templates/incl_cookie_alert.html:33
+msgid "Analysis"
+msgstr "Analisi"
+
+#: nightsquirrel/templates/incl_cookie_alert.html:36
+msgid "Monitoring website usage and optimizing the user experience"
+msgstr ""
+"Monitoraggio dell'utilizzo del sito e ottimizzazione dell'esperienza "
+"utente"
+
+#: nightsquirrel/templates/incl_cookie_alert.html:58
+msgid "Save settings"
+msgstr "Salva impostazioni"
+
+#: nightsquirrel/templates/incl_cookie_alert.html:59
+msgid "Agree to essential"
+msgstr "Accetta essenziali"
+
+#: nightsquirrel/templates/incl_cookie_alert.html:60
+msgid "Agree to all"
+msgstr "Accetta tutti"
+
+#: nightsquirrel/templates/home/terms-of-service.html:10
+#: nightsquirrel/templates/incl_footer.html:7
+msgid "Terms of Service"
+msgstr "Termini di servizio"
+
+#: nightsquirrel/templates/incl_formula_modal.html:6
+msgid "Formula (LaTeX)"
+msgstr "Formula (LaTeX)"
+
+#: nightsquirrel/templates/incl_formula_modal.html:13
+msgid "LaTeX"
+msgstr "LaTeX"
+
+#: nightsquirrel/templates/incl_formula_modal.html:15
+msgid "e.g."
+msgstr "es."
+
+#: nightsquirrel/templates/incl_formula_modal.html:17
+#, python-brace-format
+msgid ""
+"Tip: use \\n for line breaks inside aligned environments, e.g. "
+"\\begin{aligned} ... \\end{aligned}"
+msgstr ""
+"Suggerimento: usa \\\\n per le interruzioni di riga negli ambienti "
+"allineati, es. \\\\begin{aligned} ... \\\\end{aligned}"
+
+#: nightsquirrel/templates/incl_formula_modal.html:22
+msgid "Preview"
+msgstr "Anteprima"
+
+#: nightsquirrel/templates/incl_formula_modal.html:33
+#: nightsquirrel/templates/question/new_question.html:208
+#: nightsquirrel/templates/question/question_edit.html:180
+#: nightsquirrel/templates/references/ref_cover.html:123
+msgid "Apply"
+msgstr "Applica"
+
+#: nightsquirrel/templates/incl_library_subnav.html:10
+msgid "All references"
+msgstr "Tutti i riferimenti"
+
+#: nightsquirrel/templates/incl_library_subnav.html:14
+#: nightsquirrel/templates/references/people.html:2
+#: nightsquirrel/templates/references/people.html:7
+msgid "People"
+msgstr "Persone"
+
+#: nightsquirrel/templates/incl_library_subnav.html:18
+msgid "Leo reads"
+msgstr "Leo legge"
+
+#: nightsquirrel/templates/admin/references/list.html:114
+#: nightsquirrel/templates/incl_library_subnav.html:22
+msgid "Crucial"
+msgstr "Fondamentale"
+
+#: nightsquirrel/templates/auth/forgot_frm.html:11
+#: nightsquirrel/templates/auth/login_frm.html:12
+#: nightsquirrel/templates/auth/profile.html:11
+#: nightsquirrel/templates/auth/resetkey_frm.html:11
+#: nightsquirrel/templates/auth/signup_frm.html:12
+#: nightsquirrel/templates/errorpages/error404.html:9
+#: nightsquirrel/templates/errorpages/error404.html:17
+#: nightsquirrel/templates/home/about.html:11
+#: nightsquirrel/templates/home/faq.html:11
+#: nightsquirrel/templates/home/privacy-notice.html:9
+#: nightsquirrel/templates/home/terms-of-service.html:9
+#: nightsquirrel/templates/incl_navbar.html:16
+msgid "Home"
+msgstr "Home"
+
+#: nightsquirrel/templates/admin/dashboard.html:169
+#: nightsquirrel/templates/admin/examples/list.html:2
+#: nightsquirrel/templates/admin/examples/list.html:7
+#: nightsquirrel/templates/examples/examples.html:2
+#: nightsquirrel/templates/incl_navbar.html:19
+msgid "Examples"
+msgstr "Esempi"
+
+#: nightsquirrel/templates/incl_navbar.html:22
+#: nightsquirrel/templates/references/manage_refs.html:95
+#: nightsquirrel/templates/references/person.html:8
+#: nightsquirrel/templates/references/tag.html:8
+msgid "Book Wall"
+msgstr "Book Wall"
+
+#: nightsquirrel/templates/errorpages/error404.html:17
+#: nightsquirrel/templates/home/about.html:4
+#: nightsquirrel/templates/home/about.html:12
+#: nightsquirrel/templates/incl_navbar.html:25
+msgid "About"
+msgstr "Chi siamo"
+
+#: nightsquirrel/templates/home/faq.html:4
+#: nightsquirrel/templates/home/faq.html:12
+#: nightsquirrel/templates/incl_navbar.html:28
+msgid "FAQ"
+msgstr ""
+
+#: nightsquirrel/templates/incl_navbar.html:44
+msgid "Please confirm subscription!"
+msgstr "Conferma la tua iscrizione!"
+
+#: nightsquirrel/templates/auth/profile.html:4
+#: nightsquirrel/templates/auth/profile.html:15
+#: nightsquirrel/templates/incl_navbar.html:46
+msgid "My profile"
+msgstr "Il mio profilo"
+
+#: nightsquirrel/templates/home/index.html:40
+#: nightsquirrel/templates/incl_navbar.html:49
+msgid "My questions"
+msgstr "Le mie domande"
+
+#: nightsquirrel/templates/incl_navbar.html:50
+#: nightsquirrel/templates/question/my_questions.html:9
+msgid "New question"
+msgstr "Nuova domanda"
+
+#: nightsquirrel/templates/incl_navbar.html:51
+#: nightsquirrel/templates/incl_navbar.html:55
+#: nightsquirrel/templates/references/manage_refs.html:75
+msgid "My references"
+msgstr "I miei riferimenti"
+
+#: nightsquirrel/templates/incl_navbar.html:58
+msgid "Logout"
+msgstr "Esci"
+
+#: nightsquirrel/templates/admin/dashboard.html:2
+#: nightsquirrel/templates/admin/examples/form.html:2
+#: nightsquirrel/templates/admin/examples/list.html:2
+#: nightsquirrel/templates/admin/examples/list.html:7
+#: nightsquirrel/templates/admin/ideas/form.html:2
+#: nightsquirrel/templates/admin/ideas/list.html:2
+#: nightsquirrel/templates/admin/ideas/list.html:7
+#: nightsquirrel/templates/admin/ideas/manage_answers.html:2
+#: nightsquirrel/templates/admin/ideas/manage_refs.html:2
+#: nightsquirrel/templates/admin/ideas/manage_tags.html:2
+#: nightsquirrel/templates/admin/ideas/whiteboard.html:2
+#: nightsquirrel/templates/admin/payments.html:2
+#: nightsquirrel/templates/admin/payments.html:7
+#: nightsquirrel/templates/admin/questions.html:2
+#: nightsquirrel/templates/admin/questions.html:7
+#: nightsquirrel/templates/admin/rebase.html:2
+#: nightsquirrel/templates/admin/references/draft_list.html:2
+#: nightsquirrel/templates/admin/references/draft_list.html:7
+#: nightsquirrel/templates/admin/references/list.html:2
+#: nightsquirrel/templates/admin/references/list.html:7
+#: nightsquirrel/templates/admin/references/person_form.html:2
+#: nightsquirrel/templates/admin/references/persons.html:2
+#: nightsquirrel/templates/admin/references/persons.html:7
+#: nightsquirrel/templates/admin/references/publisher_form.html:2
+#: nightsquirrel/templates/admin/references/publishers.html:2
+#: nightsquirrel/templates/admin/references/publishers.html:7
+#: nightsquirrel/templates/admin/references/ref_form.html:2
+#: nightsquirrel/templates/admin/tags/list.html:2
+#: nightsquirrel/templates/admin/tags/list.html:7
+#: nightsquirrel/templates/admin/tags/tag_form.html:2
+#: nightsquirrel/templates/admin/users.html:2
+#: nightsquirrel/templates/admin/users.html:7
+#: nightsquirrel/templates/admin/users.html:34
+#: nightsquirrel/templates/incl_navbar.html:63
+msgid "Admin"
+msgstr "Admin"
+
+#: nightsquirrel/templates/admin/questions.html:45
+#: nightsquirrel/templates/admin/users.html:33
+#: nightsquirrel/templates/incl_navbar.html:67
+msgid "Tutor"
+msgstr "Tutor"
+
+#: nightsquirrel/templates/auth/login_frm.html:5
+#: nightsquirrel/templates/auth/login_frm.html:13
+#: nightsquirrel/templates/auth/login_frm.html:17
+#: nightsquirrel/templates/auth/login_frm.html:53
+#: nightsquirrel/templates/incl_navbar.html:71
+msgid "Login"
+msgstr "Accedi"
+
+#: nightsquirrel/templates/auth/login_frm.html:55
+#: nightsquirrel/templates/auth/signup_frm.html:5
+#: nightsquirrel/templates/auth/signup_frm.html:13
+#: nightsquirrel/templates/auth/signup_frm.html:17
+#: nightsquirrel/templates/auth/signup_frm.html:46
+#: nightsquirrel/templates/home/index.html:59
+#: nightsquirrel/templates/home/index.html:223
+#: nightsquirrel/templates/incl_navbar.html:74
+msgid "Sign up"
+msgstr "Registrati"
+
+#: nightsquirrel/templates/incl_ref_card.html:19
+msgid "Leo is reading this"
+msgstr "Leo sta leggendo questo"
+
+#: nightsquirrel/templates/incl_ref_card.html:25
+msgid "Crucial reference"
+msgstr "Riferimento fondamentale"
+
+#: nightsquirrel/templates/incl_ref_card.html:46
+#: nightsquirrel/templates/references/people.html:46
+#: nightsquirrel/templates/references/person.html:17
+#, python-format
+msgid "Nobel Prize: %(prizes)s"
+msgstr "Premio Nobel: %(prizes)s"
+
+#: nightsquirrel/templates/incl_vault_prompt_modal.html:8
+msgid "Almost there!"
+msgstr "Ci siamo quasi!"
+
+#: nightsquirrel/templates/incl_vault_prompt_modal.html:12
+msgid "Your payment setup is registered, but you still need to"
+msgstr "La configurazione del pagamento è registrata, ma devi ancora"
+
+#: nightsquirrel/templates/incl_vault_prompt_modal.html:13
+msgid "connect your PayPal account"
+msgstr "collegare il tuo account PayPal"
+
+#: nightsquirrel/templates/incl_vault_prompt_modal.html:14
+msgid ""
+"This is required before you can accept quotes. You will be redirected to "
+"PayPal to authorise automatic payments."
+msgstr ""
+"Questo è necessario prima di poter accettare i preventivi. Verrai "
+"reindirizzato su PayPal per autorizzare i pagamenti automatici."
+
+#: nightsquirrel/templates/incl_vault_prompt_modal.html:17
+msgid "I'll do it later"
+msgstr "Lo farò dopo"
+
+#: nightsquirrel/templates/incl_vault_prompt_modal.html:19
+msgid "Connect PayPal now"
+msgstr "Collega PayPal ora"
+
+#: nightsquirrel/templates/incl_vault_prompt_modal.html:31
+msgid "Payer registered"
+msgstr "Pagante registrato"
+
+#: nightsquirrel/templates/incl_vault_prompt_modal.html:35
+msgid "We've sent login credentials to"
+msgstr "Abbiamo inviato le credenziali di accesso a"
+
+#: nightsquirrel/templates/incl_vault_prompt_modal.html:36
+msgid "Before you can accept quotes, your payer needs to:"
+msgstr "Prima di poter accettare i preventivi, il tuo pagante deve:"
+
+#: nightsquirrel/templates/incl_vault_prompt_modal.html:38
+msgid "Log in to the platform"
+msgstr "Accedere alla piattaforma"
+
+#: nightsquirrel/templates/incl_vault_prompt_modal.html:39
+msgid "Connect their PayPal account from their profile page"
+msgstr "Collegare il proprio account PayPal dalla pagina del profilo"
+
+#: nightsquirrel/templates/incl_vault_prompt_modal.html:43
+msgid "Got it"
+msgstr "Ho capito"
+
+#: nightsquirrel/templates/admin/dashboard.html:6
+msgid "Admin Dashboard"
+msgstr "Pannello amministratore"
+
+#: nightsquirrel/templates/admin/dashboard.html:18
+msgid "Pending tickets"
+msgstr "Ticket in attesa"
+
+#: nightsquirrel/templates/admin/dashboard.html:32
+msgid "Accepted, unassigned"
+msgstr "Accettati, non assegnati"
+
+#: nightsquirrel/templates/admin/dashboard.html:74
+msgid "Failed payments"
+msgstr "Pagamenti falliti"
+
+#: nightsquirrel/templates/admin/dashboard.html:88
+msgid "References to review"
+msgstr "Riferimenti da revisionare"
+
+#: nightsquirrel/templates/admin/dashboard.html:98
+#: nightsquirrel/templates/tutor/ticket_detail.html:96
+msgid "Manage"
+msgstr "Gestisci"
+
+#: nightsquirrel/templates/admin/dashboard.html:105
+#: nightsquirrel/templates/admin/users.html:2
+#: nightsquirrel/templates/admin/users.html:7
+msgid "Users"
+msgstr "Utenti"
+
+#: nightsquirrel/templates/admin/dashboard.html:113
+msgid "All questions"
+msgstr "Tutte le domande"
+
+#: nightsquirrel/templates/admin/dashboard.html:121
+#: nightsquirrel/templates/admin/payments.html:2
+#: nightsquirrel/templates/admin/payments.html:7
+msgid "Payments"
+msgstr "Pagamenti"
+
+#: nightsquirrel/templates/admin/dashboard.html:129
+#: nightsquirrel/templates/admin/ideas/form.html:60
+#: nightsquirrel/templates/admin/references/draft_list.html:16
+#: nightsquirrel/templates/admin/references/list.html:2
+#: nightsquirrel/templates/admin/references/list.html:7
+#: nightsquirrel/templates/admin/references/persons.html:10
+#: nightsquirrel/templates/admin/references/publishers.html:10
+#: nightsquirrel/templates/admin/tags/list.html:33
+#: nightsquirrel/templates/question/question_detail.html:24
+#: nightsquirrel/templates/question/question_detail.html:345
+#: nightsquirrel/templates/question/question_edit.html:115
+#: nightsquirrel/templates/references/manage_refs.html:2
+#: nightsquirrel/templates/references/manage_refs.html:7
+#: nightsquirrel/templates/tutor/answer_edit.html:39
+msgid "References"
+msgstr "Riferimenti"
+
+#: nightsquirrel/templates/admin/dashboard.html:137
+msgid "Book drafts"
+msgstr "Bozze libri"
+
+#: nightsquirrel/templates/admin/dashboard.html:145
+#: nightsquirrel/templates/admin/ideas/form.html:56
+#: nightsquirrel/templates/admin/references/list.html:123
+#: nightsquirrel/templates/admin/tags/list.html:2
+#: nightsquirrel/templates/admin/tags/list.html:7
+#: nightsquirrel/templates/question/question_detail.html:30
+#: nightsquirrel/templates/references/my_refs.html:42
+#: nightsquirrel/templates/tags/manage_question_tags.html:2
+#: nightsquirrel/templates/tags/manage_reference_tags.html:2
+#: nightsquirrel/templates/tutor/ticket_detail.html:30
+msgid "Tags"
+msgstr "Tag"
+
+#: nightsquirrel/templates/admin/dashboard.html:153
+#: nightsquirrel/templates/admin/rebase.html:2
+#: nightsquirrel/templates/admin/rebase.html:7
+msgid "Rebase Utilities"
+msgstr "Utilità di Rebase"
+
+#: nightsquirrel/templates/admin/dashboard.html:161
+msgid "Enrich people"
+msgstr "Arricchisci persone"
+
+#: nightsquirrel/templates/admin/dashboard.html:178
+#: nightsquirrel/templates/admin/ideas/list.html:2
+#: nightsquirrel/templates/admin/ideas/list.html:7
+#: nightsquirrel/templates/tutor/dashboard.html:9
+msgid "Ideas"
+msgstr "Idee"
+
+#: nightsquirrel/templates/admin/examples/list.html:10
+#: nightsquirrel/templates/admin/ideas/list.html:12
+#: nightsquirrel/templates/admin/payments.html:8
+#: nightsquirrel/templates/admin/questions.html:8
+#: nightsquirrel/templates/admin/rebase.html:10
+#: nightsquirrel/templates/admin/references/draft_list.html:17
+#: nightsquirrel/templates/admin/references/list.html:13
+#: nightsquirrel/templates/admin/tags/list.html:10
+#: nightsquirrel/templates/admin/users.html:8
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: nightsquirrel/templates/admin/payments.html:14
+msgid "All statuses"
+msgstr "Tutti gli stati"
+
+#: nightsquirrel/templates/admin/payments.html:15
+msgid "Awaiting charge"
+msgstr "In attesa di addebito"
+
+#: nightsquirrel/templates/admin/payments.html:16
+msgid "Captured"
+msgstr "Acquisito"
+
+#: nightsquirrel/templates/admin/payments.html:17
+msgid "Failed"
+msgstr "Fallito"
+
+#: nightsquirrel/templates/admin/payments.html:21
+#: nightsquirrel/templates/admin/questions.html:32
+#: nightsquirrel/templates/admin/references/list.html:31
+#: nightsquirrel/templates/admin/references/persons.html:19
+#: nightsquirrel/templates/admin/references/publishers.html:18
+#: nightsquirrel/templates/admin/tags/list.html:20
+#: nightsquirrel/templates/admin/users.html:17
+#: nightsquirrel/templates/references/library.html:54
+msgid "Filter"
+msgstr "Filtra"
+
+#: nightsquirrel/templates/admin/payments.html:30
+#: nightsquirrel/templates/admin/questions.html:43
+#: nightsquirrel/templates/tutor/ticket_detail.html:2
+msgid "Ticket"
+msgstr "Ticket"
+
+#: nightsquirrel/templates/admin/payments.html:31
+#: nightsquirrel/templates/examples/examples.html:42
+#: nightsquirrel/templates/tutor/dashboard.html:24
+#: nightsquirrel/templates/tutor/dashboard.html:68
+msgid "Question"
+msgstr "Domanda"
+
+#: nightsquirrel/templates/admin/payments.html:32
+#: nightsquirrel/templates/admin/users.html:32
+#: nightsquirrel/templates/tutor/dashboard.html:25
+msgid "Student"
+msgstr "Studente"
+
+#: nightsquirrel/templates/admin/payments.html:33
+#: nightsquirrel/templates/admin/users.html:35
+msgid "Payer"
+msgstr "Pagante"
+
+#: nightsquirrel/templates/admin/payments.html:34
+msgid "Amount"
+msgstr "Importo"
+
+#: nightsquirrel/templates/admin/payments.html:35
+#: nightsquirrel/templates/admin/references/draft_list.html:37
+#: nightsquirrel/templates/question/my_questions.html:23
+msgid "Status"
+msgstr "Stato"
+
+#: nightsquirrel/templates/admin/payments.html:36
+#: nightsquirrel/templates/admin/references/draft_list.html:57
+msgid "Error"
+msgstr "Errore"
+
+#: nightsquirrel/templates/admin/payments.html:37
+#: nightsquirrel/templates/admin/references/draft_list.html:38
+#: nightsquirrel/templates/admin/users.html:30
+msgid "Created"
+msgstr "Creato"
+
+#: nightsquirrel/templates/admin/payments.html:38
+msgid "Charged"
+msgstr "Addebitato"
+
+#: nightsquirrel/templates/admin/payments.html:39
+#: nightsquirrel/templates/admin/questions.html:46
+msgid "Actions"
+msgstr "Azioni"
+
+#: nightsquirrel/templates/admin/payments.html:59
+msgid "captured"
+msgstr "acquisito"
+
+#: nightsquirrel/templates/admin/payments.html:61
+msgid "failed"
+msgstr "fallito"
+
+#: nightsquirrel/templates/admin/payments.html:63
+msgid "awaiting"
+msgstr "in attesa"
+
+#: nightsquirrel/templates/admin/payments.html:81
+#, python-format
+msgid "Retry payment #%(id)s?"
+msgstr "Ritentare il pagamento #%(id)s?"
+
+#: nightsquirrel/templates/admin/payments.html:82
+#: nightsquirrel/templates/admin/references/persons.html:62
+msgid "Retry"
+msgstr "Riprova"
+
+#: nightsquirrel/templates/admin/questions.html:2
+#: nightsquirrel/templates/admin/questions.html:7
+#: nightsquirrel/templates/admin/tags/list.html:32
+msgid "Questions"
+msgstr "Domande"
+
+#: nightsquirrel/templates/admin/questions.html:13
+msgid "Search title / plaintext / email"
+msgstr "Cerca titolo / testo / email"
+
+#: nightsquirrel/templates/admin/questions.html:18
+msgid "All states"
+msgstr "Tutti gli stati"
+
+#: nightsquirrel/templates/admin/questions.html:26
+#: nightsquirrel/templates/admin/references/draft_list.html:26
+#: nightsquirrel/templates/examples/examples.html:15
+msgid "All"
+msgstr "Tutti"
+
+#: nightsquirrel/templates/admin/questions.html:28
+msgid "Unassigned"
+msgstr "Non assegnato"
+
+#: nightsquirrel/templates/admin/examples/form.html:53
+#: nightsquirrel/templates/admin/examples/list.html:21
+#: nightsquirrel/templates/admin/ideas/form.html:18
+#: nightsquirrel/templates/admin/ideas/list.html:22
+#: nightsquirrel/templates/admin/questions.html:41
+#: nightsquirrel/templates/admin/references/draft_list.html:35
+#: nightsquirrel/templates/admin/references/list.html:48
+#: nightsquirrel/templates/admin/references/ref_form.html:57
+#: nightsquirrel/templates/admin/references/ref_form.html:241
+#: nightsquirrel/templates/admin/references/ref_form.html:381
+#: nightsquirrel/templates/admin/references/ref_form.html:416
+#: nightsquirrel/templates/question/my_questions.html:22
+#: nightsquirrel/templates/question/new_question.html:48
+#: nightsquirrel/templates/question/question_edit.html:14
+#: nightsquirrel/templates/references/my_refs.html:16
+msgid "Title"
+msgstr "Titolo"
+
+#: nightsquirrel/templates/admin/ideas/list.html:23
+#: nightsquirrel/templates/admin/questions.html:42
+#: nightsquirrel/templates/admin/references/list.html:51
+msgid "Owner"
+msgstr "Proprietario"
+
+#: nightsquirrel/templates/admin/questions.html:44
+#: nightsquirrel/templates/admin/questions.html:99
+#: nightsquirrel/templates/question/my_questions.html:24
+msgid "Quote"
+msgstr "Preventivo"
+
+#: nightsquirrel/templates/admin/questions.html:73
+msgid "pending"
+msgstr "in attesa"
+
+#: nightsquirrel/templates/admin/questions.html:75
+msgid "sent"
+msgstr "inviato"
+
+#: nightsquirrel/templates/admin/questions.html:77
+msgid "declined"
+msgstr "rifiutato"
+
+#: nightsquirrel/templates/admin/questions.html:87
+msgid "unassigned"
+msgstr "non assegnato"
+
+#: nightsquirrel/templates/admin/questions.html:96
+msgid "EUR"
+msgstr "EUR"
+
+#: nightsquirrel/templates/admin/questions.html:98
+msgid "Note"
+msgstr "Nota"
+
+#: nightsquirrel/templates/admin/questions.html:105
+msgid "unassign"
+msgstr "rimuovi assegnazione"
+
+#: nightsquirrel/templates/admin/examples/form.html:91
+#: nightsquirrel/templates/admin/ideas/form.html:47
+#: nightsquirrel/templates/admin/ideas/whiteboard.html:37
+#: nightsquirrel/templates/admin/questions.html:112
+#: nightsquirrel/templates/admin/references/person_form.html:42
+#: nightsquirrel/templates/admin/references/publisher_form.html:34
+#: nightsquirrel/templates/admin/references/ref_form.html:445
+#: nightsquirrel/templates/admin/tags/tag_form.html:45
+#: nightsquirrel/templates/admin/users.html:66
+#: nightsquirrel/templates/auth/profile.html:31
+#: nightsquirrel/templates/auth/profile.html:57
+#: nightsquirrel/templates/auth/profile.html:142
+#: nightsquirrel/templates/question/question_edit.html:157
+#: nightsquirrel/templates/tutor/answer_edit.html:30
+msgid "Save"
+msgstr "Salva"
+
+#: nightsquirrel/templates/admin/questions.html:115
+msgid "no ticket"
+msgstr "nessun ticket"
+
+#: nightsquirrel/templates/admin/rebase.html:19
+msgid "Library seed"
+msgstr "Seed libreria"
+
+#: nightsquirrel/templates/admin/rebase.html:20
+msgid ""
+"Generate and download the current library data as a SQL seed file (9"
+"-library-seed.sql)."
+msgstr ""
+"Genera e scarica i dati correnti della libreria come file SQL seed (9"
+"-library-seed.sql)."
+
+#: nightsquirrel/templates/admin/rebase.html:24
+#: nightsquirrel/templates/admin/rebase.html:37
+#: nightsquirrel/templates/admin/rebase.html:50
+msgid "Download"
+msgstr "Scarica"
+
+#: nightsquirrel/templates/admin/rebase.html:32
+msgid "Examples seed"
+msgstr "Seed esempi"
+
+#: nightsquirrel/templates/admin/rebase.html:33
+msgid ""
+"Generate and download the current examples as a SQL seed file (11"
+"-example-seed.sql)."
+msgstr ""
+"Genera e scarica gli esempi correnti come file SQL seed (11-example-"
+"seed.sql)."
+
+#: nightsquirrel/templates/admin/rebase.html:45
+msgid "Rebase SQL"
+msgstr "Rebase SQL"
+
+#: nightsquirrel/templates/admin/rebase.html:46
+msgid ""
+"Concatenate all SQL scripts into a single file for a full database "
+"rebuild (nightsquirrel_seed.sql)."
+msgstr ""
+"Concatena tutti gli script SQL in un unico file per un rebuild completo "
+"del database (nightsquirrel_seed.sql)."
+
+#: nightsquirrel/templates/admin/rebase.html:58
+msgid "Purge S3"
+msgstr "Pulisci S3"
+
+#: nightsquirrel/templates/admin/rebase.html:59
+msgid "Remove orphaned reference images from the S3 bucket."
+msgstr "Rimuove le immagini di riferimento orfane dal bucket S3."
+
+#: nightsquirrel/templates/admin/rebase.html:63
+msgid "Purge"
+msgstr "Pulisci"
+
+#: nightsquirrel/templates/admin/users.html:13
+msgid "Search email / name"
+msgstr "Cerca email / nome"
+
+#: nightsquirrel/templates/admin/references/list.html:32
+#: nightsquirrel/templates/admin/references/persons.html:27
+#: nightsquirrel/templates/admin/references/publishers.html:19
+#: nightsquirrel/templates/admin/tags/list.html:21
+#: nightsquirrel/templates/admin/users.html:20
+#: nightsquirrel/templates/references/library.html:55
+#: nightsquirrel/templates/references/people.html:24
+msgid "Clear"
+msgstr "Cancella"
+
+#: nightsquirrel/templates/admin/users.html:29
+msgid "Name / Email"
+msgstr "Nome / Email"
+
+#: nightsquirrel/templates/admin/users.html:31
+msgid "Valid"
+msgstr "Valido"
+
+#: nightsquirrel/templates/admin/examples/form.html:2
+msgid "Example"
+msgstr ""
+
+#: nightsquirrel/templates/admin/examples/form.html:7
+#, fuzzy
+msgid "Edit example"
+msgstr "Modifica editore"
+
+#: nightsquirrel/templates/admin/examples/form.html:7
+#: nightsquirrel/templates/admin/examples/list.html:9
+msgid "New example"
+msgstr ""
+
+#: nightsquirrel/templates/admin/examples/form.html:10
+#: nightsquirrel/templates/admin/ideas/form.html:10
+#: nightsquirrel/templates/admin/ideas/manage_answers.html:13
+#: nightsquirrel/templates/admin/ideas/manage_refs.html:13
+#: nightsquirrel/templates/admin/ideas/manage_tags.html:13
+#: nightsquirrel/templates/admin/ideas/whiteboard.html:20
+#: nightsquirrel/templates/admin/references/choose_type.html:8
+#: nightsquirrel/templates/admin/references/isbn_scan.html:8
+#: nightsquirrel/templates/admin/references/person_form.html:8
+#: nightsquirrel/templates/admin/references/publisher_form.html:8
+#: nightsquirrel/templates/admin/references/ref_form.html:18
+#: nightsquirrel/templates/admin/tags/tag_form.html:8
+#: nightsquirrel/templates/payer/register_payer.html:13
+#: nightsquirrel/templates/question/question_detail.html:13
+#: nightsquirrel/templates/question/question_edit.html:9
+#: nightsquirrel/templates/references/manage_refs.html:10
+#: nightsquirrel/templates/references/ref_cover.html:13
+#: nightsquirrel/templates/references/ref_detail.html:24
+#: nightsquirrel/templates/tags/manage_question_tags.html:9
+#: nightsquirrel/templates/tags/manage_reference_tags.html:8
+#: nightsquirrel/templates/tutor/answer_edit.html:11
+#: nightsquirrel/templates/tutor/ticket_detail.html:10
+msgid "Back"
+msgstr "Indietro"
+
+#: nightsquirrel/templates/admin/examples/form.html:18
+#: nightsquirrel/templates/question/new_question.html:66
+#: nightsquirrel/templates/question/question_edit.html:35
+msgid "Question type"
+msgstr "Tipo di domanda"
+
+#: nightsquirrel/templates/admin/examples/form.html:29
+#: nightsquirrel/templates/admin/ideas/form.html:23
+#: nightsquirrel/templates/admin/references/ref_form.html:217
+#: nightsquirrel/templates/admin/references/ref_form.html:362
+#: nightsquirrel/templates/admin/references/ref_form.html:398
+#: nightsquirrel/templates/admin/references/ref_form.html:432
+#: nightsquirrel/templates/references/ref_detail.html:91
+#: nightsquirrel/templates/references/ref_detail.html:138
+#: nightsquirrel/templates/references/ref_detail.html:160
+#: nightsquirrel/templates/references/ref_detail.html:182
+msgid "Language"
+msgstr "Lingua"
+
+#: nightsquirrel/templates/admin/examples/form.html:36
+#: nightsquirrel/templates/admin/examples/list.html:22
+#: nightsquirrel/templates/question/new_question.html:55
+#: nightsquirrel/templates/question/question_edit.html:22
+msgid "Subject"
+msgstr "Materia"
+
+#: nightsquirrel/templates/admin/examples/form.html:41
+msgid "Grade"
+msgstr ""
+
+#: nightsquirrel/templates/admin/examples/form.html:44
+#: nightsquirrel/templates/examples/examples.html:6
+#: nightsquirrel/templates/examples/examples.html:16
+msgid "Base"
+msgstr "Base"
+
+#: nightsquirrel/templates/admin/examples/form.html:45
+#: nightsquirrel/templates/examples/examples.html:6
+#: nightsquirrel/templates/examples/examples.html:16
+msgid "Medium"
+msgstr "Medio"
+
+#: nightsquirrel/templates/admin/examples/form.html:46
+#: nightsquirrel/templates/examples/examples.html:6
+#: nightsquirrel/templates/examples/examples.html:16
+msgid "High School"
+msgstr "Liceo"
+
+#: nightsquirrel/templates/admin/examples/form.html:47
+#: nightsquirrel/templates/examples/examples.html:6
+#: nightsquirrel/templates/examples/examples.html:16
+msgid "University"
+msgstr "Università"
+
+#: nightsquirrel/templates/admin/examples/form.html:59
+#, fuzzy
+msgid "Question body"
+msgstr "Tipo di domanda"
+
+#: nightsquirrel/templates/admin/examples/form.html:67
+#, fuzzy
+msgid "Answer body"
+msgstr "Risposta"
+
+#: nightsquirrel/templates/admin/examples/form.html:76
+msgid "Sequence"
+msgstr ""
+
+#: nightsquirrel/templates/admin/examples/form.html:84
+#: nightsquirrel/templates/admin/examples/list.html:24
+#: nightsquirrel/templates/admin/ideas/form.html:41
+#: nightsquirrel/templates/admin/ideas/list.html:25
+#, fuzzy
+msgid "Published"
+msgstr "Editore"
+
+#: nightsquirrel/templates/admin/examples/list.html:19
+#: nightsquirrel/templates/admin/references/list.html:46
+#: nightsquirrel/templates/admin/tags/list.html:31
+#: nightsquirrel/templates/admin/tags/tag_form.html:29
+#: nightsquirrel/templates/references/my_refs.html:15
+msgid "Type"
+msgstr "Tipo"
+
+#: nightsquirrel/templates/admin/examples/list.html:20
+#: nightsquirrel/templates/admin/ideas/list.html:21
+#, fuzzy
+msgid "Lang"
+msgstr "Lingua"
+
+#: nightsquirrel/templates/admin/examples/list.html:23
+msgid "Seq"
+msgstr ""
+
+#: nightsquirrel/templates/admin/examples/list.html:39
+#: nightsquirrel/templates/admin/ideas/list.html:43
+#: nightsquirrel/templates/admin/ideas/list.html:50
+#: nightsquirrel/templates/admin/references/list.html:92
+msgid "Yes"
+msgstr "Sì"
+
+#: nightsquirrel/templates/admin/examples/list.html:41
+#: nightsquirrel/templates/admin/ideas/list.html:52
+#: nightsquirrel/templates/admin/references/list.html:94
+msgid "No"
+msgstr "No"
+
+#: nightsquirrel/templates/admin/examples/list.html:46
+#: nightsquirrel/templates/admin/ideas/list.html:60
+#: nightsquirrel/templates/admin/references/list.html:121
+#: nightsquirrel/templates/admin/references/persons.html:66
+#: nightsquirrel/templates/admin/references/publishers.html:42
+#: nightsquirrel/templates/admin/tags/list.html:48
+#: nightsquirrel/templates/question/question_detail.html:18
+#: nightsquirrel/templates/references/my_refs.html:40
+msgid "Edit"
+msgstr "Modifica"
+
+#: nightsquirrel/templates/admin/examples/list.html:50
+#, fuzzy
+msgid "Delete this example?"
+msgstr "Eliminare questo tag?"
+
+#: nightsquirrel/templates/admin/examples/list.html:50
+#: nightsquirrel/templates/admin/ideas/list.html:64
+#: nightsquirrel/templates/admin/references/draft_list.html:83
+#: nightsquirrel/templates/admin/references/list.html:127
+#: nightsquirrel/templates/admin/references/persons.html:70
+#: nightsquirrel/templates/admin/references/publishers.html:46
+#: nightsquirrel/templates/admin/tags/list.html:52
+#: nightsquirrel/templates/question/my_questions.html:60
+#: nightsquirrel/templates/references/my_refs.html:46
+msgid "Delete"
+msgstr "Elimina"
+
+#: nightsquirrel/templates/admin/examples/list.html:55
+#, fuzzy
+msgid "No examples yet."
+msgstr "Nessun commento."
+
+#: nightsquirrel/templates/admin/ideas/form.html:2
+msgid "Idea"
+msgstr "Idea"
+
+#: nightsquirrel/templates/admin/ideas/form.html:7
+msgid "Edit idea"
+msgstr "Modifica idea"
+
+#: nightsquirrel/templates/admin/ideas/form.html:7
+#: nightsquirrel/templates/admin/ideas/list.html:10
+msgid "New idea"
+msgstr "Nuova idea"
+
+#: nightsquirrel/templates/admin/ideas/form.html:32
+#: nightsquirrel/templates/admin/references/ref_form.html:61
+msgid "Subtitle"
+msgstr "Sottotitolo"
+
+#: nightsquirrel/templates/admin/ideas/form.html:52
+msgid "Edit whiteboard"
+msgstr "Modifica lavagna"
+
+#: nightsquirrel/templates/admin/ideas/form.html:64
+#, fuzzy
+msgid "Answers"
+msgstr "Risposta"
+
+#: nightsquirrel/templates/admin/ideas/list.html:24
+#: nightsquirrel/templates/admin/ideas/list.html:58
+#: nightsquirrel/templates/admin/ideas/whiteboard.html:2
+#: nightsquirrel/templates/admin/ideas/whiteboard.html:28
+msgid "Whiteboard"
+msgstr "Lavagna"
+
+#: nightsquirrel/templates/admin/ideas/list.html:45
+msgid "Empty"
+msgstr "Vuota"
+
+#: nightsquirrel/templates/admin/ideas/list.html:64
+msgid "Delete this idea?"
+msgstr "Eliminare questa idea?"
+
+#: nightsquirrel/templates/admin/ideas/list.html:69
+msgid "No ideas yet."
+msgstr "Nessuna idea ancora."
+
+#: nightsquirrel/templates/admin/ideas/manage_answers.html:2
+#: nightsquirrel/templates/admin/ideas/manage_answers.html:8
+msgid "Idea answers"
+msgstr "Risposte dell'idea"
+
+#: nightsquirrel/templates/admin/ideas/manage_answers.html:18
+msgid "Attached answers"
+msgstr "Risposte allegate"
+
+#: nightsquirrel/templates/admin/ideas/manage_answers.html:37
+msgid "No answers attached yet."
+msgstr "Nessuna risposta allegata."
+
+#: nightsquirrel/templates/admin/ideas/manage_answers.html:44
+msgid "Add an answer"
+msgstr "Aggiungi una risposta"
+
+#: nightsquirrel/templates/admin/ideas/manage_answers.html:47
+#: nightsquirrel/templates/admin/ideas/manage_refs.html:49
+#: nightsquirrel/templates/admin/ideas/manage_tags.html:43
+#: nightsquirrel/templates/admin/tags/list.html:18
+#: nightsquirrel/templates/tags/manage_question_tags.html:40
+#: nightsquirrel/templates/tags/manage_reference_tags.html:39
+msgid "Search…"
+msgstr "Cerca…"
+
+#: nightsquirrel/templates/admin/ideas/manage_answers.html:61
+#: nightsquirrel/templates/admin/ideas/manage_refs.html:66
+#: nightsquirrel/templates/admin/ideas/manage_tags.html:58
+#: nightsquirrel/templates/tags/manage_question_tags.html:59
+#: nightsquirrel/templates/tags/manage_reference_tags.html:58
+msgid "Add"
+msgstr "Aggiungi"
+
+#: nightsquirrel/templates/admin/ideas/manage_answers.html:67
+msgid "No answers match your search."
+msgstr "Nessuna risposta corrisponde alla ricerca."
+
+#: nightsquirrel/templates/admin/ideas/manage_answers.html:74
+msgid "No answers available to attach."
+msgstr "Nessuna risposta disponibile da allegare."
+
+#: nightsquirrel/templates/admin/ideas/manage_refs.html:2
+#: nightsquirrel/templates/admin/ideas/manage_refs.html:8
+msgid "Idea references"
+msgstr "Riferimenti dell'idea"
+
+#: nightsquirrel/templates/admin/ideas/manage_refs.html:18
+msgid "Attached references"
+msgstr "Riferimenti allegati"
+
+#: nightsquirrel/templates/admin/ideas/manage_refs.html:39
+#: nightsquirrel/templates/references/manage_refs.html:65
+msgid "No references attached yet."
+msgstr "Nessun riferimento allegato."
+
+#: nightsquirrel/templates/admin/ideas/manage_refs.html:46
+msgid "Add a reference"
+msgstr "Aggiungi un riferimento"
+
+#: nightsquirrel/templates/admin/ideas/manage_refs.html:72
+msgid "No references match your search."
+msgstr "Nessun riferimento corrisponde alla ricerca."
+
+#: nightsquirrel/templates/admin/ideas/manage_refs.html:79
+msgid "All available references are already attached."
+msgstr "Tutti i riferimenti disponibili sono già allegati."
+
+#: nightsquirrel/templates/admin/ideas/manage_tags.html:2
+#: nightsquirrel/templates/admin/ideas/manage_tags.html:8
+msgid "Idea tags"
+msgstr "Tag dell'idea"
+
+#: nightsquirrel/templates/admin/ideas/manage_tags.html:18
+#: nightsquirrel/templates/tags/manage_question_tags.html:15
+#: nightsquirrel/templates/tags/manage_reference_tags.html:14
+msgid "Attached tags"
+msgstr "Tag allegati"
+
+#: nightsquirrel/templates/admin/ideas/manage_tags.html:33
+#: nightsquirrel/templates/tags/manage_question_tags.html:30
+#: nightsquirrel/templates/tags/manage_reference_tags.html:29
+msgid "No tags attached yet."
+msgstr "Nessun tag allegato."
+
+#: nightsquirrel/templates/admin/ideas/manage_tags.html:40
+#: nightsquirrel/templates/tags/manage_question_tags.html:37
+#: nightsquirrel/templates/tags/manage_reference_tags.html:36
+msgid "Add a tag"
+msgstr "Aggiungi un tag"
+
+#: nightsquirrel/templates/admin/ideas/manage_tags.html:64
+#: nightsquirrel/templates/tags/manage_question_tags.html:65
+#: nightsquirrel/templates/tags/manage_reference_tags.html:64
+msgid "No tags match your search."
+msgstr "Nessun tag corrisponde alla ricerca."
+
+#: nightsquirrel/templates/admin/ideas/manage_tags.html:71
+#: nightsquirrel/templates/tags/manage_question_tags.html:72
+#: nightsquirrel/templates/tags/manage_reference_tags.html:71
+msgid "All available tags are already attached."
+msgstr "Tutti i tag disponibili sono già allegati."
+
+#: nightsquirrel/templates/admin/ideas/whiteboard.html:16
+msgid "Edit metadata"
+msgstr "Modifica metadati"
+
+#: nightsquirrel/templates/admin/references/choose_type.html:2
+#: nightsquirrel/templates/admin/references/choose_type.html:7
+#: nightsquirrel/templates/admin/references/ref_form.html:7
+msgid "New Reference"
+msgstr "Nuovo riferimento"
+
+#: nightsquirrel/templates/admin/references/choose_type.html:7
+msgid "Choose type"
+msgstr "Scegli tipo"
+
+#: nightsquirrel/templates/admin/references/choose_type.html:17
+#: nightsquirrel/templates/admin/references/choose_type.html:26
+#: nightsquirrel/templates/admin/references/choose_type.html:36
+#: nightsquirrel/templates/admin/references/isbn_scan.html:2
+#: nightsquirrel/templates/admin/references/isbn_scan.html:7
+#: nightsquirrel/templates/admin/references/list.html:25
+#: nightsquirrel/templates/admin/references/ref_form.html:12
+#: nightsquirrel/templates/references/library.html:48
+msgid "Book"
+msgstr "Libro"
+
+#: nightsquirrel/templates/admin/references/choose_type.html:18
+msgid "Manual entry"
+msgstr "Inserimento manuale"
+
+#: nightsquirrel/templates/admin/references/choose_type.html:27
+msgid "Scan or enter ISBN"
+msgstr "Scansiona o inserisci ISBN"
+
+#: nightsquirrel/templates/admin/references/choose_type.html:45
+msgid "Article / Paper"
+msgstr "Articolo / Paper"
+
+#: nightsquirrel/templates/admin/references/choose_type.html:53
+#: nightsquirrel/templates/admin/references/list.html:27
+#: nightsquirrel/templates/admin/references/ref_form.html:14
+#: nightsquirrel/templates/references/library.html:50
+msgid "Video"
+msgstr "Video"
+
+#: nightsquirrel/templates/admin/references/choose_type.html:61
+#: nightsquirrel/templates/admin/references/list.html:28
+#: nightsquirrel/templates/admin/references/ref_form.html:15
+#: nightsquirrel/templates/references/library.html:51
+msgid "Web Link"
+msgstr "Link Web"
+
+#: nightsquirrel/templates/admin/references/draft_list.html:2
+#: nightsquirrel/templates/admin/references/draft_list.html:7
+msgid "Book Drafts"
+msgstr "Bozze libri"
+
+#: nightsquirrel/templates/admin/references/draft_list.html:9
+msgid "Scan ISBN"
+msgstr "Scansiona ISBN"
+
+#: nightsquirrel/templates/admin/references/draft_list.html:12
+msgid ""
+"Delete all completed, already-present and errored drafts? Pending drafts "
+"will be kept."
+msgstr ""
+"Eliminare tutte le bozze completate, già presenti o con errori? Le bozze "
+"in attesa verranno mantenute."
+
+#: nightsquirrel/templates/admin/references/draft_list.html:13
+msgid "Flush completed"
+msgstr "Elimina completati"
+
+#: nightsquirrel/templates/admin/references/draft_list.html:24
+#: nightsquirrel/templates/admin/references/draft_list.html:67
+msgid "Pending"
+msgstr "In attesa"
+
+#: nightsquirrel/templates/admin/references/draft_list.html:59
+msgid "Already present"
+msgstr "Già presente"
+
+#: nightsquirrel/templates/admin/references/draft_list.html:61
+msgid "Done"
+msgstr "Fatto"
+
+#: nightsquirrel/templates/admin/references/draft_list.html:76
+msgid "Process"
+msgstr "Elabora"
+
+#: nightsquirrel/templates/admin/references/draft_list.html:83
+msgid "Delete this draft?"
+msgstr "Eliminare questa bozza?"
+
+#: nightsquirrel/templates/admin/references/draft_list.html:88
+msgid "No drafts found."
+msgstr "Nessuna bozza trovata."
+
+#: nightsquirrel/templates/admin/references/isbn_scan.html:14
+msgid "Scan barcode"
+msgstr "Scansiona il codice a barre"
+
+#: nightsquirrel/templates/admin/references/isbn_scan.html:15
+msgid "Start camera"
+msgstr "Avvia fotocamera"
+
+#: nightsquirrel/templates/admin/references/isbn_scan.html:26
+msgid "Look up"
+msgstr "Cerca"
+
+#: nightsquirrel/templates/admin/references/isbn_scan.html:56
+msgid "Save draft"
+msgstr "Salva bozza"
+
+#: nightsquirrel/templates/admin/references/isbn_scan.html:91
+msgid "Looking up…"
+msgstr "Ricerca in corso…"
+
+#: nightsquirrel/templates/admin/references/isbn_scan.html:99
+msgid "Book found."
+msgstr "Libro trovato."
+
+#: nightsquirrel/templates/admin/references/isbn_scan.html:102
+msgid "API error:"
+msgstr "Errore API:"
+
+#: nightsquirrel/templates/admin/references/isbn_scan.html:104
+msgid "No book found for this ISBN."
+msgstr "Nessun libro trovato per questo ISBN."
+
+#: nightsquirrel/templates/admin/references/isbn_scan.html:107
+msgid "Lookup error. Check your connection."
+msgstr "Errore di ricerca. Controlla la connessione."
+
+#: nightsquirrel/templates/admin/references/isbn_scan.html:135
+msgid "Camera not available. Please enter ISBN manually."
+msgstr "Fotocamera non disponibile. Inserisci l'ISBN manualmente."
+
+#: nightsquirrel/templates/admin/references/list.html:9
+#: nightsquirrel/templates/admin/references/persons.html:2
+#: nightsquirrel/templates/admin/references/persons.html:7
+msgid "Persons"
+msgstr "Persone"
+
+#: nightsquirrel/templates/admin/references/list.html:10
+#: nightsquirrel/templates/admin/references/publishers.html:2
+#: nightsquirrel/templates/admin/references/publishers.html:7
+msgid "Publishers"
+msgstr "Editori"
+
+#: nightsquirrel/templates/admin/references/list.html:11
+#: nightsquirrel/templates/references/my_refs.html:8
+msgid "New reference"
+msgstr "Nuovo riferimento"
+
+#: nightsquirrel/templates/admin/references/list.html:12
+msgid "Drafts"
+msgstr "Bozze"
+
+#: nightsquirrel/templates/admin/references/list.html:20
+msgid "Search title…"
+msgstr "Cerca titolo…"
+
+#: nightsquirrel/templates/admin/references/list.html:24
+#: nightsquirrel/templates/references/library.html:47
+msgid "All types"
+msgstr "Tutti i tipi"
+
+#: nightsquirrel/templates/admin/references/list.html:26
+#: nightsquirrel/templates/admin/references/ref_form.html:13
+msgid "Paper"
+msgstr "Articolo"
+
+#: nightsquirrel/templates/admin/references/list.html:49
+#: nightsquirrel/templates/references/my_refs.html:17
+#: nightsquirrel/templates/references/ref_detail.html:45
+#: nightsquirrel/templates/references/ref_detail.html:105
+msgid "Author"
+msgstr "Autore"
+
+#: nightsquirrel/templates/admin/references/list.html:50
+#: nightsquirrel/templates/admin/references/ref_form.html:183
+#: nightsquirrel/templates/question/new_question.html:122
+#: nightsquirrel/templates/references/my_refs.html:18
+#: nightsquirrel/templates/references/ref_detail.html:75
+msgid "Year"
+msgstr "Anno"
+
+#: nightsquirrel/templates/admin/references/list.html:52
+msgid "Library"
+msgstr "Libreria"
+
+#: nightsquirrel/templates/admin/references/list.html:53
+msgid "Flags"
+msgstr "Flag"
+
+#: nightsquirrel/templates/admin/references/list.html:75
+msgid "Mark as reviewed"
+msgstr "Segna come revisionato"
+
+#: nightsquirrel/templates/admin/references/list.html:76
+msgid "Review"
+msgstr "Revisiona"
+
+#: nightsquirrel/templates/admin/references/list.html:90
+msgid "Toggle library"
+msgstr "Aggiungi/rimuovi dalla libreria"
+
+#: nightsquirrel/templates/admin/references/list.html:102
+msgid "Currently reading"
+msgstr "In lettura"
+
+#: nightsquirrel/templates/admin/references/list.html:108
+#: nightsquirrel/templates/references/leo_reading.html:27
+msgid "Recently read"
+msgstr "Letti di recente"
+
+#: nightsquirrel/templates/admin/references/list.html:127
+#: nightsquirrel/templates/references/my_refs.html:46
+msgid "Delete this reference?"
+msgstr "Eliminare questo riferimento?"
+
+#: nightsquirrel/templates/admin/references/list.html:132
+#: nightsquirrel/templates/references/library.html:64
+#: nightsquirrel/templates/references/person.html:44
+#: nightsquirrel/templates/references/tag.html:26
+msgid "No references found."
+msgstr "Nessun riferimento trovato."
+
+#: nightsquirrel/templates/admin/references/person_form.html:2
+msgid "Person"
+msgstr "Persona"
+
+#: nightsquirrel/templates/admin/references/person_form.html:7
+msgid "Edit Person"
+msgstr "Modifica persona"
+
+#: nightsquirrel/templates/admin/references/person_form.html:7
+msgid "New Person"
+msgstr "Nuova persona"
+
+#: nightsquirrel/templates/admin/references/person_form.html:15
+#: nightsquirrel/templates/admin/references/persons.html:35
+msgid "Family name"
+msgstr "Cognome"
+
+#: nightsquirrel/templates/admin/references/person_form.html:19
+#: nightsquirrel/templates/admin/references/persons.html:36
+msgid "First name"
+msgstr "Nome"
+
+#: nightsquirrel/templates/admin/references/person_form.html:23
+msgid "Caption (Italian)"
+msgstr "Didascalia (italiano)"
+
+#: nightsquirrel/templates/admin/references/person_form.html:23
+#: nightsquirrel/templates/admin/references/person_form.html:27
+msgid "(short bio or title)"
+msgstr "(breve bio o titolo)"
+
+#: nightsquirrel/templates/admin/references/person_form.html:27
+msgid "Caption (English)"
+msgstr "Didascalia (inglese)"
+
+#: nightsquirrel/templates/admin/references/person_form.html:31
+msgid "Nobel Prize"
+msgstr "Premio Nobel"
+
+#: nightsquirrel/templates/admin/references/person_form.html:31
+msgid "(e.g. 1921 - Physics)"
+msgstr "(es. 1921 - Physics)"
+
+#: nightsquirrel/templates/admin/references/person_form.html:35
+msgid "Search strings"
+msgstr "Stringhe di ricerca"
+
+#: nightsquirrel/templates/admin/references/person_form.html:35
+msgid "(extra aliases for search)"
+msgstr "(alias aggiuntivi per la ricerca)"
+
+#: nightsquirrel/templates/admin/references/persons.html:9
+msgid "New person"
+msgstr "Nuova persona"
+
+#: nightsquirrel/templates/admin/references/persons.html:16
+#: nightsquirrel/templates/admin/references/publishers.html:16
+#: nightsquirrel/templates/references/people.html:17
+msgid "Search name…"
+msgstr "Cerca nome…"
+
+#: nightsquirrel/templates/admin/references/persons.html:22
+#: nightsquirrel/templates/admin/references/persons.html:24
+msgid "Needs enrichment"
+msgstr ""
+
+#: nightsquirrel/templates/admin/references/persons.html:37
+msgid "Caption"
+msgstr "Didascalia"
+
+#: nightsquirrel/templates/admin/references/persons.html:62
+msgid "Enrich"
+msgstr "Arricchisci"
+
+#: nightsquirrel/templates/admin/references/persons.html:62
+msgid "Re-enrich"
+msgstr "Aggiorna"
+
+#: nightsquirrel/templates/admin/references/persons.html:70
+msgid "Delete this person?"
+msgstr "Eliminare questa persona?"
+
+#: nightsquirrel/templates/admin/references/persons.html:75
+msgid "No persons found."
+msgstr "Nessuna persona trovata."
+
+#: nightsquirrel/templates/admin/references/publisher_form.html:2
+#: nightsquirrel/templates/admin/references/ref_form.html:189
+#: nightsquirrel/templates/references/ref_detail.html:71
+#: nightsquirrel/templates/references/ref_detail.html:126
+msgid "Publisher"
+msgstr "Editore"
+
+#: nightsquirrel/templates/admin/references/publisher_form.html:7
+msgid "Edit Publisher"
+msgstr "Modifica editore"
+
+#: nightsquirrel/templates/admin/references/publisher_form.html:7
+msgid "New Publisher"
+msgstr "Nuovo editore"
+
+#: nightsquirrel/templates/admin/references/publisher_form.html:15
+#: nightsquirrel/templates/admin/references/publishers.html:27
+msgid "Name"
+msgstr "Nome"
+
+#: nightsquirrel/templates/admin/references/publisher_form.html:19
+msgid "Other name / abbreviation"
+msgstr "Altro nome / abbreviazione"
+
+#: nightsquirrel/templates/admin/references/publisher_form.html:23
+#: nightsquirrel/templates/admin/references/publishers.html:29
+#: nightsquirrel/templates/admin/references/ref_form.html:205
+#: nightsquirrel/templates/references/ref_detail.html:79
+#: nightsquirrel/templates/references/ref_detail.html:130
+msgid "Location"
+msgstr "Luogo"
+
+#: nightsquirrel/templates/admin/references/publisher_form.html:27
+msgid "Description"
+msgstr "Descrizione"
+
+#: nightsquirrel/templates/admin/references/publishers.html:9
+msgid "New publisher"
+msgstr "Nuovo editore"
+
+#: nightsquirrel/templates/admin/references/publishers.html:28
+msgid "Other name"
+msgstr "Altro nome"
+
+#: nightsquirrel/templates/admin/references/publishers.html:46
+msgid "Delete this publisher?"
+msgstr "Eliminare questo editore?"
+
+#: nightsquirrel/templates/admin/references/publishers.html:51
+msgid "No publishers found."
+msgstr "Nessun editore trovato."
+
+#: nightsquirrel/templates/admin/references/ref_form.html:2
+#: nightsquirrel/templates/references/ref_cover.html:2
+#: nightsquirrel/templates/references/ref_detail.html:2
+msgid "Reference"
+msgstr "Riferimento"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:7
+msgid "Edit Reference"
+msgstr "Modifica riferimento"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:26
+msgid "Reference settings"
+msgstr "Impostazioni riferimento"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:32
+msgid "Add to Leo's library (public book wall)"
+msgstr "Aggiungi alla libreria di Leo (bacheca libri pubblica)"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:42
+msgid "Leo's note"
+msgstr "Nota di Leo"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:44
+msgid "Personal recommendation or comment…"
+msgstr "Raccomandazione personale o commento…"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:53
+msgid "Book details"
+msgstr "Dettagli libro"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:68
+#: nightsquirrel/templates/admin/references/ref_form.html:247
+msgid "Person not in list? Add new →"
+msgstr "Persona non in lista? Aggiungi →"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:72
+#: nightsquirrel/templates/admin/references/ref_form.html:251
+msgid "Author 1"
+msgstr "Autore 1"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:84
+#: nightsquirrel/templates/admin/references/ref_form.html:263
+msgid "Author 2"
+msgstr "Autore 2"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:103
+#: nightsquirrel/templates/admin/references/ref_form.html:282
+msgid "Other authors (free text)"
+msgstr "Altri autori (testo libero)"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:109
+#: nightsquirrel/templates/admin/references/ref_form.html:287
+msgid "Editor 1"
+msgstr "Curatore 1"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:121
+#: nightsquirrel/templates/admin/references/ref_form.html:299
+msgid "Editor 2"
+msgstr "Curatore 2"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:140
+#: nightsquirrel/templates/admin/references/ref_form.html:318
+msgid "Other editors (free text)"
+msgstr "Altri curatori (testo libero)"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:146
+msgid "Translator 1"
+msgstr "Traduttore 1"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:158
+msgid "Translator 2"
+msgstr "Traduttore 2"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:177
+msgid "Other translators (free text)"
+msgstr "Altri traduttori (testo libero)"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:191
+#: nightsquirrel/templates/admin/references/ref_form.html:330
+msgid "Add new →"
+msgstr "Aggiungi →"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:209
+#: nightsquirrel/templates/references/ref_detail.html:83
+msgid "Edition"
+msgstr "Edizione"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:213
+msgid "ISBN"
+msgstr "ISBN"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:221
+#: nightsquirrel/templates/references/ref_detail.html:95
+msgid "Pages"
+msgstr "Pagine"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:225
+#: nightsquirrel/templates/admin/references/ref_form.html:366
+#: nightsquirrel/templates/admin/references/ref_form.html:402
+#: nightsquirrel/templates/references/ref_detail.html:99
+#: nightsquirrel/templates/references/ref_detail.html:142
+#: nightsquirrel/templates/references/ref_detail.html:164
+#: nightsquirrel/templates/references/ref_detail.html:186
+msgid "Link"
+msgstr "Link"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:237
+msgid "Article / Paper details"
+msgstr "Dettagli articolo / paper"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:323
+#: nightsquirrel/templates/admin/references/ref_form.html:389
+#: nightsquirrel/templates/admin/references/ref_form.html:424
+#: nightsquirrel/templates/references/ref_detail.html:122
+#: nightsquirrel/templates/references/ref_detail.html:152
+#: nightsquirrel/templates/references/ref_detail.html:174
+msgid "Date"
+msgstr "Data"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:328
+msgid "Publisher / Journal"
+msgstr "Editore / Rivista"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:344
+msgid "Container title"
+msgstr "Titolo contenitore"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:346
+msgid "Journal / book title"
+msgstr "Titolo rivista / libro"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:350
+msgid "Issue / Volume"
+msgstr "Numero / Volume"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:354
+msgid "Location / Pages"
+msgstr "Luogo / Pagine"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:358
+msgid "DOI"
+msgstr "DOI"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:378
+msgid "Video details"
+msgstr "Dettagli video"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:385
+msgid "Editor / Channel"
+msgstr "Curatore / Canale"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:393
+#: nightsquirrel/templates/references/ref_detail.html:156
+#: nightsquirrel/templates/references/ref_detail.html:178
+msgid "Platform"
+msgstr "Piattaforma"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:413
+msgid "Web Link details"
+msgstr "Dettagli link web"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:420
+msgid "Editor / Author"
+msgstr "Curatore / Autore"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:428
+msgid "Platform / Site"
+msgstr "Piattaforma / Sito"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:436
+msgid "URL"
+msgstr "URL"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:453
+msgid "Cover image"
+msgstr "Immagine di copertina"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:457
+#: nightsquirrel/templates/references/ref_cover.html:2
+#: nightsquirrel/templates/references/ref_cover.html:33
+#: nightsquirrel/templates/references/ref_cover.html:35
+msgid "Cover"
+msgstr "Copertina"
+
+#: nightsquirrel/templates/admin/references/ref_form.html:459
+#: nightsquirrel/templates/references/ref_cover.html:52
+msgid "No cover image yet."
+msgstr "Nessuna immagine di copertina."
+
+#: nightsquirrel/templates/admin/references/ref_form.html:463
+#: nightsquirrel/templates/references/ref_detail.html:20
+msgid "Manage cover"
+msgstr "Gestisci copertina"
+
+#: nightsquirrel/templates/admin/tags/list.html:9
+#: nightsquirrel/templates/admin/tags/tag_form.html:7
+#: nightsquirrel/templates/tags/manage_question_tags.html:44
+#: nightsquirrel/templates/tags/manage_reference_tags.html:43
+msgid "New tag"
+msgstr "Nuovo tag"
+
+#: nightsquirrel/templates/admin/tags/list.html:29
+msgid "Italian"
+msgstr "Italiano"
+
+#: nightsquirrel/templates/admin/tags/list.html:30
+msgid "English"
+msgstr "Inglese"
+
+#: nightsquirrel/templates/admin/tags/list.html:52
+msgid "Delete this tag?"
+msgstr "Eliminare questo tag?"
+
+#: nightsquirrel/templates/admin/tags/list.html:58
+msgid "No tags found."
+msgstr "Nessun tag trovato."
+
+#: nightsquirrel/templates/admin/tags/tag_form.html:2
+msgid "Tag"
+msgstr "Tag"
+
+#: nightsquirrel/templates/admin/tags/tag_form.html:7
+msgid "Edit tag"
+msgstr "Modifica tag"
+
+#: nightsquirrel/templates/admin/tags/tag_form.html:18
+msgid "Italian name"
+msgstr "Nome italiano"
+
+#: nightsquirrel/templates/admin/tags/tag_form.html:23
+msgid "English name"
+msgstr "Nome inglese"
+
+#: nightsquirrel/templates/admin/tags/tag_form.html:29
+msgid "(optional classifier)"
+msgstr "(classificatore opzionale)"
+
+#: nightsquirrel/templates/admin/tags/tag_form.html:34
+msgid "Icon"
+msgstr "Icona"
+
+#: nightsquirrel/templates/admin/tags/tag_form.html:34
+msgid "(static path, optional)"
+msgstr "(percorso statico, opzionale)"
+
+#: nightsquirrel/templates/auth/forgot_frm.html:4
+#: nightsquirrel/templates/auth/forgot_frm.html:12
+#: nightsquirrel/templates/auth/forgot_frm.html:15
+msgid "Forgot access key"
+msgstr "Chiave d'accesso dimenticata"
+
+#: nightsquirrel/templates/auth/forgot_frm.html:5
+msgid "Reset your Night Squirrels access key."
+msgstr "Reimposta la tua chiave d'accesso Night Squirrels."
+
+#: nightsquirrel/templates/auth/forgot_frm.html:28
+msgid "Ask for a new key"
+msgstr "Richiedi una nuova chiave"
+
+#: nightsquirrel/templates/auth/forgot_frm.html:29
+msgid "Insert the email used for the subscription."
+msgstr "Inserisci l'email usata per l'iscrizione."
+
+#: nightsquirrel/templates/auth/forgot_frm.html:29
+msgid "We will send you an email with the new access key."
+msgstr "Ti invieremo un'email con la nuova chiave d'accesso."
+
+#: nightsquirrel/templates/auth/forgot_frm.html:33
+#: nightsquirrel/templates/auth/forgot_frm.html:34
+msgid "Your email"
+msgstr "La tua email"
+
+#: nightsquirrel/templates/auth/forgot_frm.html:37
+msgid "I need a new key"
+msgstr "Ho bisogno di una nuova chiave"
+
+#: nightsquirrel/templates/auth/login_frm.html:6
+msgid "Login to Night Squirrels to manage your questions and answers."
+msgstr "Accedi a Night Squirrels per gestire le tue domande e risposte."
+
+#: nightsquirrel/templates/auth/login_frm.html:32
+msgid "Log in to access your questions, track answers, and manage your account."
+msgstr ""
+"Accedi per visualizzare le tue domande, seguire le risposte e gestire il "
+"tuo account."
+
+#: nightsquirrel/templates/auth/login_frm.html:39
+#: nightsquirrel/templates/auth/signup_frm.html:40
+msgid "Email address"
+msgstr "Indirizzo email"
+
+#: nightsquirrel/templates/auth/login_frm.html:45
+#: nightsquirrel/templates/auth/profile.html:68
+#: nightsquirrel/templates/auth/resetkey_frm.html:19
+msgid "Access key"
+msgstr "Chiave d'accesso"
+
+#: nightsquirrel/templates/auth/login_frm.html:48
+msgid "Can't find your access key?"
+msgstr "Non trovi la tua chiave d'accesso?"
+
+#: nightsquirrel/templates/auth/login_frm.html:48
+msgid "Click"
+msgstr "Clicca"
+
+#: nightsquirrel/templates/auth/login_frm.html:48
+msgid "here"
+msgstr "qui"
+
+#: nightsquirrel/templates/auth/login_frm.html:48
+msgid "to get a new one!"
+msgstr "per riceverne una nuova!"
+
+#: nightsquirrel/templates/auth/login_frm.html:55
+msgid "to get your access key"
+msgstr "per ottenere la tua chiave d'accesso"
+
+#: nightsquirrel/templates/auth/profile.html:5
+msgid "Your Night Squirrels profile."
+msgstr "Il tuo profilo Night Squirrels."
+
+#: nightsquirrel/templates/auth/profile.html:12
+msgid "User Profile"
+msgstr "Profilo utente"
+
+#: nightsquirrel/templates/auth/profile.html:18
+#: nightsquirrel/templates/auth/profile.html:26
+#: nightsquirrel/templates/auth/profile.html:28
+msgid "User name"
+msgstr "Nome utente"
+
+#: nightsquirrel/templates/auth/profile.html:19
+msgid "The username was assigned at sign-up: you can change it!"
+msgstr "Il nome utente è stato assegnato alla registrazione: puoi cambiarlo!"
+
+#: nightsquirrel/templates/auth/profile.html:20
+msgid "Must be bigger than 3 characters and must be unique."
+msgstr "Deve avere più di 3 caratteri e deve essere unico."
+
+#: nightsquirrel/templates/auth/profile.html:43
+#: nightsquirrel/templates/auth/profile.html:52
+#: nightsquirrel/templates/auth/profile.html:54
+msgid "Email"
+msgstr "Email"
+
+#: nightsquirrel/templates/auth/profile.html:44
+msgid "Your email used to login. You may change it:"
+msgstr "La tua email usata per il login. Puoi cambiarla:"
+
+#: nightsquirrel/templates/auth/profile.html:45
+msgid "you will receive an email - click the link to verify your new login."
+msgstr "riceverai un'email — clicca il link per verificare il tuo nuovo accesso."
+
+#: nightsquirrel/templates/auth/profile.html:46
+msgid "WARNING"
+msgstr "ATTENZIONE"
+
+#: nightsquirrel/templates/auth/profile.html:46
+msgid "you will receive a NEW access key; use it to login."
+msgstr "riceverai una NUOVA chiave d'accesso; usala per accedere."
+
+#: nightsquirrel/templates/auth/profile.html:69
+#: nightsquirrel/templates/auth/resetkey_frm.html:20
+msgid "Change your access key."
+msgstr "Cambia la tua chiave d'accesso."
+
+#: nightsquirrel/templates/auth/profile.html:74
+msgid "Your current access key"
+msgstr "La tua chiave d'accesso attuale"
+
+#: nightsquirrel/templates/auth/profile.html:78
+msgid "Unrecognized access key"
+msgstr "Chiave d'accesso non riconosciuta"
+
+#: nightsquirrel/templates/auth/profile.html:83
+#: nightsquirrel/templates/auth/resetkey_frm.html:34
+msgid "New access key"
+msgstr "Nuova chiave d'accesso"
+
+#: nightsquirrel/templates/auth/profile.html:86
+#: nightsquirrel/templates/auth/resetkey_frm.html:37
+msgid ""
+"Invalid access key: must be at least 8 characters, including a letter and"
+" a digit"
+msgstr ""
+"Chiave d'accesso non valida: deve avere almeno 8 caratteri, inclusa una "
+"lettera e un numero"
+
+#: nightsquirrel/templates/auth/profile.html:90
+#: nightsquirrel/templates/auth/resetkey_frm.html:41
+msgid "Confirm new access key"
+msgstr "Conferma nuova chiave d'accesso"
+
+#: nightsquirrel/templates/auth/profile.html:94
+#: nightsquirrel/templates/auth/resetkey_frm.html:45
+msgid "Access key and confirm access key should be equal"
+msgstr "La chiave d'accesso e la conferma devono coincidere"
+
+#: nightsquirrel/templates/auth/profile.html:97
+msgid "Update access key"
+msgstr "Aggiorna chiave d'accesso"
+
+#: nightsquirrel/templates/auth/profile.html:104
+msgid "Your custom tile"
+msgstr "Il tuo tile personalizzato"
+
+#: nightsquirrel/templates/auth/profile.html:105
+msgid "It was assigned to you during sign-up."
+msgstr "Ti è stato assegnato durante la registrazione."
+
+#: nightsquirrel/templates/auth/profile.html:115
+msgid "Academic profile"
+msgstr "Profilo scolastico"
+
+#: nightsquirrel/templates/auth/profile.html:116
+msgid ""
+"Tell us your school type and year so we can pre-fill your questions and "
+"give you better quotes."
+msgstr ""
+"Indicaci il tipo di scuola e l'anno per precompilare le domande e "
+"offrirti preventivi migliori."
+
+#: nightsquirrel/templates/auth/profile.html:121
+#: nightsquirrel/templates/question/new_question.html:145
+#: nightsquirrel/templates/question/question_edit.html:123
+msgid "School type"
+msgstr "Tipo di scuola"
+
+#: nightsquirrel/templates/auth/profile.html:124
+#: nightsquirrel/templates/auth/profile.html:164
+#: nightsquirrel/templates/auth/profile.html:184
+msgid "(not set)"
+msgstr "(non impostato)"
+
+#: nightsquirrel/templates/auth/profile.html:134
+msgid "Year / Grade"
+msgstr "Anno / Classe"
+
+#: nightsquirrel/templates/auth/profile.html:151
+msgid "Payment"
+msgstr "Pagamento"
+
+#: nightsquirrel/templates/auth/profile.html:153
+msgid "Your payer manages the PayPal account used for payments."
+msgstr "Il tuo pagante gestisce l'account PayPal usato per i pagamenti."
+
+#: nightsquirrel/templates/auth/profile.html:155
+msgid "PayPal account used for payments when answers are delivered."
+msgstr "Account PayPal usato per i pagamenti alla consegna delle risposte."
+
+#: nightsquirrel/templates/auth/profile.html:160
+msgid "No payment method configured yet."
+msgstr "Nessun metodo di pagamento configurato."
+
+#: nightsquirrel/templates/auth/profile.html:161
+#: nightsquirrel/templates/home/index.html:187
+msgid "Set up payment"
+msgstr "Configura pagamento"
+
+#: nightsquirrel/templates/auth/profile.html:164
+msgid "Payer:"
+msgstr "Pagante:"
+
+#: nightsquirrel/templates/auth/profile.html:165
+msgid "Relationship:"
+msgstr "Relazione:"
+
+#: nightsquirrel/templates/auth/profile.html:167
+#: nightsquirrel/templates/auth/profile.html:186
+msgid "Vault:"
+msgstr "Vault:"
+
+#: nightsquirrel/templates/auth/profile.html:169
+#: nightsquirrel/templates/auth/profile.html:188
+msgid "Connected"
+msgstr "Collegato"
+
+#: nightsquirrel/templates/auth/profile.html:171
+#: nightsquirrel/templates/auth/profile.html:190
+msgid "Awaiting approval"
+msgstr "In attesa di approvazione"
+
+#: nightsquirrel/templates/auth/profile.html:175
+#: nightsquirrel/templates/auth/profile.html:194
+msgid "Not set up"
+msgstr "Non configurato"
+
+#: nightsquirrel/templates/auth/profile.html:179
+msgid "Are you sure you want to unlink this payer?"
+msgstr "Sei sicuro di voler scollegare questo pagante?"
+
+#: nightsquirrel/templates/auth/profile.html:180
+msgid "Unlink payer"
+msgstr "Scollega pagante"
+
+#: nightsquirrel/templates/auth/profile.html:184
+msgid "PayPal email:"
+msgstr "Email PayPal:"
+
+#: nightsquirrel/templates/auth/profile.html:199
+msgid "Disconnect PayPal? You will need to set it up again."
+msgstr "Scollegare PayPal? Dovrai riconfigurarlo."
+
+#: nightsquirrel/templates/auth/profile.html:201
+msgid "Disconnect PayPal"
+msgstr "Scollega PayPal"
+
+#: nightsquirrel/templates/auth/profile.html:207
+msgid "Retry PayPal setup"
+msgstr "Riprova configurazione PayPal"
+
+#: nightsquirrel/templates/auth/profile.html:207
+msgid "Set up PayPal"
+msgstr "Configura PayPal"
+
+#: nightsquirrel/templates/auth/profile.html:211
+msgid ""
+"This will remove your current payment setup. You can then register a "
+"different payer."
+msgstr ""
+"Questo rimuoverà la configurazione di pagamento attuale. Potrai poi "
+"registrare un pagante diverso."
+
+#: nightsquirrel/templates/auth/profile.html:212
+msgid "Cancel setup"
+msgstr "Annulla configurazione"
+
+#: nightsquirrel/templates/auth/profile.html:218
+msgid "No payment method registered yet."
+msgstr "Nessun metodo di pagamento registrato."
+
+#: nightsquirrel/templates/auth/profile.html:226
+msgid "Delete subscription"
+msgstr "Elimina iscrizione"
+
+#: nightsquirrel/templates/auth/profile.html:227
+msgid "All your images and data will be deleted."
+msgstr "Tutte le tue immagini e i tuoi dati saranno eliminati."
+
+#: nightsquirrel/templates/auth/profile.html:228
+msgid "Warning"
+msgstr "Attenzione"
+
+#: nightsquirrel/templates/auth/profile.html:228
+msgid "closing your account cannot be undone."
+msgstr "la chiusura dell'account non può essere annullata."
+
+#: nightsquirrel/templates/auth/profile.html:231
+msgid "Delete subscription..."
+msgstr "Elimina iscrizione..."
+
+#: nightsquirrel/templates/auth/profile.html:242
+msgid "Are you sure you want to delete your subscription?"
+msgstr "Sei sicuro di voler eliminare la tua iscrizione?"
+
+#: nightsquirrel/templates/auth/profile.html:246
+msgid "Delete it"
+msgstr "Elimina"
+
+#: nightsquirrel/templates/auth/resetkey_frm.html:4
+#: nightsquirrel/templates/auth/resetkey_frm.html:12
+#: nightsquirrel/templates/auth/resetkey_frm.html:15
+#: nightsquirrel/templates/auth/resetkey_frm.html:48
+msgid "Reset access key"
+msgstr "Reimposta chiave d'accesso"
+
+#: nightsquirrel/templates/auth/resetkey_frm.html:5
+msgid "Set a new access key for your Night Squirrels account."
+msgstr "Imposta una nuova chiave d'accesso per il tuo account Night Squirrels."
+
+#: nightsquirrel/templates/auth/resetkey_frm.html:25
+msgid "OTP Code (you received via email)"
+msgstr "Codice OTP (ricevuto via email)"
+
+#: nightsquirrel/templates/auth/resetkey_frm.html:29
+msgid "Invalid code"
+msgstr "Codice non valido"
+
+#: nightsquirrel/templates/auth/signup_frm.html:6
+msgid ""
+"Create your Night Squirrels account to submit questions and receive "
+"expert answers."
+msgstr ""
+"Crea il tuo account Night Squirrels per inviare domande e ricevere "
+"risposte esperte."
+
+#: nightsquirrel/templates/auth/signup_frm.html:32
+msgid "Create your account to submit questions and get expert answers."
+msgstr "Crea il tuo account per inviare domande e ottenere risposte esperte."
+
+#: nightsquirrel/templates/auth/signup_frm.html:33
+msgid "You will receive an access key via email."
+msgstr "Riceverai una chiave d'accesso via email."
+
+#: nightsquirrel/templates/auth/signup_frm.html:48
+msgid "Just"
+msgstr "Fai il"
+
+#: nightsquirrel/templates/auth/signup_frm.html:48
+msgid "login"
+msgstr "login"
+
+#: nightsquirrel/templates/auth/signup_frm.html:48
+msgid "if you are already registered."
+msgstr "se sei già registrato."
+
+#: nightsquirrel/templates/errorpages/error404.html:3
+#: nightsquirrel/templates/errorpages/error404.html:10
+msgid "Error 404"
+msgstr "Errore 404"
+
+#: nightsquirrel/templates/errorpages/error404.html:15
+msgid "Sorry, the page you requested was not found."
+msgstr "La pagina richiesta non è stata trovata."
+
+#: nightsquirrel/templates/errorpages/error404.html:16
+msgid "This page might have been moved, updated or deleted."
+msgstr "Questa pagina potrebbe essere stata spostata, aggiornata o eliminata."
+
+#: nightsquirrel/templates/errorpages/error404.html:17
+msgid "Please visit the"
+msgstr "Visita le pagine"
+
+#: nightsquirrel/templates/errorpages/error404.html:17
+msgid "or"
+msgstr "o"
+
+#: nightsquirrel/templates/errorpages/error404.html:17
+msgid "pages."
+msgstr "."
+
+#: nightsquirrel/templates/errorpages/error500.html:3
+#: nightsquirrel/templates/errorpages/error500.html:9
+msgid "Error 500"
+msgstr "Errore 500"
+
+#: nightsquirrel/templates/errorpages/error500.html:10
+msgid "INTERNAL SERVER ERROR"
+msgstr "ERRORE INTERNO DEL SERVER"
+
+#: nightsquirrel/templates/examples/examples.html:9
+msgid "Question examples"
+msgstr "Esempi di domande"
+
+#: nightsquirrel/templates/examples/examples.html:10
+msgid "See a completed example for each question type."
+msgstr "Guarda un esempio completo per ogni tipo di domanda."
+
+#: nightsquirrel/templates/examples/examples.html:49
+#: nightsquirrel/templates/question/question_detail.html:278
+#: nightsquirrel/templates/question/question_detail.html:285
+msgid "Answer"
+msgstr "Risposta"
+
+#: nightsquirrel/templates/examples/examples.html:57
+msgid "Examples coming soon."
+msgstr "Esempi in arrivo."
+
+#: nightsquirrel/templates/home/about.html:5
+msgid "About Night Squirrels — how the platform works."
+msgstr "Chi siamo — come funziona la piattaforma Night Squirrels."
+
+#: nightsquirrel/templates/home/about.html:16
+msgid "About Night Squirrels"
+msgstr "Chi siamo"
+
+#: nightsquirrel/templates/home/about.html:17
+msgid ""
+"Night Squirrels helps students get expert answers to their homework "
+"questions, with transparent pricing and secure payments."
+msgstr ""
+"Night Squirrels aiuta gli studenti a ottenere risposte esperte alle loro "
+"domande scolastiche, con prezzi trasparenti e pagamenti sicuri."
+
+#: nightsquirrel/templates/home/about.html:18
+msgid "How it works:"
+msgstr "Come funziona:"
+
+#: nightsquirrel/templates/home/about.html:18
+msgid ""
+"submit your question, receive a clear quote, and only pay when the answer"
+" is delivered. Parents and guardians can manage payments on the student's"
+" behalf."
+msgstr ""
+"invia la tua domanda, ricevi un preventivo chiaro e paga solo quando la "
+"risposta viene consegnata. Genitori e tutori possono gestire i pagamenti "
+"per conto dello studente."
+
+#: nightsquirrel/templates/home/about.html:19
+msgid ""
+"Answers are crafted by verified tutors and support rich text, formulas, "
+"and attachments."
+msgstr ""
+"Le risposte sono preparate da tutor verificati e supportano testo "
+"formattato, formule e allegati."
+
+#: nightsquirrel/templates/home/faq.html:5
+msgid ""
+"Frequently asked questions about Night Squirrels — how it works, pricing,"
+" tutors, and your account."
+msgstr ""
+"Domande frequenti su Night Squirrels — come funziona, prezzi, tutor e il "
+"tuo account."
+
+#: nightsquirrel/templates/home/faq.html:16
+msgid "Frequently Asked Questions"
+msgstr "Domande frequenti"
+
+#: nightsquirrel/templates/home/faq.html:17
+msgid "Everything you need to know before getting started."
+msgstr "Tutto quello che devi sapere prima di iniziare."
+
+#: nightsquirrel/templates/home/faq.html:22
+#: nightsquirrel/templates/home/index.html:77
+msgid "How it works"
+msgstr "Come funziona"
+
+#: nightsquirrel/templates/home/faq.html:27
+msgid "How does Night Squirrels work?"
+msgstr "Come funziona Night Squirrels?"
+
+#: nightsquirrel/templates/home/faq.html:32
+msgid ""
+"You submit a question — with text, formulas, or an image of your exercise"
+" — and receive a personalised price quote. Once you accept the quote, a "
+"verified tutor works on your answer. You are only charged when the answer"
+" is delivered."
+msgstr ""
+"Invii una domanda — con testo, formule o un'immagine del tuo esercizio — "
+"e ricevi un preventivo personalizzato. Una volta accettato, un tutor "
+"verificato lavora alla tua risposta. Il pagamento viene addebitato solo "
+"quando la risposta è consegnata."
+
+#: nightsquirrel/templates/home/faq.html:40
+msgid "Who can use the platform?"
+msgstr "Chi può usare la piattaforma?"
+
+#: nightsquirrel/templates/home/faq.html:45
+msgid ""
+"Any registered student. A parent or guardian can also create an account "
+"as a Payer to manage payments on the student's behalf."
+msgstr ""
+"Qualsiasi studente registrato. Un genitore o tutore può creare un account"
+" come Pagante per gestire i pagamenti per conto dello studente."
+
+#: nightsquirrel/templates/home/faq.html:53
+msgid "What types of questions can I submit?"
+msgstr "Che tipo di domande posso fare?"
+
+#: nightsquirrel/templates/home/faq.html:58
+msgid ""
+"You can submit exercises, concept explanations, step-by-step proofs, "
+"summaries, essays, and projects. Check the Examples page to see a "
+"completed sample for each type."
+msgstr ""
+"Puoi fare esercizi, spiegazioni di concetti, dimostrazioni passo dopo "
+"passo, riassunti, temi e progetti. Visita la pagina Esempi per vedere un "
+"campione completato per ogni tipologia."
+
+#: nightsquirrel/templates/home/faq.html:64
+msgid "Pricing & payments"
+msgstr "Prezzi e pagamenti"
+
+#: nightsquirrel/templates/home/faq.html:69
+msgid "How is the price calculated?"
+msgstr "Come viene calcolato il prezzo?"
+
+#: nightsquirrel/templates/home/faq.html:74
+msgid ""
+"The price is calculated automatically based on the complexity, depth, and"
+" urgency of your question. You can adjust these parameters using the "
+"sliders shown in the quote, so you always know exactly what you are "
+"choosing before confirming."
+msgstr ""
+"Il prezzo viene calcolato automaticamente in base alla complessità, alla "
+"profondità e all'urgenza della tua domanda. Puoi regolare questi "
+"parametri tramite i cursori mostrati nel preventivo, così sai sempre "
+"esattamente cosa stai scegliendo prima di confermare."
+
+#: nightsquirrel/templates/home/faq.html:82
+msgid "When am I charged?"
+msgstr "Quando viene addebitato il pagamento?"
+
+#: nightsquirrel/templates/home/faq.html:87
+msgid ""
+"Payment is collected only when the answer is marked as delivered — never "
+"before. If you delete the question before delivery, no charge is made."
+msgstr ""
+"Il pagamento viene riscosso solo quando la risposta è contrassegnata come"
+" consegnata — mai prima. Se elimini la domanda prima della consegna, non "
+"verrà addebitato nulla."
+
+#: nightsquirrel/templates/home/faq.html:95
+msgid "What payment methods are accepted?"
+msgstr "Quali metodi di pagamento sono accettati?"
+
+#: nightsquirrel/templates/home/faq.html:100
+msgid ""
+"Payments are handled via PayPal. You or your Payer connect a PayPal "
+"account once, and all future charges happen automatically — no need to "
+"re-enter card details for each question."
+msgstr ""
+"I pagamenti vengono gestiti tramite PayPal. Tu o il tuo Pagante collegate"
+" un account PayPal una sola volta, e tutti i pagamenti successivi "
+"avvengono automaticamente — senza dover reinserire i dati della carta per"
+" ogni domanda."
+
+#: nightsquirrel/templates/home/faq.html:108
+msgid "Can a parent pay on my behalf?"
+msgstr "Un genitore può pagare al mio posto?"
+
+#: nightsquirrel/templates/home/faq.html:113
+msgid ""
+"Yes. You can invite a parent or guardian to become your Payer. Once they "
+"connect their PayPal account, they are charged automatically whenever you"
+" accept a quote, with no further action needed from them."
+msgstr ""
+"Sì. Puoi invitare un genitore o tutore a diventare il tuo Pagante. Una "
+"volta che collegano il loro account PayPal, vengono addebitati "
+"automaticamente ogni volta che accetti un preventivo, senza che debbano "
+"fare nulla."
+
+#: nightsquirrel/templates/home/faq.html:119
+msgid "Tutors & answers"
+msgstr "Tutor e risposte"
+
+#: nightsquirrel/templates/home/faq.html:124
+msgid "Who answers my question?"
+msgstr "Chi risponde alla mia domanda?"
+
+#: nightsquirrel/templates/home/faq.html:129
+msgid ""
+"Questions are answered by verified tutors selected and managed by our "
+"team. Each question is assigned to the most suitable tutor based on "
+"subject and level."
+msgstr ""
+"Le domande ricevono risposta da tutor verificati, selezionati e gestiti "
+"dal nostro team. Ogni domanda viene assegnata al tutor più adatto in base"
+" alla materia e al livello."
+
+#: nightsquirrel/templates/home/faq.html:137
+msgid "Can I ask follow-up questions?"
+msgstr "Posso fare domande di approfondimento?"
+
+#: nightsquirrel/templates/home/faq.html:142
+msgid ""
+"Yes. After the answer is delivered you can exchange comments with the "
+"tutor directly in the question page, including rich text and mathematical"
+" formulas."
+msgstr ""
+"Sì. Dopo la consegna della risposta puoi scambiare commenti con il tutor "
+"direttamente nella pagina della domanda, inclusi testo ricco e formule "
+"matematiche."
+
+#: nightsquirrel/templates/home/faq.html:150
+msgid "What if my question needs clarification?"
+msgstr "Cosa succede se la mia domanda non è chiara?"
+
+#: nightsquirrel/templates/home/faq.html:155
+msgid ""
+"If your question is unclear or incomplete, the platform will let you know"
+" immediately with a short hint explaining what to improve. You can edit "
+"and resubmit as many times as needed before accepting a quote."
+msgstr ""
+"Se la tua domanda non è chiara o è incompleta, la piattaforma te lo "
+"comunica immediatamente con un breve suggerimento su cosa migliorare. "
+"Puoi modificare e reinviare tutte le volte che vuoi prima di accettare un"
+" preventivo."
+
+#: nightsquirrel/templates/home/faq.html:161
+msgid "Account"
+msgstr "Account"
+
+#: nightsquirrel/templates/home/faq.html:166
+msgid "How do I change my email address?"
+msgstr "Come cambio il mio indirizzo email?"
+
+#: nightsquirrel/templates/home/faq.html:171
+msgid ""
+"You can update your email from your profile page. For security, you will "
+"receive a one-time verification link at the new address before the change"
+" takes effect."
+msgstr ""
+"Puoi aggiornare la tua email dalla pagina del profilo. Per sicurezza, "
+"riceverai un link di verifica monouso al nuovo indirizzo prima che la "
+"modifica abbia effetto."
+
+#: nightsquirrel/templates/home/faq.html:179
+msgid "Can I delete my account?"
+msgstr "Posso eliminare il mio account?"
+
+#: nightsquirrel/templates/home/faq.html:184
+msgid ""
+"Yes. You can delete your account from your profile page at any time. "
+"Questions that have already been paid and delivered remain in our records"
+" for accounting purposes."
+msgstr ""
+"Sì. Puoi eliminare il tuo account dalla pagina del profilo in qualsiasi "
+"momento. Le domande già pagate e consegnate rimangono nei nostri archivi "
+"per motivi contabili."
+
+#: nightsquirrel/templates/home/faq.html:192
+msgid "Is my data safe?"
+msgstr "I miei dati sono al sicuro?"
+
+#: nightsquirrel/templates/home/faq.html:197
+msgid ""
+"Yes. We never store payment card details — those are handled exclusively "
+"by PayPal. For full details on how we manage your data, see our"
+msgstr ""
+"Sì. Non conserviamo mai i dati della carta di pagamento — vengono gestiti"
+" esclusivamente da PayPal. Per tutti i dettagli su come trattiamo i tuoi "
+"dati, consulta la nostra"
+
+#: nightsquirrel/templates/home/index.html:5
+msgid ""
+"Night Squirrels — get expert help on your homework questions with "
+"transparent pricing and secure payments."
+msgstr ""
+"Night Squirrels — ricevi aiuto esperto per i tuoi compiti con prezzi "
+"trasparenti e pagamenti sicuri."
+
+#: nightsquirrel/templates/home/index.html:14
+msgid "Find new ideas, forge your tools, get solutions"
+msgstr "Scopri nuove idee, costruisci i tuoi strumenti, ottieni le soluzioni"
+
+#: nightsquirrel/templates/home/index.html:16
+msgid "The Night Squirrels team will answer all your questions"
+msgstr "Il team di Night Squirrels risponderà a tutte le tue domande"
+
+#: nightsquirrel/templates/home/index.html:24
+msgid "Complete your academic profile"
+msgstr "Completa il tuo profilo scolastico"
+
+#: nightsquirrel/templates/home/index.html:25
+msgid "tell us your school type and year for faster quoting."
+msgstr "indica il tipo di scuola e l'anno per ricevere preventivi più velocemente."
+
+#: nightsquirrel/templates/home/index.html:26
+msgid "Go to profile"
+msgstr "Vai al profilo"
+
+#: nightsquirrel/templates/home/index.html:35
+msgid "Welcome back,"
+msgstr "Bentornato,"
+
+#: nightsquirrel/templates/home/index.html:39
+#: nightsquirrel/templates/references/ref_detail.html:14
+msgid "Ask a question"
+msgstr "Fai una domanda"
+
+#: nightsquirrel/templates/home/index.html:52
+msgid "Welcome"
+msgstr "Benvenuto"
+
+#: nightsquirrel/templates/home/index.html:53
+msgid "Please confirm your email: click the link in the mail we sent you."
+msgstr "Conferma la tua email: clicca il link nella mail che ti abbiamo inviato."
+
+#: nightsquirrel/templates/home/index.html:60
+msgid "Learn how it works"
+msgstr "Scopri come funziona"
+
+#: nightsquirrel/templates/home/index.html:88
+msgid "Ask"
+msgstr "Chiedi"
+
+#: nightsquirrel/templates/home/index.html:89
+msgid ""
+"Write your question using our rich editor. Attach a photo or PDF if "
+"needed."
+msgstr ""
+"Scrivi la tua domanda con il nostro editor avanzato. Allega una foto o un"
+" PDF se necessario."
+
+#: nightsquirrel/templates/home/index.html:100
+msgid "Choose your quote"
+msgstr "Scegli il tuo preventivo"
+
+#: nightsquirrel/templates/home/index.html:101
+msgid ""
+"Receive a transparent quote with options. Accept only if you're happy "
+"with it."
+msgstr ""
+"Ricevi un preventivo trasparente con diverse opzioni. Accetta solo se sei"
+" soddisfatto."
+
+#: nightsquirrel/templates/home/index.html:112
+msgid "Get your answer"
+msgstr "Ricevi la risposta"
+
+#: nightsquirrel/templates/home/index.html:113
+msgid "A verified tutor delivers your answer. Payment happens only on delivery."
+msgstr ""
+"Un tutor verificato consegna la tua risposta. Il pagamento avviene solo "
+"alla consegna."
+
+#: nightsquirrel/templates/home/index.html:125
+msgid "Quoted before payment"
+msgstr "Preventivo prima del pagamento"
+
+#: nightsquirrel/templates/home/index.html:126
+msgid "You always know the price before you commit."
+msgstr "Conosci sempre il prezzo prima di impegnarti."
+
+#: nightsquirrel/templates/home/index.html:134
+msgid "Charged only on delivery"
+msgstr "Addebito solo alla consegna"
+
+#: nightsquirrel/templates/home/index.html:135
+msgid "No upfront payment. You pay when the answer is ready."
+msgstr "Nessun pagamento anticipato. Paghi quando la risposta è pronta."
+
+#: nightsquirrel/templates/home/index.html:143
+msgid "Parent/guardian support"
+msgstr "Supporto genitori/tutori"
+
+#: nightsquirrel/templates/home/index.html:144
+msgid "A parent or guardian can manage payments on your behalf."
+msgstr "Un genitore o tutore può gestire i pagamenti per tuo conto."
+
+#: nightsquirrel/templates/home/index.html:152
+msgid "Attachments supported"
+msgstr "Allegati supportati"
+
+#: nightsquirrel/templates/home/index.html:153
+msgid "Upload photos or PDFs of your exercise directly."
+msgstr "Carica foto o PDF del tuo esercizio direttamente."
+
+#: nightsquirrel/templates/home/index.html:166
+msgid "For students"
+msgstr "Per gli studenti"
+
+#: nightsquirrel/templates/home/index.html:168
+msgid ""
+"Submit questions with our rich text and formula editor. Track your ticket"
+" from quote to delivery, and chat with your tutor if you need "
+"clarifications after receiving the answer."
+msgstr ""
+"Invia domande con il nostro editor di testo e formule. Segui il tuo "
+"ticket dal preventivo alla consegna e chatta con il tutor se hai bisogno "
+"di chiarimenti dopo aver ricevuto la risposta."
+
+#: nightsquirrel/templates/home/index.html:171
+msgid "Get started"
+msgstr "Inizia ora"
+
+#: nightsquirrel/templates/home/index.html:179
+msgid "For parents"
+msgstr "Per i genitori"
+
+#: nightsquirrel/templates/home/index.html:181
+msgid ""
+"Link your PayPal account to your child's profile. You stay in control — "
+"payment only happens when the answer is delivered, and you are notified "
+"before every charge."
+msgstr ""
+"Collega il tuo account PayPal al profilo di tuo figlio. Mantieni il "
+"controllo — il pagamento avviene solo quando la risposta viene consegnata"
+" e vieni avvisato prima di ogni addebito."
+
+#: nightsquirrel/templates/home/index.html:185
+msgid "Payment set up"
+msgstr "Pagamento configurato"
+
+#: nightsquirrel/templates/home/index.html:200
+#: nightsquirrel/templates/references/library.html:2
+#: nightsquirrel/templates/references/library.html:8
+msgid "Book Wall – Leo's Library"
+msgstr "Book Wall – La Biblioteca di Leo"
+
+#: nightsquirrel/templates/home/index.html:202
+msgid "Browse the library"
+msgstr "Sfoglia la biblioteca"
+
+#: nightsquirrel/templates/home/index.html:205
+#: nightsquirrel/templates/references/library.html:9
+msgid "Books, papers and resources that inspire the questions we love to answer."
+msgstr "Libri, articoli e risorse che ispirano le domande che amiamo rispondere."
+
+#: nightsquirrel/templates/home/index.html:219
+msgid "Have a question?"
+msgstr "Hai una domanda?"
+
+#: nightsquirrel/templates/home/index.html:220
+msgid "Ask now"
+msgstr "Chiedi ora"
+
+#: nightsquirrel/templates/home/index.html:222
+msgid "Ready to get started?"
+msgstr "Pronto per iniziare?"
+
+#: nightsquirrel/templates/payer/register_payer.html:4
+msgid "Register Payer"
+msgstr "Registra pagante"
+
+#: nightsquirrel/templates/payer/register_payer.html:11
+msgid "Register a Payer"
+msgstr "Registra un pagante"
+
+#: nightsquirrel/templates/payer/register_payer.html:28
+msgid ""
+"A payer is the person whose PayPal account will be charged when your "
+"question is answered. This can be a parent, guardian, or yourself."
+msgstr ""
+"Il pagante è la persona il cui account PayPal verrà addebitato quando la "
+"tua domanda riceve una risposta. Può essere un genitore, un tutore o te "
+"stesso."
+
+#: nightsquirrel/templates/payer/register_payer.html:38
+msgid "I am the payer"
+msgstr "Sono io il pagante"
+
+#: nightsquirrel/templates/payer/register_payer.html:38
+msgid "(I will pay with my own PayPal account)"
+msgstr "(pagherò con il mio account PayPal)"
+
+#: nightsquirrel/templates/payer/register_payer.html:45
+msgid "Payer's email"
+msgstr "Email del pagante"
+
+#: nightsquirrel/templates/payer/register_payer.html:50
+msgid ""
+"If this person already has an account, they will be linked directly. "
+"Otherwise, a new account will be created and credentials sent to this "
+"email."
+msgstr ""
+"Se questa persona ha già un account, verrà collegata direttamente. "
+"Altrimenti verrà creato un nuovo account e le credenziali inviate a "
+"questa email."
+
+#: nightsquirrel/templates/payer/register_payer.html:55
+msgid "Relationship"
+msgstr "Relazione"
+
+#: nightsquirrel/templates/payer/register_payer.html:57
+msgid "Parent"
+msgstr "Genitore"
+
+#: nightsquirrel/templates/payer/register_payer.html:58
+msgid "Guardian"
+msgstr "Tutore"
+
+#: nightsquirrel/templates/payer/register_payer.html:59
+msgid "Other"
+msgstr "Altro"
+
+#: nightsquirrel/templates/payer/register_payer.html:66
+msgid "PayPal email"
+msgstr "Email PayPal"
+
+#: nightsquirrel/templates/payer/register_payer.html:71
+msgid "The PayPal account that will be charged when your questions are answered."
+msgstr ""
+"L'account PayPal che verrà addebitato quando le tue domande riceveranno "
+"risposta."
+
+#: nightsquirrel/templates/payer/register_payer.html:75
+msgid "Register payer"
+msgstr "Registra pagante"
+
+#: nightsquirrel/templates/question/my_questions.html:3
+#: nightsquirrel/templates/question/my_questions.html:8
+msgid "My Questions"
+msgstr "Le mie domande"
+
+#: nightsquirrel/templates/question/my_questions.html:14
+msgid "You haven't asked any questions yet."
+msgstr "Non hai ancora fatto domande."
+
+#: nightsquirrel/templates/question/my_questions.html:15
+msgid "Ask your first question"
+msgstr "Fai la tua prima domanda"
+
+#: nightsquirrel/templates/question/my_questions.html:25
+msgid "Due"
+msgstr "Scadenza"
+
+#: nightsquirrel/templates/question/my_questions.html:58
+msgid "Delete this question? This cannot be undone."
+msgstr "Eliminare questa domanda? L'operazione non può essere annullata."
+
+#: nightsquirrel/templates/question/new_question.html:3
+#: nightsquirrel/templates/question/new_question.html:9
+msgid "New Question"
+msgstr "Nuova domanda"
+
+#: nightsquirrel/templates/question/new_question.html:15
+msgid "Set your school type and year in your"
+msgstr "Imposta il tipo di scuola e l'anno nel tuo"
+
+#: nightsquirrel/templates/question/new_question.html:16
+msgid "profile"
+msgstr "profilo"
+
+#: nightsquirrel/templates/question/new_question.html:17
+msgid "to auto-fill these fields."
+msgstr "per compilare automaticamente questi campi."
+
+#: nightsquirrel/templates/question/new_question.html:41
+msgid "The reference will be attached to your question automatically."
+msgstr "Il riferimento verrà allegato automaticamente alla tua domanda."
+
+#: nightsquirrel/templates/question/new_question.html:57
+#: nightsquirrel/templates/question/new_question.html:68
+#: nightsquirrel/templates/question/new_question.html:147
+#: nightsquirrel/templates/question/question_edit.html:25
+#: nightsquirrel/templates/question/question_edit.html:38
+#: nightsquirrel/templates/question/question_edit.html:126
+msgid "(optional)"
+msgstr "(facoltativo)"
+
+#: nightsquirrel/templates/question/new_question.html:79
+msgid "Attach a photo or PDF (optional)"
+msgstr "Allega una foto o un PDF (facoltativo)"
+
+#: nightsquirrel/templates/question/new_question.html:82
+msgid "JPG, PNG, HEIC or PDF. Max 10 MB."
+msgstr "JPG, PNG, HEIC o PDF. Massimo 10 MB."
+
+#: nightsquirrel/templates/question/new_question.html:89
+#: nightsquirrel/templates/question/question_edit.html:75
+msgid "Re-crop"
+msgstr "Ritaglia di nuovo"
+
+#: nightsquirrel/templates/question/new_question.html:92
+#: nightsquirrel/templates/question/question_edit.html:78
+msgid "Extract text from image"
+msgstr "Recupera testo da immagine"
+
+#: nightsquirrel/templates/question/new_question.html:95
+#: nightsquirrel/templates/question/question_edit.html:81
+msgid "Remove"
+msgstr "Rimuovi"
+
+#: nightsquirrel/templates/question/new_question.html:103
+#: nightsquirrel/templates/question/question_edit.html:89
+msgid "Describe your question"
+msgstr "Descrivi la tua domanda"
+
+#: nightsquirrel/templates/question/new_question.html:106
+#: nightsquirrel/templates/question/new_question.html:445
+#: nightsquirrel/templates/question/question_edit.html:92
+#: nightsquirrel/templates/question/question_edit.html:434
+msgid "Content extracted from your image — please review and correct if needed."
+msgstr "Contenuto estratto dall'immagine — controlla e correggi se necessario."
+
+#: nightsquirrel/templates/question/new_question.html:118
+msgid "Using your profile:"
+msgstr "Dal tuo profilo:"
+
+#: nightsquirrel/templates/question/new_question.html:123
+msgid "(change)"
+msgstr "(modifica)"
+
+#: nightsquirrel/templates/question/new_question.html:132
+#: nightsquirrel/templates/question/question_edit.html:106
+msgid "Academic details"
+msgstr "Dettagli scolastici"
+
+#: nightsquirrel/templates/question/new_question.html:137
+#: nightsquirrel/templates/question/question_edit.html:111
+msgid "Additional details"
+msgstr "Dettagli aggiuntivi"
+
+#: nightsquirrel/templates/question/new_question.html:156
+#: nightsquirrel/templates/question/question_edit.html:135
+msgid "Grade / Year"
+msgstr "Classe / Anno"
+
+#: nightsquirrel/templates/question/new_question.html:167
+#: nightsquirrel/templates/question/question_edit.html:146
+msgid "Difficulty (1-5)"
+msgstr "Difficoltà (1-5)"
+
+#: nightsquirrel/templates/question/new_question.html:172
+#: nightsquirrel/templates/question/question_edit.html:151
+msgid "Notes (optional)"
+msgstr "Note (facoltativo)"
+
+#: nightsquirrel/templates/question/new_question.html:178
+msgid "Submit question"
+msgstr "Invia domanda"
+
+#: nightsquirrel/templates/question/new_question.html:182
+#: nightsquirrel/templates/tutor/answer_edit.html:45
+msgid "You can attach"
+msgstr "Puoi allegare"
+
+#: nightsquirrel/templates/question/new_question.html:182
+#: nightsquirrel/templates/tutor/answer_edit.html:45
+msgid "references"
+msgstr "riferimenti"
+
+#: nightsquirrel/templates/question/new_question.html:182
+msgid "to your question after saving."
+msgstr "alla tua domanda dopo il salvataggio."
+
+#: nightsquirrel/templates/question/new_question.html:195
+#: nightsquirrel/templates/question/question_edit.html:167
+#: nightsquirrel/templates/references/ref_cover.html:110
+msgid "Crop & Rotate"
+msgstr "Ritaglia e ruota"
+
+#: nightsquirrel/templates/question/new_question.html:203
+#: nightsquirrel/templates/question/question_edit.html:175
+#: nightsquirrel/templates/references/ref_cover.html:118
+msgid "Rotate left"
+msgstr "Ruota a sinistra"
+
+#: nightsquirrel/templates/question/new_question.html:204
+#: nightsquirrel/templates/question/question_edit.html:176
+#: nightsquirrel/templates/references/ref_cover.html:119
+msgid "Rotate right"
+msgstr "Ruota a destra"
+
+#: nightsquirrel/templates/question/new_question.html:432
+#: nightsquirrel/templates/question/question_edit.html:421
+msgid "Extracting content from image…"
+msgstr "Estrazione del contenuto dall'immagine…"
+
+#: nightsquirrel/templates/question/question_detail.html:51
+msgid "Archived."
+msgstr "Archiviata."
+
+#: nightsquirrel/templates/question/question_detail.html:51
+msgid "This question has been cancelled and is no longer active."
+msgstr "Questa domanda è stata annullata e non è più attiva."
+
+#: nightsquirrel/templates/question/question_detail.html:101
+#: nightsquirrel/templates/question/question_detail.html:153
+msgid "Quoted at:"
+msgstr "Preventivato il:"
+
+#: nightsquirrel/templates/question/question_detail.html:106
+#: nightsquirrel/templates/question/question_detail.html:158
+msgid "Before you can accept:"
+msgstr "Prima di poter accettare:"
+
+#: nightsquirrel/templates/question/question_detail.html:108
+#: nightsquirrel/templates/question/question_detail.html:160
+msgid "Register a payer"
+msgstr "Registra un pagante"
+
+#: nightsquirrel/templates/question/question_detail.html:110
+#: nightsquirrel/templates/question/question_detail.html:162
+msgid "(parent, guardian, or yourself)."
+msgstr "(genitore, tutore o te stesso)."
+
+#: nightsquirrel/templates/question/question_detail.html:114
+#: nightsquirrel/templates/question/question_detail.html:166
+msgid "PayPal not connected."
+msgstr "PayPal non collegato."
+
+#: nightsquirrel/templates/question/question_detail.html:115
+#: nightsquirrel/templates/question/question_detail.html:167
+msgid "Your payer must"
+msgstr "Il tuo pagante deve"
+
+#: nightsquirrel/templates/question/question_detail.html:116
+#: nightsquirrel/templates/question/question_detail.html:168
+msgid "set up PayPal"
+msgstr "configurare PayPal"
+
+#: nightsquirrel/templates/question/question_detail.html:117
+#: nightsquirrel/templates/question/question_detail.html:169
+msgid "before you can accept a quote."
+msgstr "prima di poter accettare un preventivo."
+
+#: nightsquirrel/templates/question/question_detail.html:123
+#: nightsquirrel/templates/question/question_detail.html:180
+msgid "Accept"
+msgstr "Accetta"
+
+#: nightsquirrel/templates/question/question_detail.html:128
+#: nightsquirrel/templates/question/question_detail.html:184
+msgid "Are you sure you want to decline this quote?"
+msgstr "Sei sicuro di voler rifiutare questo preventivo?"
+
+#: nightsquirrel/templates/question/question_detail.html:129
+#: nightsquirrel/templates/question/question_detail.html:185
+msgid "Decline"
+msgstr "Rifiuta"
+
+#: nightsquirrel/templates/question/question_detail.html:138
+msgid "Quote for your question"
+msgstr "Preventivo per la tua domanda"
+
+#: nightsquirrel/templates/question/question_detail.html:146
+msgid "Quote pending — please contact support."
+msgstr "Preventivo in sospeso — contatta l'assistenza."
+
+#: nightsquirrel/templates/question/question_detail.html:195
+msgid "Clarification needed"
+msgstr "Chiarimenti necessari"
+
+#: nightsquirrel/templates/question/question_detail.html:198
+msgid "Our analysis found some issues with your submission:"
+msgstr "La nostra analisi ha trovato alcuni problemi con la tua richiesta:"
+
+#: nightsquirrel/templates/question/question_detail.html:203
+msgid "Please edit your question to fix the issues, then save to resubmit."
+msgstr "Modifica la domanda per correggere i problemi, poi salva per reinviarla."
+
+#: nightsquirrel/templates/question/question_detail.html:211
+msgid "Quote under review"
+msgstr "Preventivo in revisione"
+
+#: nightsquirrel/templates/question/question_detail.html:214
+msgid "Your question requires a custom quote. An admin will review it shortly."
+msgstr ""
+"La tua domanda richiede un preventivo personalizzato. Un amministratore "
+"la esaminerà a breve."
+
+#: nightsquirrel/templates/question/question_detail.html:224
+msgid "Quote declined"
+msgstr "Preventivo rifiutato"
+
+#: nightsquirrel/templates/question/question_detail.html:227
+msgid "You declined the quote."
+msgstr "Hai rifiutato il preventivo."
+
+#: nightsquirrel/templates/question/question_detail.html:229
+msgid ""
+"You can update your question — change the scope, add details, or simplify"
+" it — and resubmit to get a revised quote."
+msgstr ""
+"Puoi aggiornare la tua domanda — ridurne la portata, aggiungere dettagli "
+"o semplificarla — e ripresentarla per ottenere un nuovo preventivo."
+
+#: nightsquirrel/templates/question/question_detail.html:233
+msgid "Edit your question"
+msgstr "Modifica la tua domanda"
+
+#: nightsquirrel/templates/question/question_detail.html:241
+msgid "Accepted quote"
+msgstr "Preventivo accettato"
+
+#: nightsquirrel/templates/question/question_detail.html:259
+#: nightsquirrel/templates/question/question_edit.html:49
+msgid "Attached document"
+msgstr "Documento allegato"
+
+#: nightsquirrel/templates/question/question_detail.html:280
+msgid "Your answer is ready. Waiting for payment confirmation."
+msgstr "La tua risposta è pronta. In attesa di conferma del pagamento."
+
+#: nightsquirrel/templates/question/question_detail.html:291
+msgid "Answer not delivered yet."
+msgstr "Risposta non ancora consegnata."
+
+#: nightsquirrel/templates/question/question_detail.html:298
+msgid "Answer created:"
+msgstr "Risposta creata:"
+
+#: nightsquirrel/templates/question/question_detail.html:299
+msgid "modified:"
+msgstr "modificata:"
+
+#: nightsquirrel/templates/question/question_detail.html:304
+#: nightsquirrel/templates/tutor/ticket_detail.html:92
+msgid "Answer references"
+msgstr "Riferimenti della risposta"
+
+#: nightsquirrel/templates/question/question_detail.html:331
+msgid "Delivery complete."
+msgstr "Consegna completata."
+
+#: nightsquirrel/templates/question/question_detail.html:332
+msgid "Satisfied with the answer? Accept and close this ticket."
+msgstr "Soddisfatto della risposta? Accetta e chiudi questo ticket."
+
+#: nightsquirrel/templates/question/question_detail.html:336
+msgid "Accept the delivery and close this ticket? This action cannot be undone."
+msgstr ""
+"Accetti la consegna e chiudi questo ticket? Questa azione non può essere "
+"annullata."
+
+#: nightsquirrel/templates/question/question_detail.html:337
+msgid "Accept & Close"
+msgstr "Accetta e chiudi"
+
+#: nightsquirrel/templates/question/question_detail.html:369
+#: nightsquirrel/templates/tutor/ticket_detail.html:128
+msgid "Comments"
+msgstr "Commenti"
+
+#: nightsquirrel/templates/question/question_detail.html:384
+msgid ""
+"No comments yet. Use the form below to start a conversation with your "
+"tutor."
+msgstr ""
+"Nessun commento. Usa il modulo qui sotto per iniziare una conversazione "
+"con il tuo tutor."
+
+#: nightsquirrel/templates/question/question_detail.html:399
+#: nightsquirrel/templates/question/question_detail.html:429
+#: nightsquirrel/templates/tutor/ticket_detail.html:162
+#: nightsquirrel/templates/tutor/ticket_detail.html:186
+msgid "Post comment"
+msgstr "Pubblica commento"
+
+#: nightsquirrel/templates/question/question_detail.html:408
+#: nightsquirrel/templates/tutor/ticket_detail.html:170
+msgid "Notes"
+msgstr "Note"
+
+#: nightsquirrel/templates/question/question_detail.html:414
+msgid "Question created:"
+msgstr "Domanda creata:"
+
+#: nightsquirrel/templates/question/question_detail.html:414
+msgid "last edited:"
+msgstr "ultima modifica:"
+
+#: nightsquirrel/templates/question/question_detail.html:427
+#: nightsquirrel/templates/tutor/ticket_detail.html:184
+msgid "Write a comment..."
+msgstr "Scrivi un commento..."
+
+#: nightsquirrel/templates/question/question_detail.html:428
+#: nightsquirrel/templates/tutor/ticket_detail.html:185
+msgid "Posting..."
+msgstr "Pubblicazione..."
+
+#: nightsquirrel/templates/question/question_detail.html:431
+#: nightsquirrel/templates/tutor/ticket_detail.html:188
+msgid "Failed to post comment."
+msgstr "Pubblicazione del commento fallita."
+
+#: nightsquirrel/templates/question/question_detail.html:432
+#: nightsquirrel/templates/references/ref_cover.html:190
+#: nightsquirrel/templates/tutor/ticket_detail.html:189
+msgid "Network error. Please try again."
+msgstr "Errore di rete. Riprova."
+
+#: nightsquirrel/templates/question/question_detail.html:433
+msgid "Delivery within"
+msgstr "Consegna entro"
+
+#: nightsquirrel/templates/question/question_detail.html:434
+msgid "hours"
+msgstr "ore"
+
+#: nightsquirrel/templates/question/question_edit.html:3
+#: nightsquirrel/templates/question/question_edit.html:8
+msgid "Edit question"
+msgstr "Modifica domanda"
+
+#: nightsquirrel/templates/question/question_edit.html:61
+msgid "Remove this document"
+msgstr "Rimuovi questo documento"
+
+#: nightsquirrel/templates/question/question_edit.html:68
+msgid "JPG, PNG, HEIC or PDF. Max 10 MB. Replaces any existing document."
+msgstr "JPG, PNG, HEIC o PDF. Max 10 MB. Sostituisce il documento esistente."
+
+#: nightsquirrel/templates/references/leo_reading.html:2
+#: nightsquirrel/templates/references/leo_reading.html:7
+msgid "What Leo is Reading"
+msgstr "Cosa sta leggendo Leo"
+
+#: nightsquirrel/templates/references/leo_reading.html:8
+msgid "Books and references that Leo is reading or has recently finished."
+msgstr "Libri e riferimenti che Leo sta leggendo o ha letto di recente."
+
+#: nightsquirrel/templates/references/leo_reading.html:15
+msgid "Reading now"
+msgstr "In lettura ora"
+
+#: nightsquirrel/templates/references/leo_reading.html:39
+msgid "Nothing here yet. Check back soon!"
+msgstr "Niente ancora. Torna presto!"
+
+#: nightsquirrel/templates/references/library.html:42
+msgid "Search title or person…"
+msgstr "Cerca titolo o persona…"
+
+#: nightsquirrel/templates/references/library.html:49
+msgid "Article"
+msgstr "Articolo"
+
+#: nightsquirrel/templates/references/manage_refs.html:9
+msgid "Create new"
+msgstr "Crea nuovo"
+
+#: nightsquirrel/templates/references/manage_refs.html:14
+msgid "For:"
+msgstr "Per:"
+
+#: nightsquirrel/templates/references/manage_refs.html:42
+#: nightsquirrel/templates/references/manage_refs.html:60
+#: nightsquirrel/templates/references/manage_refs.html:62
+msgid "Detach"
+msgstr "Scollega"
+
+#: nightsquirrel/templates/references/manage_refs.html:52
+msgid "Attached"
+msgstr "Allegato"
+
+#: nightsquirrel/templates/references/manage_refs.html:81
+#: nightsquirrel/templates/references/manage_refs.html:83
+#: nightsquirrel/templates/references/manage_refs.html:101
+#: nightsquirrel/templates/references/manage_refs.html:103
+msgid "Attach"
+msgstr "Allega"
+
+#: nightsquirrel/templates/references/manage_refs.html:114
+msgid "No other references available."
+msgstr "Nessun altro riferimento disponibile."
+
+#: nightsquirrel/templates/references/manage_refs.html:115
+msgid "Create one."
+msgstr "Creane uno."
+
+#: nightsquirrel/templates/references/my_refs.html:2
+#: nightsquirrel/templates/references/my_refs.html:7
+msgid "My References"
+msgstr "I miei riferimenti"
+
+#: nightsquirrel/templates/references/my_refs.html:52
+msgid "No references yet."
+msgstr "Nessun riferimento."
+
+#: nightsquirrel/templates/references/my_refs.html:53
+msgid "Create your first one."
+msgstr "Crea il tuo primo."
+
+#: nightsquirrel/templates/references/people.html:8
+msgid "Authors, editors and translators in the Book Wall."
+msgstr "Autori, curatori e traduttori nel Book Wall."
+
+#: nightsquirrel/templates/references/people.html:20
+msgid "Search"
+msgstr "Cerca"
+
+#: nightsquirrel/templates/references/people.html:85
+msgid "Full page"
+msgstr "Pagina completa"
+
+#: nightsquirrel/templates/references/people.html:94
+msgid "No people found."
+msgstr "Nessuna persona trovata."
+
+#: nightsquirrel/templates/references/person.html:36
+msgid "Not published"
+msgstr "Non pubblicato"
+
+#: nightsquirrel/templates/references/ref_cover.html:8
+msgid "Manage Cover"
+msgstr "Gestisci copertina"
+
+#: nightsquirrel/templates/references/ref_cover.html:28
+msgid "Current cover"
+msgstr "Copertina attuale"
+
+#: nightsquirrel/templates/references/ref_cover.html:39
+#: nightsquirrel/templates/references/ref_cover.html:41
+msgid "Thumbnail"
+msgstr "Miniatura"
+
+#: nightsquirrel/templates/references/ref_cover.html:47
+msgid "Remove cover and thumbnail?"
+msgstr "Rimuovere copertina e miniatura?"
+
+#: nightsquirrel/templates/references/ref_cover.html:48
+msgid "Remove cover"
+msgstr "Rimuovi copertina"
+
+#: nightsquirrel/templates/references/ref_cover.html:60
+msgid "Replace cover"
+msgstr "Sostituisci copertina"
+
+#: nightsquirrel/templates/references/ref_cover.html:60
+msgid "Upload cover"
+msgstr "Carica copertina"
+
+#: nightsquirrel/templates/references/ref_cover.html:63
+msgid ""
+"Select an image from disk. You can crop and rotate it before uploading. "
+"The thumbnail will be generated automatically."
+msgstr ""
+"Seleziona un'immagine dal disco. Puoi ritagliarla e ruotarla prima di "
+"caricarla. La miniatura verrà generata automaticamente."
+
+#: nightsquirrel/templates/references/ref_cover.html:71
+#: nightsquirrel/templates/references/ref_cover.html:187
+#: nightsquirrel/templates/references/ref_cover.html:192
+msgid "Upload"
+msgstr "Carica"
+
+#: nightsquirrel/templates/references/ref_cover.html:84
+msgid "Advanced: replace thumbnail only"
+msgstr "Avanzato: sostituisci solo la miniatura"
+
+#: nightsquirrel/templates/references/ref_cover.html:89
+msgid ""
+"Use this only if the auto-generated thumbnail does not look right (e.g. "
+"wrong crop area). The cover image is not affected."
+msgstr ""
+"Usa questa opzione solo se la miniatura generata automaticamente non è "
+"corretta (es. ritaglio errato). La copertina non viene modificata."
+
+#: nightsquirrel/templates/references/ref_cover.html:97
+msgid "Upload thumbnail"
+msgstr "Carica miniatura"
+
+#: nightsquirrel/templates/references/ref_cover.html:185
+msgid "Upload failed."
+msgstr "Caricamento fallito."
+
+#: nightsquirrel/templates/references/ref_detail.html:54
+#: nightsquirrel/templates/references/ref_detail.html:148
+#: nightsquirrel/templates/references/ref_detail.html:170
+msgid "Editor"
+msgstr "Curatore"
+
+#: nightsquirrel/templates/references/ref_detail.html:63
+msgid "Translator"
+msgstr "Traduttore"
+
+#: nightsquirrel/templates/references/ref_detail.html:114
+msgid "Journal"
+msgstr "Rivista"
+
+#: nightsquirrel/templates/references/ref_detail.html:118
+msgid "Issue"
+msgstr "Numero"
+
+#: nightsquirrel/templates/references/ref_detail.html:213
+msgid "Choose a question type"
+msgstr "Scegli un tipo di domanda"
+
+#: nightsquirrel/templates/references/ref_detail.html:217
+msgid "Start a new question inspired by"
+msgstr "Crea una nuova domanda ispirata da"
+
+#: nightsquirrel/templates/references/ref_detail.html:230
+msgid "See examples"
+msgstr ""
+
+#: nightsquirrel/templates/tags/manage_question_tags.html:7
+msgid "Question tags"
+msgstr "Tag della domanda"
+
+#: nightsquirrel/templates/tags/manage_reference_tags.html:7
+msgid "Reference tags"
+msgstr "Tag del riferimento"
+
+#: nightsquirrel/templates/tutor/answer_edit.html:2
+#: nightsquirrel/templates/tutor/answer_edit.html:20
+msgid "Answer editor"
+msgstr "Editor risposta"
+
+#: nightsquirrel/templates/tutor/answer_edit.html:8
+#: nightsquirrel/templates/tutor/ticket_detail.html:21
+msgid "Create answer"
+msgstr "Crea risposta"
+
+#: nightsquirrel/templates/tutor/answer_edit.html:8
+#: nightsquirrel/templates/tutor/ticket_detail.html:23
+msgid "Edit answer"
+msgstr "Modifica risposta"
+
+#: nightsquirrel/templates/tutor/answer_edit.html:15
+msgid "Question:"
+msgstr "Domanda:"
+
+#: nightsquirrel/templates/tutor/answer_edit.html:32
+msgid "Deliver the answer to the student?"
+msgstr "Consegnare la risposta allo studente?"
+
+#: nightsquirrel/templates/tutor/answer_edit.html:33
+msgid "Deliver"
+msgstr "Consegna"
+
+#: nightsquirrel/templates/tutor/answer_edit.html:45
+msgid "to your answer after saving."
+msgstr "alla tua risposta dopo il salvataggio."
+
+#: nightsquirrel/templates/tutor/dashboard.html:2
+#: nightsquirrel/templates/tutor/dashboard.html:6
+msgid "Tutor dashboard"
+msgstr "Dashboard tutor"
+
+#: nightsquirrel/templates/tutor/dashboard.html:16
+msgid "Open tickets"
+msgstr "Ticket aperti"
+
+#: nightsquirrel/templates/tutor/dashboard.html:40
+#: nightsquirrel/templates/tutor/dashboard.html:84
+msgid "View"
+msgstr "Visualizza"
+
+#: nightsquirrel/templates/tutor/dashboard.html:42
+#: nightsquirrel/templates/tutor/ticket_detail.html:14
+msgid "Claim"
+msgstr "Richiedi"
+
+#: nightsquirrel/templates/tutor/dashboard.html:52
+msgid "No open tickets."
+msgstr "Nessun ticket aperto."
+
+#: nightsquirrel/templates/tutor/dashboard.html:60
+msgid "My tickets"
+msgstr "I miei ticket"
+
+#: nightsquirrel/templates/tutor/dashboard.html:69
+msgid "State"
+msgstr "Stato"
+
+#: nightsquirrel/templates/tutor/dashboard.html:92
+msgid "Mark this ticket as delivered?"
+msgstr "Contrassegnare questo ticket come consegnato?"
+
+#: nightsquirrel/templates/tutor/dashboard.html:96
+msgid "Release this ticket?"
+msgstr "Rilasciare questo ticket?"
+
+#: nightsquirrel/templates/tutor/dashboard.html:97
+msgid "Release"
+msgstr "Rilascia"
+
+#: nightsquirrel/templates/tutor/dashboard.html:108
+msgid "No claimed tickets."
+msgstr "Nessun ticket richiesto."
+
+#: nightsquirrel/templates/tutor/ticket_detail.html:17
+msgid "Not assigned to you"
+msgstr "Non assegnato a te"
+
+#: nightsquirrel/templates/tutor/ticket_detail.html:25
+msgid "Answer exists (read-only)"
+msgstr "Risposta esistente (sola lettura)"
+
+#: nightsquirrel/templates/tutor/ticket_detail.html:52
+msgid "Question (read-only)"
+msgstr "Domanda (sola lettura)"
+
+#: nightsquirrel/templates/tutor/ticket_detail.html:60
+msgid "Question references"
+msgstr "Riferimenti della domanda"
+
+#: nightsquirrel/templates/tutor/ticket_detail.html:120
+msgid "No references attached to the answer yet."
+msgstr "Nessun riferimento allegato alla risposta."
+
+#: nightsquirrel/templates/tutor/ticket_detail.html:143
+msgid "No comments yet."
+msgstr "Nessun commento."
+
+#: nightsquirrel/templates/tutor/ticket_detail.html:151
+msgid "Add a comment"
+msgstr "Aggiungi un commento"
+
+#~ msgid "Your profile"
+#~ msgstr "Il tuo profilo"
+
+#~ msgid "You can still edit the question and resubmit it for a new quote."
+#~ msgstr ""
+#~ "Puoi ancora modificare la domanda e "
+#~ "inviarla di nuovo per un nuovo "
+#~ "preventivo."
+
+#~ msgid "Please log in to access this page."
+#~ msgstr "Effettua il login per accedere a questa pagina."
+
+#~ msgid "User #%(id)s updated."
+#~ msgstr "Utente #%(id)s aggiornato."
+
+#~ msgid "User not found."
+#~ msgstr "Utente non trovato."
+
+#~ msgid "Enter a valid price (e.g. 7.50)."
+#~ msgstr "Inserisci un prezzo valido (es. 7,50)."
+
+#~ msgid "Manual quote set: %(amount)s EUR."
+#~ msgstr "Preventivo manuale impostato: %(amount)s EUR."
+
+#~ msgid "Could not set quote (ticket not in review state?)."
+#~ msgstr ""
+#~ "Impossibile impostare il preventivo (ticket"
+#~ " non in stato di revisione?)."
+
+#~ msgid "Tutor assigned."
+#~ msgstr "Tutor assegnato."
+
+#~ msgid "Assignment failed."
+#~ msgstr "Assegnazione fallita."
+
+#~ msgid "Payment not found or not in failed state."
+#~ msgstr "Pagamento non trovato o non in stato di errore."
+
+#~ msgid "Payment #%(id)s retried successfully. Ticket delivered."
+#~ msgstr "Pagamento #%(id)s ritentato con successo. Ticket consegnato."
+
+#~ msgid "Payment #%(id)s retry failed. Check error details."
+#~ msgstr ""
+#~ "Tentativo di pagamento #%(id)s fallito. "
+#~ "Controlla i dettagli dell'errore."
+
+#~ msgid "Invalid email"
+#~ msgstr "Email non valida"
+
+#~ msgid "Email already used for a subscription"
+#~ msgstr "Email già utilizzata per un'iscrizione"
+
+#~ msgid "Welcome to Night Squirrels!"
+#~ msgstr "Benvenuto su Night Squirrels!"
+
+#~ msgid ""
+#~ "We sent you an email containing a"
+#~ " link: please click the link and "
+#~ "confirm your subscription."
+#~ msgstr ""
+#~ "Ti abbiamo inviato un'email con un "
+#~ "link: clicca il link per confermare "
+#~ "la tua iscrizione."
+
+#~ msgid ""
+#~ "We assigned you a nickname: %(name)s;"
+#~ " you can change it in your "
+#~ "profile."
+#~ msgstr ""
+#~ "Ti abbiamo assegnato un nickname: "
+#~ "%(name)s; puoi cambiarlo nel tuo "
+#~ "profilo."
+
+#~ msgid "We created you a profile icon — hope you like it!"
+#~ msgstr "Ti abbiamo creato un'icona profilo — speriamo ti piaccia!"
+
+#~ msgid "Could not login!"
+#~ msgstr "Accesso non riuscito!"
+
+#~ msgid "You are logged in :)"
+#~ msgstr "Accesso effettuato :)"
+
+#~ msgid "See you soon!"
+#~ msgstr "A presto!"
+
+#~ msgid "User name too short"
+#~ msgstr "Nome utente troppo corto"
+
+#~ msgid "User name too logn"
+#~ msgstr "Nome utente troppo lungo"
+
+#~ msgid "User name already in use"
+#~ msgstr "Nome utente già in uso"
+
+#~ msgid "User name updated!"
+#~ msgstr "Nome utente aggiornato!"
+
+#~ msgid "Access key updated!"
+#~ msgstr "Chiave d'accesso aggiornata!"
+
+#~ msgid "Your email has been updated."
+#~ msgstr "La tua email è stata aggiornata."
+
+#~ msgid ""
+#~ "We sent you a new email containing"
+#~ " a link: please click the link "
+#~ "and confirm your change."
+#~ msgstr ""
+#~ "Ti abbiamo inviato una nuova email "
+#~ "con un link: clicca il link per"
+#~ " confermare la modifica."
+
+#~ msgid "WARNING: your access key has been changed!"
+#~ msgstr "ATTENZIONE: la tua chiave d'accesso è stata cambiata!"
+
+#~ msgid "Academic profile updated!"
+#~ msgstr "Profilo scolastico aggiornato!"
+
+#~ msgid "We sent you an email. Use the OTP code inside to reset your access key."
+#~ msgstr ""
+#~ "Ti abbiamo inviato un'email. Usa il "
+#~ "codice OTP contenuto per reimpostare la"
+#~ " tua chiave d'accesso."
+
+#~ msgid "Email not found"
+#~ msgstr "Email non trovata"
+
+#~ msgid "Use your new access key to login"
+#~ msgstr "Usa la tua nuova chiave d'accesso per accedere"
+
+#~ msgid "Account deleted"
+#~ msgstr "Account eliminato"
+
+#~ msgid "Your email is confirmed, have fun"
+#~ msgstr "La tua email è confermata, buon divertimento"
+
+#~ msgid "Problems with your confirmation email"
+#~ msgstr "Problemi con l'email di conferma"
+
+#~ msgid "PayPal email is required."
+#~ msgstr "L'email PayPal è obbligatoria."
+
+#~ msgid "Payer email is required."
+#~ msgstr "L'email del pagante è obbligatoria."
+
+#~ msgid "Invalid payer email."
+#~ msgstr "Email del pagante non valida."
+
+#~ msgid "Could not find the payer account."
+#~ msgstr "Account del pagante non trovato."
+
+#~ msgid "Error creating payer account: %(error)s"
+#~ msgstr "Errore nella creazione dell'account pagante: %(error)s"
+
+#~ msgid "You already have a payment setup. Complete the PayPal connection below."
+#~ msgstr ""
+#~ "Hai già una configurazione di pagamento."
+#~ " Completa la connessione PayPal qui "
+#~ "sotto."
+
+#~ msgid ""
+#~ "You already have a payer registered. "
+#~ "They need to complete the PayPal "
+#~ "setup from their own account."
+#~ msgstr ""
+#~ "Hai già un pagante registrato. Deve "
+#~ "completare la configurazione PayPal dal "
+#~ "proprio account."
+
+#~ msgid "Payment setup removed."
+#~ msgstr "Configurazione di pagamento rimossa."
+
+#~ msgid "No active payer to unlink."
+#~ msgstr "Nessun pagante attivo da scollegare."
+
+#~ msgid "Could not start PayPal setup: %(error)s"
+#~ msgstr "Impossibile avviare la configurazione PayPal: %(error)s"
+
+#~ msgid "PayPal did not return an approval link."
+#~ msgstr "PayPal non ha restituito un link di approvazione."
+
+#~ msgid "Missing vault setup token."
+#~ msgstr "Token di configurazione vault mancante."
+
+#~ msgid "Could not finalize PayPal setup: %(error)s"
+#~ msgstr "Impossibile completare la configurazione PayPal: %(error)s"
+
+#~ msgid "PayPal did not return a vault ID."
+#~ msgstr "PayPal non ha restituito un ID vault."
+
+#~ msgid "PayPal connected successfully."
+#~ msgstr "PayPal collegato con successo."
+
+#~ msgid "PayPal setup was cancelled."
+#~ msgstr "La configurazione PayPal è stata annullata."
+
+#~ msgid "PayPal disconnected."
+#~ msgstr "PayPal scollegato."
+
+#~ msgid "No payment method to disconnect."
+#~ msgstr "Nessun metodo di pagamento da scollegare."
+
+#~ msgid "Your account is suspended. You cannot create questions."
+#~ msgstr "Il tuo account è sospeso. Non puoi creare domande."
+
+#~ msgid "Title is required."
+#~ msgstr "Il titolo è obbligatorio."
+
+#~ msgid "Please review the feedback and update your question."
+#~ msgstr "Controlla il feedback e aggiorna la tua domanda."
+
+#~ msgid "Invalid file type. Allowed: JPG, PNG, HEIC, PDF."
+#~ msgstr "Tipo di file non valido. Consentiti: JPG, PNG, HEIC, PDF."
+
+#~ msgid "File too large. Max 10 MB."
+#~ msgstr "File troppo grande. Massimo 10 MB."
+
+#~ msgid "Question submitted!"
+#~ msgstr "Domanda inviata!"
+
+#~ msgid "Error while saving the question: %(error)s"
+#~ msgstr "Errore durante il salvataggio della domanda: %(error)s"
+
+#~ msgid "Question not found (or not yours)."
+#~ msgstr "Domanda non trovata (o non è tua)."
+
+#~ msgid "Question archived."
+#~ msgstr "Domanda archiviata."
+
+#~ msgid "Could not archive question."
+#~ msgstr "Impossibile archiviare la domanda."
+
+#~ msgid "Question deleted."
+#~ msgstr "Domanda eliminata."
+
+#~ msgid "Delete failed: %(error)s"
+#~ msgstr "Eliminazione fallita: %(error)s"
+
+#~ msgid "Your account is suspended. You cannot accept quotes."
+#~ msgstr "Il tuo account è sospeso. Non puoi accettare preventivi."
+
+#~ msgid "You must register a payer before accepting a quote."
+#~ msgstr "Devi registrare un pagante prima di accettare un preventivo."
+
+#~ msgid ""
+#~ "Your payer's PayPal is not connected "
+#~ "yet. Payment must be set up before"
+#~ " accepting."
+#~ msgstr ""
+#~ "Il PayPal del tuo pagante non è"
+#~ " ancora collegato. Il pagamento deve "
+#~ "essere configurato prima di accettare."
+
+#~ msgid "Invalid option selected."
+#~ msgstr "Opzione selezionata non valida."
+
+#~ msgid "No quote options available."
+#~ msgstr "Nessuna opzione di preventivo disponibile."
+
+#~ msgid "Quote accepted. A tutor will work on your question."
+#~ msgstr "Preventivo accettato. Un tutor lavorerà alla tua domanda."
+
+#~ msgid "Could not accept quote (wrong state or not yours)."
+#~ msgstr "Impossibile accettare il preventivo (stato non valido o non è tuo)."
+
+#~ msgid "Quote declined."
+#~ msgstr "Preventivo rifiutato."
+
+#~ msgid "Could not decline quote (wrong state or not yours)."
+#~ msgstr "Impossibile rifiutare il preventivo (stato non valido o non è tuo)."
+
+#~ msgid "Delivery accepted. Ticket closed."
+#~ msgstr "Consegna accettata. Ticket chiuso."
+
+#~ msgid "Could not close ticket (wrong state or not yours)."
+#~ msgstr "Impossibile chiudere il ticket (stato non valido o non è tuo)."
+
+#~ msgid "Question not found."
+#~ msgstr "Domanda non trovata."
+
+#~ msgid "Comments are not available for this ticket state."
+#~ msgstr "I commenti non sono disponibili per questo stato del ticket."
+
+#~ msgid "Cannot post an empty comment."
+#~ msgstr "Non è possibile pubblicare un commento vuoto."
+
+#~ msgid "Comment posted."
+#~ msgstr "Commento pubblicato."
+
+#~ msgid "Error posting comment: %(error)s"
+#~ msgstr "Errore nella pubblicazione del commento: %(error)s"
+
+#~ msgid "Your account is suspended. You cannot edit questions."
+#~ msgstr "Il tuo account è sospeso. Non puoi modificare le domande."
+
+#~ msgid "Question updated."
+#~ msgstr "Domanda aggiornata."
+
+#~ msgid "Update failed."
+#~ msgstr "Aggiornamento fallito."
+
+#~ msgid "Your account is suspended. You cannot claim tickets."
+#~ msgstr "Il tuo account è sospeso. Non puoi richiedere ticket."
+
+#~ msgid "Ticket claimed."
+#~ msgstr "Ticket richiesto."
+
+#~ msgid "Could not claim ticket (maybe already taken)."
+#~ msgstr "Impossibile richiedere il ticket (forse già assegnato)."
+
+#~ msgid "Ticket released."
+#~ msgstr "Ticket rilasciato."
+
+#~ msgid "Could not release ticket."
+#~ msgstr "Impossibile rilasciare il ticket."
+
+#~ msgid "Your account is suspended."
+#~ msgstr "Il tuo account è sospeso."
+
+#~ msgid "Ticket set to in progress."
+#~ msgstr "Ticket impostato come in lavorazione."
+
+#~ msgid "State change not allowed."
+#~ msgstr "Cambio di stato non consentito."
+
+#~ msgid "Your account is suspended. You cannot deliver tickets."
+#~ msgstr "Il tuo account è sospeso. Non puoi consegnare ticket."
+
+#~ msgid "Cannot deliver: no answer has been created yet."
+#~ msgstr "Impossibile consegnare: non è ancora stata creata una risposta."
+
+#~ msgid "Ticket delivered and payment captured."
+#~ msgstr "Ticket consegnato e pagamento acquisito."
+
+#~ msgid "Ticket delivered but payment failed. Admin notified."
+#~ msgstr "Ticket consegnato ma pagamento fallito. Amministratore avvisato."
+
+#~ msgid "Cannot deliver this ticket (not yours or wrong state)."
+#~ msgstr "Impossibile consegnare questo ticket (non è tuo o stato non valido)."
+
+#~ msgid "No answer exists yet. Create one first."
+#~ msgstr "Non esiste ancora una risposta. Creane una prima."
+
+#~ msgid "Your account is suspended. You cannot deliver."
+#~ msgstr "Il tuo account è sospeso. Non puoi effettuare consegne."
+
+#~ msgid "Answer delivered and payment captured."
+#~ msgstr "Risposta consegnata e pagamento acquisito."
+
+#~ msgid "Answer delivered but payment failed. Admin notified."
+#~ msgstr "Risposta consegnata ma pagamento fallito. Amministratore avvisato."
+
+#~ msgid "Deliver failed (is the ticket assigned + answer created?)."
+#~ msgstr "Consegna fallita (il ticket è assegnato e la risposta è stata creata?)."
+
+#~ msgid "Answer saved."
+#~ msgstr "Risposta salvata."
+
+#~ msgid "Could not save answer."
+#~ msgstr "Impossibile salvare la risposta."
+
+#~ msgid "Answer already exists. Editing it instead."
+#~ msgstr "La risposta esiste già. Verrà modificata."
+
+#~ msgid "Answer created and delivered. Payment captured."
+#~ msgstr "Risposta creata e consegnata. Pagamento acquisito."
+
+#~ msgid "Answer created (#%(id)s)."
+#~ msgstr "Risposta creata (#%(id)s)."
+
+#~ msgid "Ticket not found."
+#~ msgstr "Ticket non trovato."
+
+#~ msgid "Not your ticket."
+#~ msgstr "Non è il tuo ticket."
+
+#~ msgid "New"
+#~ msgstr "Nuovo"
+
+#~ msgid "Needs clarification"
+#~ msgstr "Richiede chiarimenti"
+
+#~ msgid "Quoted"
+#~ msgstr "Preventivato"
+
+#~ msgid "Needs review"
+#~ msgstr "In revisione"
+
+#~ msgid "Rejected"
+#~ msgstr "Rifiutato"
+
+#~ msgid "Accepted"
+#~ msgstr "Accettato"
+
+#~ msgid "Assigned"
+#~ msgstr "Assegnato"
+
+#~ msgid "In progress"
+#~ msgstr "In lavorazione"
+
+#~ msgid "Pending payment"
+#~ msgstr "In attesa di pagamento"
+
+#~ msgid "Delivered"
+#~ msgstr "Consegnato"
+
+#~ msgid "Closed"
+#~ msgstr "Chiuso"
+
+#~ msgid "Cancelled"
+#~ msgstr "Annullato"
+
+#~ msgid "Unknown"
+#~ msgstr "Sconosciuto"
+
+#~ msgid "Your account is currently suspended. Some actions are restricted."
+#~ msgstr "Il tuo account è attualmente sospeso. Alcune azioni sono limitate."
+
+#~ msgid "Confirm"
+#~ msgstr "Conferma"
+
+#~ msgid "Cancel"
+#~ msgstr "Annulla"
+
+#~ msgid "Cookie Settings"
+#~ msgstr "Impostazioni cookie"
+
+#~ msgid "Privacy Notice"
+#~ msgstr "Informativa sulla privacy"
+
+#~ msgid "My Settings"
+#~ msgstr "Le mie impostazioni"
+
+#~ msgid "Necessary"
+#~ msgstr "Necessari"
+
+#~ msgid "Required to run the website"
+#~ msgstr "Necessari per il funzionamento del sito"
+
+#~ msgid "Analysis"
+#~ msgstr "Analisi"
+
+#~ msgid "Monitoring website usage and optimizing the user experience"
+#~ msgstr ""
+#~ "Monitoraggio dell'utilizzo del sito e "
+#~ "ottimizzazione dell'esperienza utente"
+
+#~ msgid "Save settings"
+#~ msgstr "Salva impostazioni"
+
+#~ msgid "Agree to essential"
+#~ msgstr "Accetta essenziali"
+
+#~ msgid "Agree to all"
+#~ msgstr "Accetta tutti"
+
+#~ msgid "Terms of Service"
+#~ msgstr "Termini di servizio"
+
+#~ msgid "Formula (LaTeX)"
+#~ msgstr "Formula (LaTeX)"
+
+#~ msgid "LaTeX"
+#~ msgstr "LaTeX"
+
+#~ msgid "e.g."
+#~ msgstr "es."
+
+#~ msgid ""
+#~ "Tip: use \\n for line breaks "
+#~ "inside aligned environments, e.g. "
+#~ "\\begin{aligned} ... \\end{aligned}"
+#~ msgstr ""
+#~ "Suggerimento: usa \\n per le "
+#~ "interruzioni di riga negli ambienti "
+#~ "allineati, es. \\begin{aligned} ... "
+#~ "\\end{aligned}"
+
+#~ msgid "Preview"
+#~ msgstr "Anteprima"
+
+#~ msgid "Apply"
+#~ msgstr "Applica"
+
+#~ msgid "OK"
+#~ msgstr "OK"
+
+#~ msgid "Home"
+#~ msgstr "Home"
+
+#~ msgid "About"
+#~ msgstr "Chi siamo"
+
+#~ msgid "Please confirm subscription!"
+#~ msgstr "Conferma la tua iscrizione!"
+
+#~ msgid "My profile"
+#~ msgstr "Il mio profilo"
+
+#~ msgid "My questions"
+#~ msgstr "Le mie domande"
+
+#~ msgid "New question"
+#~ msgstr "Nuova domanda"
+
+#~ msgid "Logout"
+#~ msgstr "Esci"
+
+#~ msgid "Admin"
+#~ msgstr "Admin"
+
+#~ msgid "Tutor"
+#~ msgstr "Tutor"
+
+#~ msgid "Login"
+#~ msgstr "Accedi"
+
+#~ msgid "Sign up"
+#~ msgstr "Registrati"
+
+#~ msgid "Almost there!"
+#~ msgstr "Ci siamo quasi!"
+
+#~ msgid "Your payment setup is registered, but you still need to"
+#~ msgstr "La configurazione del pagamento è registrata, ma devi ancora"
+
+#~ msgid "connect your PayPal account"
+#~ msgstr "collegare il tuo account PayPal"
+
+#~ msgid ""
+#~ "This is required before you can "
+#~ "accept quotes. You will be redirected"
+#~ " to PayPal to authorise automatic "
+#~ "payments."
+#~ msgstr ""
+#~ "Questo è necessario prima di poter "
+#~ "accettare i preventivi. Verrai reindirizzato"
+#~ " su PayPal per autorizzare i "
+#~ "pagamenti automatici."
+
+#~ msgid "I'll do it later"
+#~ msgstr "Lo farò dopo"
+
+#~ msgid "Connect PayPal now"
+#~ msgstr "Collega PayPal ora"
+
+#~ msgid "Payer registered"
+#~ msgstr "Pagante registrato"
+
+#~ msgid "We've sent login credentials to"
+#~ msgstr "Abbiamo inviato le credenziali di accesso a"
+
+#~ msgid "Before you can accept quotes, your payer needs to:"
+#~ msgstr "Prima di poter accettare i preventivi, il tuo pagante deve:"
+
+#~ msgid "Log in to the platform"
+#~ msgstr "Accedere alla piattaforma"
+
+#~ msgid "Connect their PayPal account from their profile page"
+#~ msgstr "Collegare il proprio account PayPal dalla pagina del profilo"
+
+#~ msgid "Got it"
+#~ msgstr "Ho capito"
+
+#~ msgid "Users"
+#~ msgstr "Utenti"
+
+#~ msgid "All questions"
+#~ msgstr "Tutte le domande"
+
+#~ msgid "Payments"
+#~ msgstr "Pagamenti"
+
+#~ msgid "Welcome. Start from"
+#~ msgstr "Benvenuto. Inizia da"
+
+#~ msgid "Dashboard"
+#~ msgstr "Dashboard"
+
+#~ msgid "All statuses"
+#~ msgstr "Tutti gli stati"
+
+#~ msgid "Awaiting charge"
+#~ msgstr "In attesa di addebito"
+
+#~ msgid "Captured"
+#~ msgstr "Acquisito"
+
+#~ msgid "Failed"
+#~ msgstr "Fallito"
+
+#~ msgid "Filter"
+#~ msgstr "Filtra"
+
+#~ msgid "Ticket"
+#~ msgstr "Ticket"
+
+#~ msgid "Question"
+#~ msgstr "Domanda"
+
+#~ msgid "Student"
+#~ msgstr "Studente"
+
+#~ msgid "Payer"
+#~ msgstr "Pagante"
+
+#~ msgid "Amount"
+#~ msgstr "Importo"
+
+#~ msgid "Status"
+#~ msgstr "Stato"
+
+#~ msgid "Error"
+#~ msgstr "Errore"
+
+#~ msgid "Created"
+#~ msgstr "Creato"
+
+#~ msgid "Charged"
+#~ msgstr "Addebitato"
+
+#~ msgid "Actions"
+#~ msgstr "Azioni"
+
+#~ msgid "captured"
+#~ msgstr "acquisito"
+
+#~ msgid "failed"
+#~ msgstr "fallito"
+
+#~ msgid "awaiting"
+#~ msgstr "in attesa"
+
+#~ msgid "Retry"
+#~ msgstr "Riprova"
+
+#~ msgid "Questions"
+#~ msgstr "Domande"
+
+#~ msgid "Search title / plaintext / email"
+#~ msgstr "Cerca titolo / testo / email"
+
+#~ msgid "All states"
+#~ msgstr "Tutti gli stati"
+
+#~ msgid "All"
+#~ msgstr "Tutti"
+
+#~ msgid "Unassigned"
+#~ msgstr "Non assegnato"
+
+#~ msgid "Title"
+#~ msgstr "Titolo"
+
+#~ msgid "Owner"
+#~ msgstr "Proprietario"
+
+#~ msgid "Quote"
+#~ msgstr "Preventivo"
+
+#~ msgid "pending"
+#~ msgstr "in attesa"
+
+#~ msgid "sent"
+#~ msgstr "inviato"
+
+#~ msgid "declined"
+#~ msgstr "rifiutato"
+
+#~ msgid "unassigned"
+#~ msgstr "non assegnato"
+
+#~ msgid "EUR"
+#~ msgstr "EUR"
+
+#~ msgid "Note"
+#~ msgstr "Nota"
+
+#~ msgid "unassign"
+#~ msgstr "rimuovi assegnazione"
+
+#~ msgid "Save"
+#~ msgstr "Salva"
+
+#~ msgid "no ticket"
+#~ msgstr "nessun ticket"
+
+#~ msgid "Search email / name"
+#~ msgstr "Cerca email / nome"
+
+#~ msgid "Clear"
+#~ msgstr "Cancella"
+
+#~ msgid "Name / Email"
+#~ msgstr "Nome / Email"
+
+#~ msgid "Valid"
+#~ msgstr "Valido"
+
+#~ msgid "Forgot access key"
+#~ msgstr "Chiave d'accesso dimenticata"
+
+#~ msgid "Reset your Night Squirrels access key."
+#~ msgstr "Reimposta la tua chiave d'accesso Night Squirrels."
+
+#~ msgid "Ask for a new key"
+#~ msgstr "Richiedi una nuova chiave"
+
+#~ msgid "Insert the email used for the subscription."
+#~ msgstr "Inserisci l'email usata per l'iscrizione."
+
+#~ msgid "We will send you an email with the new access key."
+#~ msgstr "Ti invieremo un'email con la nuova chiave d'accesso."
+
+#~ msgid "Your email"
+#~ msgstr "La tua email"
+
+#~ msgid "I need a new key"
+#~ msgstr "Ho bisogno di una nuova chiave"
+
+#~ msgid "Login to Night Squirrels to manage your questions and answers."
+#~ msgstr "Accedi a Night Squirrels per gestire le tue domande e risposte."
+
+#~ msgid ""
+#~ "Log in to access your questions, "
+#~ "track answers, and manage your account."
+#~ msgstr ""
+#~ "Accedi per visualizzare le tue domande,"
+#~ " seguire le risposte e gestire il "
+#~ "tuo account."
+
+#~ msgid "Email address"
+#~ msgstr "Indirizzo email"
+
+#~ msgid "Access key"
+#~ msgstr "Chiave d'accesso"
+
+#~ msgid "Can't find your access key?"
+#~ msgstr "Non trovi la tua chiave d'accesso?"
+
+#~ msgid "Click"
+#~ msgstr "Clicca"
+
+#~ msgid "here"
+#~ msgstr "qui"
+
+#~ msgid "to get a new one!"
+#~ msgstr "per riceverne una nuova!"
+
+#~ msgid "to get your access key"
+#~ msgstr "per ottenere la tua chiave d'accesso"
+
+#~ msgid "Your Night Squirrels profile."
+#~ msgstr "Il tuo profilo Night Squirrels."
+
+#~ msgid "User Profile"
+#~ msgstr "Profilo utente"
+
+#~ msgid "User name"
+#~ msgstr "Nome utente"
+
+#~ msgid "The username was assigned at sign-up: you can change it!"
+#~ msgstr "Il nome utente è stato assegnato alla registrazione: puoi cambiarlo!"
+
+#~ msgid "Must be bigger than 3 characters and must be unique."
+#~ msgstr "Deve avere più di 3 caratteri e deve essere unico."
+
+#~ msgid "Email"
+#~ msgstr "Email"
+
+#~ msgid "Your email used to login. You may change it:"
+#~ msgstr "La tua email usata per il login. Puoi cambiarla:"
+
+#~ msgid "you will receive an email - click the link to verify your new login."
+#~ msgstr ""
+#~ "riceverai un'email — clicca il link "
+#~ "per verificare il tuo nuovo accesso."
+
+#~ msgid "WARNING"
+#~ msgstr "ATTENZIONE"
+
+#~ msgid "you will receive a NEW access key; use it to login."
+#~ msgstr "riceverai una NUOVA chiave d'accesso; usala per accedere."
+
+#~ msgid "Change your access key."
+#~ msgstr "Cambia la tua chiave d'accesso."
+
+#~ msgid "Your current access key"
+#~ msgstr "La tua chiave d'accesso attuale"
+
+#~ msgid "Unrecognized access key"
+#~ msgstr "Chiave d'accesso non riconosciuta"
+
+#~ msgid "New access key"
+#~ msgstr "Nuova chiave d'accesso"
+
+#~ msgid ""
+#~ "Invalid access key: must be at "
+#~ "least 8 characters, including a letter"
+#~ " and a digit"
+#~ msgstr ""
+#~ "Chiave d'accesso non valida: deve avere"
+#~ " almeno 8 caratteri, inclusa una "
+#~ "lettera e un numero"
+
+#~ msgid "Confirm new access key"
+#~ msgstr "Conferma nuova chiave d'accesso"
+
+#~ msgid "Access key and confirm access key should be equal"
+#~ msgstr "La chiave d'accesso e la conferma devono coincidere"
+
+#~ msgid "Update access key"
+#~ msgstr "Aggiorna chiave d'accesso"
+
+#~ msgid "Your custom tile"
+#~ msgstr "Il tuo tile personalizzato"
+
+#~ msgid "It was assigned to you during sign-up."
+#~ msgstr "Ti è stato assegnato durante la registrazione."
+
+#~ msgid "Academic profile"
+#~ msgstr "Profilo scolastico"
+
+#~ msgid ""
+#~ "Tell us your school type and year"
+#~ " so we can pre-fill your "
+#~ "questions and give you better quotes."
+#~ msgstr ""
+#~ "Indicaci il tipo di scuola e "
+#~ "l'anno per precompilare le domande e "
+#~ "offrirti preventivi migliori."
+
+#~ msgid "School type"
+#~ msgstr "Tipo di scuola"
+
+#~ msgid "(not set)"
+#~ msgstr "(non impostato)"
+
+#~ msgid "Year / Grade"
+#~ msgstr "Anno / Classe"
+
+#~ msgid "Payment"
+#~ msgstr "Pagamento"
+
+#~ msgid "Your payer manages the PayPal account used for payments."
+#~ msgstr "Il tuo pagante gestisce l'account PayPal usato per i pagamenti."
+
+#~ msgid "PayPal account used for payments when answers are delivered."
+#~ msgstr "Account PayPal usato per i pagamenti alla consegna delle risposte."
+
+#~ msgid "No payment method configured yet."
+#~ msgstr "Nessun metodo di pagamento configurato."
+
+#~ msgid "Set up payment"
+#~ msgstr "Configura pagamento"
+
+#~ msgid "Payer:"
+#~ msgstr "Pagante:"
+
+#~ msgid "Relationship:"
+#~ msgstr "Relazione:"
+
+#~ msgid "Vault:"
+#~ msgstr "Vault:"
+
+#~ msgid "Connected"
+#~ msgstr "Collegato"
+
+#~ msgid "Awaiting approval"
+#~ msgstr "In attesa di approvazione"
+
+#~ msgid "Not set up"
+#~ msgstr "Non configurato"
+
+#~ msgid "Are you sure you want to unlink this payer?"
+#~ msgstr "Sei sicuro di voler scollegare questo pagante?"
+
+#~ msgid "Unlink payer"
+#~ msgstr "Scollega pagante"
+
+#~ msgid "PayPal email:"
+#~ msgstr "Email PayPal:"
+
+#~ msgid "Disconnect PayPal? You will need to set it up again."
+#~ msgstr "Scollegare PayPal? Dovrai riconfigurarlo."
+
+#~ msgid "Disconnect PayPal"
+#~ msgstr "Scollega PayPal"
+
+#~ msgid "Retry PayPal setup"
+#~ msgstr "Riprova configurazione PayPal"
+
+#~ msgid "Set up PayPal"
+#~ msgstr "Configura PayPal"
+
+#~ msgid ""
+#~ "This will remove your current payment"
+#~ " setup. You can then register a "
+#~ "different payer."
+#~ msgstr ""
+#~ "Questo rimuoverà la configurazione di "
+#~ "pagamento attuale. Potrai poi registrare "
+#~ "un pagante diverso."
+
+#~ msgid "Cancel setup"
+#~ msgstr "Annulla configurazione"
+
+#~ msgid "No payment method registered yet."
+#~ msgstr "Nessun metodo di pagamento registrato."
+
+#~ msgid "Delete subscription"
+#~ msgstr "Elimina iscrizione"
+
+#~ msgid "All your images and data will be deleted."
+#~ msgstr "Tutte le tue immagini e i tuoi dati saranno eliminati."
+
+#~ msgid "Warning"
+#~ msgstr "Attenzione"
+
+#~ msgid "closing your account cannot be undone."
+#~ msgstr "la chiusura dell'account non può essere annullata."
+
+#~ msgid "Delete subscription..."
+#~ msgstr "Elimina iscrizione..."
+
+#~ msgid "Are you sure you want to delete your subscription?"
+#~ msgstr "Sei sicuro di voler eliminare la tua iscrizione?"
+
+#~ msgid "Delete it"
+#~ msgstr "Elimina"
+
+#~ msgid "Reset access key"
+#~ msgstr "Reimposta chiave d'accesso"
+
+#~ msgid "Set a new access key for your Night Squirrels account."
+#~ msgstr "Imposta una nuova chiave d'accesso per il tuo account Night Squirrels."
+
+#~ msgid "OTP Code (you received via email)"
+#~ msgstr "Codice OTP (ricevuto via email)"
+
+#~ msgid "Invalid code"
+#~ msgstr "Codice non valido"
+
+#~ msgid ""
+#~ "Create your Night Squirrels account to"
+#~ " submit questions and receive expert "
+#~ "answers."
+#~ msgstr ""
+#~ "Crea il tuo account Night Squirrels "
+#~ "per inviare domande e ricevere risposte"
+#~ " esperte."
+
+#~ msgid "Create your account to submit questions and get expert answers."
+#~ msgstr "Crea il tuo account per inviare domande e ottenere risposte esperte."
+
+#~ msgid "You will receive an access key via email."
+#~ msgstr "Riceverai una chiave d'accesso via email."
+
+#~ msgid "Just"
+#~ msgstr "Fai il"
+
+#~ msgid "login"
+#~ msgstr "login"
+
+#~ msgid "if you are already registered."
+#~ msgstr "se sei già registrato."
+
+#~ msgid "Error 404"
+#~ msgstr "Errore 404"
+
+#~ msgid "Sorry, the page you requested was not found."
+#~ msgstr "La pagina richiesta non è stata trovata."
+
+#~ msgid "This page might have been moved, updated or deleted."
+#~ msgstr "Questa pagina potrebbe essere stata spostata, aggiornata o eliminata."
+
+#~ msgid "Please visit the"
+#~ msgstr "Visita le pagine"
+
+#~ msgid "or"
+#~ msgstr "o"
+
+#~ msgid "pages."
+#~ msgstr "."
+
+#~ msgid "Error 500"
+#~ msgstr "Errore 500"
+
+#~ msgid "INTERNAL SERVER ERROR"
+#~ msgstr "ERRORE INTERNO DEL SERVER"
+
+#~ msgid "About Night Squirrels — how the platform works."
+#~ msgstr "Chi siamo — come funziona la piattaforma Night Squirrels."
+
+#~ msgid "About Night Squirrels"
+#~ msgstr "Chi siamo"
+
+#~ msgid ""
+#~ "Night Squirrels helps students get "
+#~ "expert answers to their homework "
+#~ "questions, with transparent pricing and "
+#~ "secure payments."
+#~ msgstr ""
+#~ "Night Squirrels aiuta gli studenti a "
+#~ "ottenere risposte esperte alle loro "
+#~ "domande scolastiche, con prezzi trasparenti"
+#~ " e pagamenti sicuri."
+
+#~ msgid "How it works:"
+#~ msgstr "Come funziona:"
+
+#~ msgid ""
+#~ "submit your question, receive a clear"
+#~ " quote, and only pay when the "
+#~ "answer is delivered. Parents and "
+#~ "guardians can manage payments on the "
+#~ "student's behalf."
+#~ msgstr ""
+#~ "invia la tua domanda, ricevi un "
+#~ "preventivo chiaro e paga solo quando "
+#~ "la risposta viene consegnata. Genitori e"
+#~ " tutori possono gestire i pagamenti "
+#~ "per conto dello studente."
+
+#~ msgid ""
+#~ "Answers are crafted by verified tutors"
+#~ " and support rich text, formulas, and"
+#~ " attachments."
+#~ msgstr ""
+#~ "Le risposte sono preparate da tutor "
+#~ "verificati e supportano testo formattato, "
+#~ "formule e allegati."
+
+#~ msgid ""
+#~ "Night Squirrels — get expert help "
+#~ "on your homework questions with "
+#~ "transparent pricing and secure payments."
+#~ msgstr ""
+#~ "Night Squirrels — ricevi aiuto esperto"
+#~ " per i tuoi compiti con prezzi "
+#~ "trasparenti e pagamenti sicuri."
+
+#~ msgid "Get expert help on your homework"
+#~ msgstr "Ricevi aiuto esperto per i tuoi compiti"
+
+#~ msgid ""
+#~ "Submit your question, receive a clear"
+#~ " quote, and only pay when the "
+#~ "answer is delivered."
+#~ msgstr ""
+#~ "Invia la tua domanda, ricevi un "
+#~ "preventivo chiaro e paga solo quando "
+#~ "la risposta viene consegnata."
+
+#~ msgid "Complete your academic profile"
+#~ msgstr "Completa il tuo profilo scolastico"
+
+#~ msgid "tell us your school type and year for faster quoting."
+#~ msgstr ""
+#~ "indica il tipo di scuola e l'anno"
+#~ " per ricevere preventivi più velocemente."
+
+#~ msgid "Go to profile"
+#~ msgstr "Vai al profilo"
+
+#~ msgid "Welcome back,"
+#~ msgstr "Bentornato,"
+
+#~ msgid "Ask a question"
+#~ msgstr "Fai una domanda"
+
+#~ msgid "Welcome"
+#~ msgstr "Benvenuto"
+
+#~ msgid "Please confirm your email: click the link in the mail we sent you."
+#~ msgstr ""
+#~ "Conferma la tua email: clicca il "
+#~ "link nella mail che ti abbiamo "
+#~ "inviato."
+
+#~ msgid "Learn how it works"
+#~ msgstr "Scopri come funziona"
+
+#~ msgid "How it works"
+#~ msgstr "Come funziona"
+
+#~ msgid "Ask"
+#~ msgstr "Chiedi"
+
+#~ msgid ""
+#~ "Write your question using our rich "
+#~ "editor. Attach a photo or PDF if"
+#~ " needed."
+#~ msgstr ""
+#~ "Scrivi la tua domanda con il "
+#~ "nostro editor avanzato. Allega una foto"
+#~ " o un PDF se necessario."
+
+#~ msgid "Choose your quote"
+#~ msgstr "Scegli il tuo preventivo"
+
+#~ msgid ""
+#~ "Receive a transparent quote with "
+#~ "options. Accept only if you're happy "
+#~ "with it."
+#~ msgstr ""
+#~ "Ricevi un preventivo trasparente con "
+#~ "diverse opzioni. Accetta solo se sei "
+#~ "soddisfatto."
+
+#~ msgid "Get your answer"
+#~ msgstr "Ricevi la risposta"
+
+#~ msgid ""
+#~ "A verified tutor delivers your answer."
+#~ " Payment happens only on delivery."
+#~ msgstr ""
+#~ "Un tutor verificato ti consegna la "
+#~ "risposta. Il pagamento avviene solo alla"
+#~ " consegna."
+
+#~ msgid "Quoted before payment"
+#~ msgstr "Preventivo prima del pagamento"
+
+#~ msgid "You always know the price before you commit."
+#~ msgstr "Conosci sempre il prezzo prima di impegnarti."
+
+#~ msgid "Charged only on delivery"
+#~ msgstr "Addebito solo alla consegna"
+
+#~ msgid "No upfront payment. You pay when the answer is ready."
+#~ msgstr "Nessun pagamento anticipato. Paghi quando la risposta è pronta."
+
+#~ msgid "Parent/guardian support"
+#~ msgstr "Supporto genitori/tutori"
+
+#~ msgid "A parent or guardian can manage payments on your behalf."
+#~ msgstr "Un genitore o tutore può gestire i pagamenti per tuo conto."
+
+#~ msgid "Attachments supported"
+#~ msgstr "Allegati supportati"
+
+#~ msgid "Upload photos or PDFs of your exercise directly."
+#~ msgstr "Carica foto o PDF del tuo esercizio direttamente."
+
+#~ msgid "For students"
+#~ msgstr "Per gli studenti"
+
+#~ msgid ""
+#~ "Submit questions with our rich text "
+#~ "and formula editor. Track your ticket"
+#~ " from quote to delivery, and chat "
+#~ "with your tutor if you need "
+#~ "clarifications after receiving the answer."
+#~ msgstr ""
+#~ "Invia domande con il nostro editor "
+#~ "di testo e formule. Segui il tuo"
+#~ " ticket dal preventivo alla consegna "
+#~ "e chatta con il tutor se hai "
+#~ "bisogno di chiarimenti dopo aver "
+#~ "ricevuto la risposta."
+
+#~ msgid "Get started"
+#~ msgstr "Inizia ora"
+
+#~ msgid "For parents"
+#~ msgstr "Per i genitori"
+
+#~ msgid ""
+#~ "Link your PayPal account to your "
+#~ "child's profile. You stay in control "
+#~ "— payment only happens when the "
+#~ "answer is delivered, and you are "
+#~ "notified before every charge."
+#~ msgstr ""
+#~ "Collega il tuo account PayPal al "
+#~ "profilo di tuo figlio. Mantieni il "
+#~ "controllo — il pagamento avviene solo"
+#~ " quando la risposta viene consegnata "
+#~ "e vieni avvisato prima di ogni "
+#~ "addebito."
+
+#~ msgid "Payment set up"
+#~ msgstr "Pagamento configurato"
+
+#~ msgid "Have a question?"
+#~ msgstr "Hai una domanda?"
+
+#~ msgid "Ask now"
+#~ msgstr "Chiedi ora"
+
+#~ msgid "Ready to get started?"
+#~ msgstr "Pronto per iniziare?"
+
+#~ msgid "Register Payer"
+#~ msgstr "Registra pagante"
+
+#~ msgid "Register a Payer"
+#~ msgstr "Registra un pagante"
+
+#~ msgid "Back"
+#~ msgstr "Indietro"
+
+#~ msgid ""
+#~ "A payer is the person whose PayPal"
+#~ " account will be charged when your"
+#~ " question is answered. This can be"
+#~ " a parent, guardian, or yourself."
+#~ msgstr ""
+#~ "Il pagante è la persona il cui "
+#~ "account PayPal verrà addebitato quando "
+#~ "la tua domanda riceve una risposta. "
+#~ "Può essere un genitore, un tutore "
+#~ "o te stesso."
+
+#~ msgid "I am the payer"
+#~ msgstr "Sono io il pagante"
+
+#~ msgid "(I will pay with my own PayPal account)"
+#~ msgstr "(pagherò con il mio account PayPal)"
+
+#~ msgid "Payer's email"
+#~ msgstr "Email del pagante"
+
+#~ msgid ""
+#~ "If this person already has an "
+#~ "account, they will be linked directly."
+#~ " Otherwise, a new account will be "
+#~ "created and credentials sent to this "
+#~ "email."
+#~ msgstr ""
+#~ "Se questa persona ha già un "
+#~ "account, verrà collegata direttamente. "
+#~ "Altrimenti verrà creato un nuovo account"
+#~ " e le credenziali inviate a questa"
+#~ " email."
+
+#~ msgid "Relationship"
+#~ msgstr "Relazione"
+
+#~ msgid "Parent"
+#~ msgstr "Genitore"
+
+#~ msgid "Guardian"
+#~ msgstr "Tutore"
+
+#~ msgid "Other"
+#~ msgstr "Altro"
+
+#~ msgid "PayPal email"
+#~ msgstr "Email PayPal"
+
+#~ msgid ""
+#~ "The PayPal account that will be "
+#~ "charged when your questions are "
+#~ "answered."
+#~ msgstr ""
+#~ "L'account PayPal che verrà addebitato "
+#~ "quando le tue domande riceveranno "
+#~ "risposta."
+
+#~ msgid "Register payer"
+#~ msgstr "Registra pagante"
+
+#~ msgid "My Questions"
+#~ msgstr "Le mie domande"
+
+#~ msgid "You haven't asked any questions yet."
+#~ msgstr "Non hai ancora fatto domande."
+
+#~ msgid "Ask your first question"
+#~ msgstr "Fai la tua prima domanda"
+
+#~ msgid "Due"
+#~ msgstr "Scadenza"
+
+#~ msgid "Delete this question? This cannot be undone."
+#~ msgstr "Eliminare questa domanda? L'operazione non può essere annullata."
+
+#~ msgid "Delete"
+#~ msgstr "Elimina"
+
+#~ msgid "New Question"
+#~ msgstr "Nuova domanda"
+
+#~ msgid "Set your school type and year in your"
+#~ msgstr "Imposta il tipo di scuola e l'anno nel tuo"
+
+#~ msgid "profile"
+#~ msgstr "profilo"
+
+#~ msgid "to auto-fill these fields."
+#~ msgstr "per compilare automaticamente questi campi."
+
+#~ msgid "Subject"
+#~ msgstr "Materia"
+
+#~ msgid "(optional)"
+#~ msgstr "(facoltativo)"
+
+#~ msgid "Question type"
+#~ msgstr "Tipo di domanda"
+
+#~ msgid "Attach a photo or PDF (optional)"
+#~ msgstr "Allega una foto o un PDF (facoltativo)"
+
+#~ msgid "JPG, PNG, HEIC or PDF. Max 10 MB."
+#~ msgstr "JPG, PNG, HEIC o PDF. Massimo 10 MB."
+
+#~ msgid "Re-crop"
+#~ msgstr "Ritaglia di nuovo"
+
+#~ msgid "Remove"
+#~ msgstr "Rimuovi"
+
+#~ msgid "Describe your question"
+#~ msgstr "Descrivi la tua domanda"
+
+#~ msgid "Using your profile:"
+#~ msgstr "Dal tuo profilo:"
+
+#~ msgid "Year"
+#~ msgstr "Anno"
+
+#~ msgid "(change)"
+#~ msgstr "(modifica)"
+
+#~ msgid "Academic details"
+#~ msgstr "Dettagli scolastici"
+
+#~ msgid "Additional details"
+#~ msgstr "Dettagli aggiuntivi"
+
+#~ msgid "Grade / Year"
+#~ msgstr "Classe / Anno"
+
+#~ msgid "Difficulty (1-5)"
+#~ msgstr "Difficoltà (1-5)"
+
+#~ msgid "Notes (optional)"
+#~ msgstr "Note (facoltativo)"
+
+#~ msgid "Reference (optional)"
+#~ msgstr "Riferimento (facoltativo)"
+
+#~ msgid "Submit question"
+#~ msgstr "Invia domanda"
+
+#~ msgid "Crop & Rotate"
+#~ msgstr "Ritaglia e ruota"
+
+#~ msgid "Rotate left"
+#~ msgstr "Ruota a sinistra"
+
+#~ msgid "Rotate right"
+#~ msgstr "Ruota a destra"
+
+#~ msgid "Edit"
+#~ msgstr "Modifica"
+
+#~ msgid "Archived."
+#~ msgstr "Archiviata."
+
+#~ msgid "This question has been cancelled and is no longer active."
+#~ msgstr "Questa domanda è stata annullata e non è più attiva."
+
+#~ msgid "Quoted at:"
+#~ msgstr "Preventivato il:"
+
+#~ msgid "Before you can accept:"
+#~ msgstr "Prima di poter accettare:"
+
+#~ msgid "Register a payer"
+#~ msgstr "Registra un pagante"
+
+#~ msgid "(parent, guardian, or yourself)."
+#~ msgstr "(genitore, tutore o te stesso)."
+
+#~ msgid "PayPal not connected."
+#~ msgstr "PayPal non collegato."
+
+#~ msgid "Your payer must"
+#~ msgstr "Il tuo pagante deve"
+
+#~ msgid "set up PayPal"
+#~ msgstr "configurare PayPal"
+
+#~ msgid "before you can accept a quote."
+#~ msgstr "prima di poter accettare un preventivo."
+
+#~ msgid "Accept"
+#~ msgstr "Accetta"
+
+#~ msgid "Are you sure you want to decline this quote?"
+#~ msgstr "Sei sicuro di voler rifiutare questo preventivo?"
+
+#~ msgid "Decline"
+#~ msgstr "Rifiuta"
+
+#~ msgid "Quote for your question"
+#~ msgstr "Preventivo per la tua domanda"
+
+#~ msgid "Quote pending — please contact support."
+#~ msgstr "Preventivo in sospeso — contatta l'assistenza."
+
+#~ msgid "Clarification needed"
+#~ msgstr "Chiarimenti necessari"
+
+#~ msgid "Our analysis found some issues with your submission:"
+#~ msgstr "La nostra analisi ha trovato alcuni problemi con la tua richiesta:"
+
+#~ msgid "Please edit your question to fix the issues, then save to resubmit."
+#~ msgstr ""
+#~ "Modifica la tua domanda per risolvere"
+#~ " i problemi, poi salva per "
+#~ "reinviarla."
+
+#~ msgid "Quote under review"
+#~ msgstr "Preventivo in revisione"
+
+#~ msgid "Your question requires a custom quote. An admin will review it shortly."
+#~ msgstr ""
+#~ "La tua domanda richiede un preventivo"
+#~ " personalizzato. Un amministratore la "
+#~ "esaminerà a breve."
+
+#~ msgid "Quote declined"
+#~ msgstr "Preventivo rifiutato"
+
+#~ msgid "You declined the quote."
+#~ msgstr "Hai rifiutato il preventivo."
+
+#~ msgid ""
+#~ "You can update your question — "
+#~ "change the scope, add details, or "
+#~ "simplify it — and resubmit to get"
+#~ " a revised quote."
+#~ msgstr ""
+#~ "Puoi aggiornare la tua domanda — "
+#~ "ridurne la portata, aggiungere dettagli "
+#~ "o semplificarla — e ripresentarla per"
+#~ " ottenere un nuovo preventivo."
+
+#~ msgid "Edit your question"
+#~ msgstr "Modifica la tua domanda"
+
+#~ msgid "Accepted quote"
+#~ msgstr "Preventivo accettato"
+
+#~ msgid "Attached document"
+#~ msgstr "Documento allegato"
+
+#~ msgid "Answer"
+#~ msgstr "Risposta"
+
+#~ msgid "Your answer is ready. Waiting for payment confirmation."
+#~ msgstr "La tua risposta è pronta. In attesa di conferma del pagamento."
+
+#~ msgid "Answer not delivered yet."
+#~ msgstr "Risposta non ancora consegnata."
+
+#~ msgid "Answer created:"
+#~ msgstr "Risposta creata:"
+
+#~ msgid "modified:"
+#~ msgstr "modificata:"
+
+#~ msgid "Delivery complete."
+#~ msgstr "Consegna completata."
+
+#~ msgid "Satisfied with the answer? Accept and close this ticket."
+#~ msgstr "Soddisfatto della risposta? Accetta e chiudi questo ticket."
+
+#~ msgid ""
+#~ "Accept the delivery and close this "
+#~ "ticket? This action cannot be undone."
+#~ msgstr ""
+#~ "Accettare la consegna e chiudere questo"
+#~ " ticket? L'operazione non può essere "
+#~ "annullata."
+
+#~ msgid "Accept & Close"
+#~ msgstr "Accetta e chiudi"
+
+#~ msgid "Comments"
+#~ msgstr "Commenti"
+
+#~ msgid ""
+#~ "No comments yet. Use the form "
+#~ "below to start a conversation with "
+#~ "your tutor."
+#~ msgstr ""
+#~ "Nessun commento. Usa il modulo qui "
+#~ "sotto per iniziare una conversazione con"
+#~ " il tuo tutor."
+
+#~ msgid "Post comment"
+#~ msgstr "Pubblica commento"
+
+#~ msgid "Notes"
+#~ msgstr "Note"
+
+#~ msgid "Reference"
+#~ msgstr "Riferimento"
+
+#~ msgid "Question created:"
+#~ msgstr "Domanda creata:"
+
+#~ msgid "last edited:"
+#~ msgstr "ultima modifica:"
+
+#~ msgid "Write a comment..."
+#~ msgstr "Scrivi un commento..."
+
+#~ msgid "Posting..."
+#~ msgstr "Pubblicazione..."
+
+#~ msgid "Failed to post comment."
+#~ msgstr "Pubblicazione del commento fallita."
+
+#~ msgid "Network error. Please try again."
+#~ msgstr "Errore di rete. Riprova."
+
+#~ msgid "Delivery within"
+#~ msgstr "Consegna entro"
+
+#~ msgid "hours"
+#~ msgstr "ore"
+
+#~ msgid "Edit question"
+#~ msgstr "Modifica domanda"
+
+#~ msgid "Remove this document"
+#~ msgstr "Rimuovi questo documento"
+
+#~ msgid "JPG, PNG, HEIC or PDF. Max 10 MB. Replaces any existing document."
+#~ msgstr ""
+#~ "JPG, PNG, HEIC o PDF. Massimo 10"
+#~ " MB. Sostituisce qualsiasi documento "
+#~ "esistente."
+
+#~ msgid "Answer editor"
+#~ msgstr "Editor risposta"
+
+#~ msgid "Create answer"
+#~ msgstr "Crea risposta"
+
+#~ msgid "Edit answer"
+#~ msgstr "Modifica risposta"
+
+#~ msgid "Question:"
+#~ msgstr "Domanda:"
+
+#~ msgid "Deliver the answer to the student?"
+#~ msgstr "Consegnare la risposta allo studente?"
+
+#~ msgid "Deliver"
+#~ msgstr "Consegna"
+
+#~ msgid "Tutor dashboard"
+#~ msgstr "Dashboard tutor"
+
+#~ msgid "Open tickets"
+#~ msgstr "Ticket aperti"
+
+#~ msgid "View"
+#~ msgstr "Visualizza"
+
+#~ msgid "Claim"
+#~ msgstr "Richiedi"
+
+#~ msgid "No open tickets."
+#~ msgstr "Nessun ticket aperto."
+
+#~ msgid "My tickets"
+#~ msgstr "I miei ticket"
+
+#~ msgid "State"
+#~ msgstr "Stato"
+
+#~ msgid "Release"
+#~ msgstr "Rilascia"
+
+#~ msgid "No claimed tickets."
+#~ msgstr "Nessun ticket richiesto."
+
+#~ msgid "Not assigned to you"
+#~ msgstr "Non assegnato a te"
+
+#~ msgid "Answer exists (read-only)"
+#~ msgstr "Risposta esistente (sola lettura)"
+
+#~ msgid "Question (read-only)"
+#~ msgstr "Domanda (sola lettura)"
+
+#~ msgid "No comments yet."
+#~ msgstr "Nessun commento."
+
+#~ msgid "Add a comment"
+#~ msgstr "Aggiungi un commento"
+
+#~ msgid "Enrich persons"
+#~ msgstr "Arricchisci persone"
+
+#~ msgid ""
+#~ "Persons with at least one missing "
+#~ "caption. Click Generate to auto-fill "
+#~ "via AI, then review on the edit"
+#~ " page."
+#~ msgstr ""
+#~ "Persone con almeno una didascalia "
+#~ "mancante. Clicca Genera per compilarla "
+#~ "automaticamente via IA, poi verifica "
+#~ "nella pagina di modifica."
+
+#~ msgid "Caption ITA"
+#~ msgstr "Didascalia (ITA)"
+
+#~ msgid "Caption ENG"
+#~ msgstr "Didascalia (ENG)"
+
+#~ msgid "Generate"
+#~ msgstr "Genera"
+
+#~ msgid "All persons have captions."
+#~ msgstr "Tutte le persone hanno già le didascalie."
+
+#~ msgid "All available answers are already attached."
+#~ msgstr "Tutte le risposte disponibili sono già allegate."
+
+#~ msgid "Images"
+#~ msgstr "Immagini"
+
+#~ msgid "No thumbnail yet."
+#~ msgstr "Nessuna miniatura."
+

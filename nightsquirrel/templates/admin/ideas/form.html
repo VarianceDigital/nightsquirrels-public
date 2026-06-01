@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block metatags %}<title>{{ _('Admin') }} · {{ _('Idea') }} | Night Squirrels</title>{% endblock %}
+{% block ns_container %}ns-container-md{% endblock %}
+{% block contents %}
+
+<div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+  <h2 class="m-0">{{ _('Edit idea') if row else _('New idea') }}</h2>
+  <a class="btn btn-outline-secondary btn-sm"
+     href="{{ url_for('bl_ideas.admin_ideas') }}">
+    <i class="bi bi-arrow-left"></i> {{ _('Back') }}
+  </a>
+</div>
+
+<form method="post">
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-8">
+      <label class="form-label">{{ _('Title') }}</label>
+      <input class="form-control" name="idea_title" required
+             value="{{ row.idea_title if row else '' }}">
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">{{ _('Language') }}</label>
+      <select class="form-select" name="idea_lang">
+        <option value="it" {% if not row or row.idea_lang == 'it' %}selected{% endif %}>IT</option>
+        <option value="en" {% if row and row.idea_lang == 'en' %}selected{% endif %}>EN</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">{{ _('Subtitle') }}</label>
+    <input class="form-control" name="idea_subtitle"
+           value="{{ row.idea_subtitle or '' if row else '' }}">
+  </div>
+
+  <div class="mb-4">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" name="idea_is_published" id="idea_is_published"
+             {% if row and row.idea_is_published %}checked{% endif %}>
+      <label class="form-check-label" for="idea_is_published">{{ _('Published') }}</label>
+    </div>
+  </div>
+
+  <div class="d-flex gap-2">
+    <button class="btn btn-primary" type="submit">
+      <i class="bi bi-floppy"></i> {{ _('Save') }}
+    </button>
+    {% if row %}
+    <a class="btn btn-outline-secondary"
+       href="{{ url_for('bl_ideas.admin_idea_whiteboard', idea_id=row.idea_id) }}">
+      <i class="bi bi-grid-1x2"></i> {{ _('Edit whiteboard') }}
+    </a>
+    <a class="btn btn-outline-secondary"
+       href="{{ url_for('bl_ideas.admin_idea_tags', idea_id=row.idea_id) }}">
+      <i class="bi bi-tags"></i> {{ _('Tags') }}
+    </a>
+    <a class="btn btn-outline-secondary"
+       href="{{ url_for('bl_ideas.admin_idea_refs', idea_id=row.idea_id) }}">
+      <i class="bi bi-book"></i> {{ _('References') }}
+    </a>
+    <a class="btn btn-outline-secondary"
+       href="{{ url_for('bl_ideas.admin_idea_answers', idea_id=row.idea_id) }}">
+      <i class="bi bi-chat-left-text"></i> {{ _('Answers') }}
+    </a>
+    {% endif %}
+    <a class="btn btn-outline-secondary"
+       href="{{ url_for('bl_ideas.admin_ideas') }}">{{ _('Cancel') }}</a>
+  </div>
+
+</form>
+{% endblock %}

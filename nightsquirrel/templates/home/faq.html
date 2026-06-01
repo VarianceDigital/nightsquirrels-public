@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+
+{% block metatags %}
+<title>{{ _('FAQ') }} | Night Squirrels</title>
+<meta name="description" content="{{ _('Frequently asked questions about Night Squirrels — how it works, pricing, tutors, and your account.') }}">
+{% endblock %}
+
+{% block contents %}
+<div>
+    <ol class="breadcrumb small">
+        <li class="breadcrumb-item"><a href="{{url_for('bl_home.index')}}">{{ _('Home') }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ _('FAQ') }}</li>
+    </ol>
+</div>
+
+<h1>{{ _('Frequently Asked Questions') }}</h1>
+<p class="lead mb-4">{{ _('Everything you need to know before getting started.') }}</p>
+
+<div class="accordion ns-accordion" id="faqAccordion">
+
+    <!-- GROUP 1: Come funziona -->
+    <h5 class="mt-4 mb-2 text-muted">{{ _('How it works') }}</h5>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="h1">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#q1" aria-expanded="true" aria-controls="q1">
+                {{ _('How does Night Squirrels work?') }}
+            </button>
+        </h2>
+        <div id="q1" class="accordion-collapse collapse show" aria-labelledby="h1" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+                {{ _('You submit a question — with text, formulas, or an image of your exercise — and receive a personalised price quote. Once you accept the quote, a verified tutor works on your answer. You are only charged when the answer is delivered.') }}
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="h2">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q2" aria-expanded="false" aria-controls="q2">
+                {{ _('Who can use the platform?') }}
+            </button>
+        </h2>
+        <div id="q2" class="accordion-collapse collapse" aria-labelledby="h2" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+                {{ _('Any registered student. A parent or guardian can also create an account as a Payer to manage payments on the student\'s behalf.') }}
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="h3">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q3" aria-expanded="false" aria-controls="q3">
+                {{ _('What types of questions can I submit?') }}
+            </button>
+        </h2>
+        <div id="q3" class="accordion-collapse collapse" aria-labelledby="h3" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+                {{ _('You can submit exercises, concept explanations, step-by-step proofs, summaries, essays, and projects. Check the Examples page to see a completed sample for each type.') }}
+            </div>
+        </div>
+    </div>
+
+    <!-- GROUP 2: Prezzi e pagamenti -->
+    <h5 class="mt-4 mb-2 text-muted">{{ _('Pricing & payments') }}</h5>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="h4">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q4" aria-expanded="false" aria-controls="q4">
+                {{ _('How is the price calculated?') }}
+            </button>
+        </h2>
+        <div id="q4" class="accordion-collapse collapse" aria-labelledby="h4" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+                {{ _('The price is calculated automatically based on the complexity, depth, and urgency of your question. You can adjust these parameters using the sliders shown in the quote, so you always know exactly what you are choosing before confirming.') }}
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="h5">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q5" aria-expanded="false" aria-controls="q5">
+                {{ _('When am I charged?') }}
+            </button>
+        </h2>
+        <div id="q5" class="accordion-collapse collapse" aria-labelledby="h5" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+                {{ _('Payment is collected only when the answer is marked as delivered — never before. If you delete the question before delivery, no charge is made.') }}
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="h6">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q6" aria-expanded="false" aria-controls="q6">
+                {{ _('What payment methods are accepted?') }}
+            </button>
+        </h2>
+        <div id="q6" class="accordion-collapse collapse" aria-labelledby="h6" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+                {{ _('Payments are handled via PayPal. You or your Payer connect a PayPal account once, and all future charges happen automatically — no need to re-enter card details for each question.') }}
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="h7">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q7" aria-expanded="false" aria-controls="q7">
+                {{ _('Can a parent pay on my behalf?') }}
+            </button>
+        </h2>
+        <div id="q7" class="accordion-collapse collapse" aria-labelledby="h7" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+                {{ _('Yes. You can invite a parent or guardian to become your Payer. Once they connect their PayPal account, they are charged automatically whenever you accept a quote, with no further action needed from them.') }}
+            </div>
+        </div>
+    </div>
+
+    <!-- GROUP 3: Tutor e risposte -->
+    <h5 class="mt-4 mb-2 text-muted">{{ _('Tutors & answers') }}</h5>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="h8">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q8" aria-expanded="false" aria-controls="q8">
+                {{ _('Who answers my question?') }}
+            </button>
+        </h2>
+        <div id="q8" class="accordion-collapse collapse" aria-labelledby="h8" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+                {{ _('Questions are answered by verified tutors selected and managed by our team. Each question is assigned to the most suitable tutor based on subject and level.') }}
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="h9">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q9" aria-expanded="false" aria-controls="q9">
+                {{ _('Can I ask follow-up questions?') }}
+            </button>
+        </h2>
+        <div id="q9" class="accordion-collapse collapse" aria-labelledby="h9" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+                {{ _('Yes. After the answer is delivered you can exchange comments with the tutor directly in the question page, including rich text and mathematical formulas.') }}
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="h10">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q10" aria-expanded="false" aria-controls="q10">
+                {{ _('What if my question needs clarification?') }}
+            </button>
+        </h2>
+        <div id="q10" class="accordion-collapse collapse" aria-labelledby="h10" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+                {{ _('If your question is unclear or incomplete, the platform will let you know immediately with a short hint explaining what to improve. You can edit and resubmit as many times as needed before accepting a quote.') }}
+            </div>
+        </div>
+    </div>
+
+    <!-- GROUP 4: Account -->
+    <h5 class="mt-4 mb-2 text-muted">{{ _('Account') }}</h5>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="h11">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q11" aria-expanded="false" aria-controls="q11">
+                {{ _('How do I change my email address?') }}
+            </button>
+        </h2>
+        <div id="q11" class="accordion-collapse collapse" aria-labelledby="h11" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+                {{ _('You can update your email from your profile page. For security, you will receive a one-time verification link at the new address before the change takes effect.') }}
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="h12">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q12" aria-expanded="false" aria-controls="q12">
+                {{ _('Can I delete my account?') }}
+            </button>
+        </h2>
+        <div id="q12" class="accordion-collapse collapse" aria-labelledby="h12" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+                {{ _('Yes. You can delete your account from your profile page at any time. Questions that have already been paid and delivered remain in our records for accounting purposes.') }}
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="h13">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q13" aria-expanded="false" aria-controls="q13">
+                {{ _('Is my data safe?') }}
+            </button>
+        </h2>
+        <div id="q13" class="accordion-collapse collapse" aria-labelledby="h13" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+                {{ _('Yes. We never store payment card details — those are handled exclusively by PayPal. For full details on how we manage your data, see our') }}
+                <a href="{{ url_for('bl_home.privacy') }}">{{ _('Privacy Notice') }}</a>.
+            </div>
+        </div>
+    </div>
+
+</div><!-- /accordion -->
+{% endblock %}

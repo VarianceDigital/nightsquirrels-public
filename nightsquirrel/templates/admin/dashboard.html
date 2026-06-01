@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% block metatags %}<title>{{ _('Admin') }} | Night Squirrels</title>{% endblock %}
+{% block ns_container %}ns-container-wide{% endblock %}
+{% block contents %}
+
+<h2 class="mt-3 mb-4">{{ _('Admin Dashboard') }}</h2>
+
+<!-- Stat cards -->
+<div class="row g-3 mb-5">
+
+  <div class="col-sm-6 col-lg-4">
+    <a href="{{ url_for('bl_admin.questions', state=0) }}" class="text-decoration-none">
+      <div class="card h-100 border-warning">
+        <div class="card-body d-flex align-items-center gap-3">
+          <i class="bi bi-hourglass-split text-warning fs-2"></i>
+          <div>
+            <div class="fs-3 fw-bold">{{ stats.tickets_pending }}</div>
+            <div class="text-muted small">{{ _('Pending tickets') }}</div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <div class="col-sm-6 col-lg-4">
+    <a href="{{ url_for('bl_admin.questions', state=5, assigned=0) }}" class="text-decoration-none">
+      <div class="card h-100 {% if stats.tickets_unassigned %}border-danger{% endif %}">
+        <div class="card-body d-flex align-items-center gap-3">
+          <i class="bi bi-person-exclamation {% if stats.tickets_unassigned %}text-danger{% else %}text-muted{% endif %} fs-2"></i>
+          <div>
+            <div class="fs-3 fw-bold {% if stats.tickets_unassigned %}text-danger{% endif %}">{{ stats.tickets_unassigned }}</div>
+            <div class="text-muted small">{{ _('Accepted, unassigned') }}</div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <div class="col-sm-6 col-lg-4">
+    <a href="{{ url_for('bl_admin.questions', state=7) }}" class="text-decoration-none">
+      <div class="card h-100">
+        <div class="card-body d-flex align-items-center gap-3">
+          <i class="bi bi-pencil-square text-info fs-2"></i>
+          <div>
+            <div class="fs-3 fw-bold">{{ stats.tickets_in_progress }}</div>
+            <div class="text-muted small">{{ _('In progress') }}</div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <div class="col-sm-6 col-lg-4">
+    <a href="{{ url_for('bl_admin.questions', state=8) }}" class="text-decoration-none">
+      <div class="card h-100 {% if stats.tickets_pending_payment %}border-primary{% endif %}">
+        <div class="card-body d-flex align-items-center gap-3">
+          <i class="bi bi-credit-card text-primary fs-2"></i>
+          <div>
+            <div class="fs-3 fw-bold">{{ stats.tickets_pending_payment }}</div>
+            <div class="text-muted small">{{ _('Pending payment') }}</div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <div class="col-sm-6 col-lg-4">
+    <a href="{{ url_for('bl_admin.payments', status='failed') }}" class="text-decoration-none">
+      <div class="card h-100 {% if stats.payments_failed %}border-danger{% endif %}">
+        <div class="card-body d-flex align-items-center gap-3">
+          <i class="bi bi-exclamation-triangle {% if stats.payments_failed %}text-danger{% else %}text-muted{% endif %} fs-2"></i>
+          <div>
+            <div class="fs-3 fw-bold {% if stats.payments_failed %}text-danger{% endif %}">{{ stats.payments_failed }}</div>
+            <div class="text-muted small">{{ _('Failed payments') }}</div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <div class="col-sm-6 col-lg-4">
+    <a href="{{ url_for('bl_references.admin_list', review='1') }}" class="text-decoration-none">
+      <div class="card h-100 {% if stats.refs_to_review %}border-warning{% endif %}">
+        <div class="card-body d-flex align-items-center gap-3">
+          <i class="bi bi-book {% if stats.refs_to_review %}text-warning{% else %}text-muted{% endif %} fs-2"></i>
+          <div>
+            <div class="fs-3 fw-bold {% if stats.refs_to_review %}text-warning{% endif %}">{{ stats.refs_to_review }}</div>
+            <div class="text-muted small">{{ _('References to review') }}</div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+
+</div>
+
+<!-- Nav buttons -->
+<h5 class="text-muted mb-3">{{ _('Manage') }}</h5>
+<div class="row g-2">
+
+  <div class="col-6 col-md-4 col-lg-2">
+    <a href="{{ url_for('bl_admin.users') }}"
+       class="btn btn-outline-secondary w-100 d-flex flex-column align-items-center py-3 gap-1">
+      <i class="bi bi-people-fill fs-4"></i>
+      <span class="small">{{ _('Users') }}</span>
+    </a>
+  </div>
+
+  <div class="col-6 col-md-4 col-lg-2">
+    <a href="{{ url_for('bl_admin.questions') }}"
+       class="btn btn-outline-secondary w-100 d-flex flex-column align-items-center py-3 gap-1">
+      <i class="bi bi-chat-left-text-fill fs-4"></i>
+      <span class="small">{{ _('All questions') }}</span>
+    </a>
+  </div>
+
+  <div class="col-6 col-md-4 col-lg-2">
+    <a href="{{ url_for('bl_admin.payments') }}"
+       class="btn btn-outline-secondary w-100 d-flex flex-column align-items-center py-3 gap-1">
+      <i class="bi bi-credit-card-fill fs-4"></i>
+      <span class="small">{{ _('Payments') }}</span>
+    </a>
+  </div>
+
+  <div class="col-6 col-md-4 col-lg-2">
+    <a href="{{ url_for('bl_references.admin_list') }}"
+       class="btn btn-outline-secondary w-100 d-flex flex-column align-items-center py-3 gap-1">
+      <i class="bi bi-book-fill fs-4"></i>
+      <span class="small">{{ _('References') }}</span>
+    </a>
+  </div>
+
+  <div class="col-6 col-md-4 col-lg-2">
+    <a href="{{ url_for('bl_references.admin_draft_list') }}"
+       class="btn btn-outline-secondary w-100 d-flex flex-column align-items-center py-3 gap-1">
+      <i class="bi bi-upc-scan fs-4"></i>
+      <span class="small">{{ _('Book drafts') }}</span>
+    </a>
+  </div>
+
+  <div class="col-6 col-md-4 col-lg-2">
+    <a href="{{ url_for('bl_tags.admin_list') }}"
+       class="btn btn-outline-secondary w-100 d-flex flex-column align-items-center py-3 gap-1">
+      <i class="bi bi-tags-fill fs-4"></i>
+      <span class="small">{{ _('Tags') }}</span>
+    </a>
+  </div>
+
+  <div class="col-6 col-md-4 col-lg-2">
+    <a href="{{ url_for('bl_admin.rebase_utilities') }}"
+       class="btn btn-outline-secondary w-100 d-flex flex-column align-items-center py-3 gap-1">
+      <i class="bi bi-tools fs-4"></i>
+      <span class="small">{{ _('Rebase Utilities') }}</span>
+    </a>
+  </div>
+
+  <div class="col-6 col-md-4 col-lg-2">
+    <a href="{{ url_for('bl_references.admin_persons') }}"
+       class="btn btn-outline-secondary w-100 d-flex flex-column align-items-center py-3 gap-1">
+      <i class="bi bi-person-lines-fill fs-4"></i>
+      <span class="small">{{ _('Enrich people') }}</span>
+    </a>
+  </div>
+
+  <div class="col-6 col-md-4 col-lg-2">
+    <a href="{{ url_for('bl_examples.admin_examples') }}"
+       class="btn btn-outline-secondary w-100 d-flex flex-column align-items-center py-3 gap-1">
+      <i class="bi bi-journal-check fs-4"></i>
+      <span class="small">{{ _('Examples') }}</span>
+    </a>
+  </div>
+
+
+  <div class="col-6 col-md-4 col-lg-2">
+    <a href="{{ url_for('bl_ideas.admin_ideas') }}"
+       class="btn btn-outline-secondary w-100 d-flex flex-column align-items-center py-3 gap-1">
+      <i class="bi bi-lightbulb-fill fs-4"></i>
+      <span class="small">{{ _('Ideas') }}</span>
+    </a>
+  </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,94 @@
+<!-- Fixed navbar -->
+<nav class="navbar navbar-expand-md navbar-dark fixed-top shadow-sm ns-navbar">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="{{url_for('bl_home.index')}}">
+            <img src="{{url_for('static', filename='images/squirrel.svg')}}" alt="" height="30" width="41"
+                class="d-inline-block ns-navbar-logo">
+            Night Squirrels
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+                <li class="nav-item">
+                    <a class="nav-link {{mc.get('home','')}}" aria-current="page" href="{{url_for('bl_home.index')}}">{{ _('Home') }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{mc.get('examples','')}}" href="{{url_for('bl_examples.examples')}}">{{ _('Examples') }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{mc.get('library','')}}" href="{{url_for('bl_references.library')}}">{{ _('Book Wall') }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{mc.get('about','')}}" href="{{url_for('bl_home.about')}}">{{ _('About') }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{mc.get('faq','')}}" href="{{url_for('bl_home.faq')}}">{{ _('FAQ') }}</a>
+                </li>
+                <li class="nav-item d-none d-md-block">
+                    <a class="nav-link">&nbsp;|&nbsp;</a>
+                </li>
+                <li class="nav-item d-block d-md-none">
+                    <hr class="dropdown-divider">
+                </li>
+                {% if g.user_is_logged %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle {% if mc.get('userprofile') or mc.get('questions') or mc.get('my_refs') %}active{% endif %}" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="bi bi-person-circle"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><h6 class="dropdown-header">{{g.user_email}}</h6></li>
+                        <li><h6 class="dropdown-header text-muted small">({{g.user_name}})</h6></li>
+                        {% if not g.user_confirmed %}<li><h6 class="dropdown-header text-warning"><strong><i>{{ _('Please confirm subscription!') }}</i></strong></h6></li>{%endif%}
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{url_for('bl_auth.userprofile')}}">{{ _('My profile') }}</a></li>
+                        {% if g.usr_is_student %}
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{url_for('bl_question.my_questions')}}">{{ _('My questions') }}</a></li>
+                        <li><a class="dropdown-item" href="{{url_for('bl_question.new_question')}}">{{ _('New question') }}</a></li>
+                        <li><a class="dropdown-item {{mc.get('my_refs','')}}" href="{{url_for('bl_references.my_refs')}}">{{ _('My references') }}</a></li>
+                        {% endif %}
+                        {% if g.usr_is_tutor %}
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item {{mc.get('my_refs','')}}" href="{{url_for('bl_references.my_refs')}}">{{ _('My references') }}</a></li>
+                        {% endif %}
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{url_for('bl_auth.logout')}}">{{ _('Logout') }}</a></li>
+                    </ul>
+                </li>
+                    {% if current_user.is_authenticated and current_user.usr_is_admin %}
+                        <li class="nav-item">
+                            <a class="nav-link {{ mc.get('admin','') }}" href="{{ url_for('bl_admin.dashboard') }}">{{ _('Admin') }}</a>
+                        </li>
+                    {% endif %}
+                    {% if g.usr_is_tutor %}
+                        <a class="nav-link {{ mc.get('tutor','') }}" href="{{ url_for('bl_tutor.tutor_dashboard') }}">{{ _('Tutor') }}</a>
+                    {% endif %}
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link {{mc.get('login','')}}" href="{{url_for('bl_auth.login')}}">{{ _('Login') }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{mc.get('signup','')}}" href="{{url_for('bl_auth.signup')}}"><strong>{{ _('Sign up') }}</strong></a>
+                </li>
+                {%endif%}
+                <li class="nav-item d-none d-md-block">
+                    <a class="nav-link">&nbsp;|&nbsp;</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                        {% if g.lang == 'en' %}<span class="fi fi-gb"></span>{% else %}<span class="fi fi-it"></span>{% endif %}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item {% if g.lang == 'it' %}active{% endif %}"
+                               href="{{ url_for('bl_lang.set_language', lang='it') }}"><span class="fi fi-it me-2"></span>Italiano</a></li>
+                        <li><a class="dropdown-item {% if g.lang == 'en' %}active{% endif %}"
+                               href="{{ url_for('bl_lang.set_language', lang='en') }}"><span class="fi fi-gb me-2"></span>English</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

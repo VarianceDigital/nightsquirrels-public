@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block metatags %}<title>{{ _("Book Wall – Leo's Library") }} | Night Squirrels</title>{% endblock %}
+{% block ns_container %}ns-container-wide{% endblock %}
+{% block contents %}
+
+<div class="row align-items-center mt-3 mb-4">
+  <div class="col">
+    <h2 class="m-0">{{ _("Book Wall – Leo's Library") }}</h2>
+    <p class="text-muted mt-1 mb-0">{{ _('Books, papers and resources that inspire the questions we love to answer.') }}</p>
+  </div>
+  <div class="col-auto d-none d-md-block">
+    <figure class="ns-img-placeholder m-0" style="width:180px; height:240px;">
+      <i class="bi bi-image ns-placeholder-icon"></i>
+      <span class="ns-placeholder-name">leo_library.png</span>
+      <span class="ns-placeholder-dims">180 × 240 px</span>
+      <figcaption class="ns-placeholder-caption">Image TBD</figcaption>
+    </figure>
+  </div>
+</div>
+
+{% set active_tab = 'library' %}
+{% include 'incl_library_subnav.html' %}
+
+<!-- tag cloud -->
+{% if library_tags %}
+<div class="mb-4">
+  {% set max_count = library_tags[0].ref_count %}
+  {% for t in library_tags %}
+    {% if t.ref_count >= max_count * 0.66 %}{% set size = 'fs-6 fw-semibold' %}
+    {% elif t.ref_count >= max_count * 0.33 %}{% set size = 'fs-7' %}
+    {% else %}{% set size = 'fs-7 fw-light' %}
+    {% endif %}
+  <a href="{{ url_for('bl_references.tag_page', tag_id=t.tag_id) }}"
+     class="badge bg-light text-dark border text-decoration-none me-1 mb-1 {{ size }}">{{ t|localized_name('tag_name') }}</a>
+  {% endfor %}
+</div>
+{% endif %}
+
+<!-- filter bar -->
+<form id="lib-filter" class="row g-2 mb-4" method="get">
+  <div class="col-md-6">
+    <input class="form-control form-control-sm" name="q" placeholder="{{ _('Search title or person…') }}" value="{{ q or '' }}">
+    {% if crucial %}<input type="hidden" name="crucial" value="1">{% endif %}
+  </div>
+  <div class="col-md-3">
+    <select class="form-select form-select-sm" name="rtp">
+      <option value="">{{ _('All types') }}</option>
+      <option value="book"    {% if rtp_filter=='book'    %}selected{% endif %}>{{ _('Book') }}</option>
+      <option value="article" {% if rtp_filter=='article' %}selected{% endif %}>{{ _('Article') }}</option>
+      <option value="video"   {% if rtp_filter=='video'   %}selected{% endif %}>{{ _('Video') }}</option>
+      <option value="weblink" {% if rtp_filter=='weblink' %}selected{% endif %}>{{ _('Web Link') }}</option>
+    </select>
+  </div>
+  <div class="col-md-1 d-grid"><button class="btn btn-sm btn-primary">{{ _('Filter') }}</button></div>
+  <div class="col-md-1 d-grid"><a class="btn btn-sm btn-outline-secondary" href="{{ url_for('bl_references.library', crucial='1' if crucial else None) }}">{{ _('Clear') }}</a></div>
+</form>
+
+<div id="lib-results" class="row g-3">
+  {% for r in refs %}
+  <div class="col-md-6">
+    {% include 'incl_ref_card.html' %}
+  </div>
+  {% else %}
+  <div class="col-12 text-center text-muted py-5">{{ _('No references found.') }}</div>
+  {% endfor %}
+</div>
+{% if q or rtp_filter or crucial %}
+<script>
+  (function(){
+    var el = document.getElementById('lib-results');
+    window.scrollTo({top: el.offsetTop - 80, behavior: 'smooth'});
+  })();
+</script>
+{% endif %}
+{% endblock %}

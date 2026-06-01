@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% block metatags %}<title>{{ _('Book') }} — ISBN | Night Squirrels</title>{% endblock %}
+{% block ns_container %}ns-container-md{% endblock %}
+{% block contents %}
+
+<div class="d-flex justify-content-between align-items-center mt-3 mb-4">
+  <h2 class="m-0">{{ _('Book') }} — ISBN</h2>
+  <a class="btn btn-outline-secondary btn-sm" href="{{ back_url }}">{{ _('Back') }}</a>
+</div>
+
+<!-- Scanner section -->
+<div class="card mb-3">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span>{{ _('Scan barcode') }}</span>
+    <button id="btn-start-scan" class="btn btn-sm btn-outline-primary">{{ _('Start camera') }}</button>
+  </div>
+  <div class="card-body">
+    <div id="reader" style="width:100%;"></div>
+  </div>
+</div>
+
+<!-- Manual ISBN input -->
+<div class="input-group mb-3">
+  <input id="isbn-input" type="text" class="form-control"
+         placeholder="ISBN-13 or ISBN-10" inputmode="numeric">
+  <button id="btn-lookup" class="btn btn-primary">{{ _('Look up') }}</button>
+</div>
+
+<div id="lookup-status" class="text-muted small mb-3" style="min-height:1.5em;"></div>
+
+<!-- Results card (hidden until a book is found) -->
+<div id="result-card" class="card mb-4 d-none">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-auto">
+        <img id="result-cover" src="" alt="" class="rounded shadow-sm d-none"
+             style="max-height:140px;">
+      </div>
+      <div class="col">
+        <h5 id="result-title" class="mb-1"></h5>
+        <div id="result-authors" class="text-muted small mb-1"></div>
+        <div id="result-publisher" class="text-muted small mb-1"></div>
+        <div id="result-year" class="text-muted small mb-2"></div>
+        <span id="result-source" class="badge bg-secondary small"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Save draft form (hidden until a book is found) -->
+<form id="save-form" method="post" action="{{ save_url }}" class="d-none">
+  <input type="hidden" name="isbn"      id="f-isbn">
+  <input type="hidden" name="cover_url" id="f-cover-url">
+  <input type="hidden" name="raw_data"  id="f-raw-data">
+  <div class="d-grid">
+    <button type="submit" class="btn btn-success">{{ _('Save draft') }}</button>
+  </div>
+</form>
+
+<!-- html5-qrcode -->
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script>
+const LOOKUP_URL = {{ lookup_url | tojson }};
+let scanner = null;
+
+function showResult(data) {
+  document.getElementById('result-title').textContent     = data.title || '—';
+  document.getElementById('result-authors').textContent   = (data.authors || []).join(', ') || '—';
+  document.getElementById('result-publisher').textContent = data.publisher || '';
+  document.getElementById('result-year').textContent      = data.year || '';
+  document.getElementById('result-source').textContent    = data.source || '';
+
+  const cover = document.getElementById('result-cover');
+  if (data.cover_url) {
+    cover.src = data.cover_url;
+    cover.classList.remove('d-none');
+  } else {
+    cover.classList.add('d-none');
+  }
+
+  document.getElementById('f-isbn').value      = data.isbn || '';
+  document.getElementById('f-cover-url').value = data.cover_url || '';
+  document.getElementById('f-raw-data').value  = JSON.stringify(data.raw_data || {});
+
+  document.getElementById('result-card').classList.remove('d-none');
+  document.getElementById('save-form').classList.remove('d-none');
+}
+
+async function doLookup(isbn) {
+  const status = document.getElementById('lookup-status');
+  status.textContent = {{ _("Looking up…") | tojson }};
+  document.getElementById('result-card').classList.add('d-none');
+  document.getElementById('save-form').classList.add('d-none');
+
+  try {
+    const res  = await fetch(`${LOOKUP_URL}?isbn=${encodeURIComponent(isbn)}`);
+    const data = await res.json();
+    if (data.found) {
+      status.textContent = {{ _("Book found.") | tojson }};
+      showResult(data);
+    } else if (data.error) {
+      status.textContent = {{ _("API error:") | tojson }} + ' ' + data.error;
+    } else {
+      status.textContent = {{ _("No book found for this ISBN.") | tojson }};
+    }
+  } catch (e) {
+    status.textContent = {{ _("Lookup error. Check your connection.") | tojson }};
+  }
+}
+
+document.getElementById('btn-lookup').addEventListener('click', () => {
+  const isbn = document.getElementById('isbn-input').value.trim();
+  if (isbn) doLookup(isbn);
+});
+
+document.getElementById('isbn-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); document.getElementById('btn-lookup').click(); }
+});
+
+document.getElementById('btn-start-scan').addEventListener('click', function () {
+  if (scanner) return;
+  scanner = new Html5Qrcode('reader');
+  scanner.start(
+    { facingMode: 'environment' },
+    { fps: 10, qrbox: { width: 280, height: 140 } },
+    (decodedText) => {
+      scanner.stop().catch(() => {});
+      scanner = null;
+      document.getElementById('isbn-input').value = decodedText;
+      doLookup(decodedText);
+    },
+    () => {}
+  ).catch(() => {
+    document.getElementById('lookup-status').textContent =
+      {{ _("Camera not available. Please enter ISBN manually.") | tojson }};
+    scanner = null;
+  });
+  this.disabled = true;
+});
+</script>
+{% endblock %}

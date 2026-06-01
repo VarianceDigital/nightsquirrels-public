@@ -1,0 +1,814 @@
+{% extends 'base.html' %}
+
+{% block metatags %}<title>{{ row.qtn_title }} | Night Squirrels</title>{% endblock %}
+
+{% block ns_container %}ns-container-md{% endblock %}
+{% block contents %}
+
+  <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mt-3 mb-3">
+    <h2 class="m-0">{{ row.qtn_title }}</h2>
+    <div class="d-flex flex-wrap gap-2">
+      <a class="btn btn-sm btn-outline-secondary"
+         href="{{ url_for('bl_question.my_questions') }}">
+        <i class="bi bi-arrow-left"></i> {{ _('Back') }}
+      </a>
+      {% if row.qtn_is_valid and row.tkt_state in QUESTION_EDITABLE_STATES %}
+      <a class="btn btn-sm btn-outline-primary"
+         href="{{ url_for('bl_question.question_edit', qtn_id=row.qtn_id) }}">
+        <i class="bi bi-pencil"></i> {{ _('Edit') }}
+      </a>
+      {% endif %}
+      {% if row.qtn_is_valid and (not row.tkt_state or row.tkt_state < TKT_CLOSED) %}
+      <a class="btn btn-sm btn-outline-secondary"
+         href="{{ url_for('bl_references.manage_question_refs', qtn_id=row.qtn_id) }}">
+        <i class="bi bi-book"></i> {{ _('References') }}
+      </a>
+      {% endif %}
+      {% if row.qtn_is_valid and (not row.tkt_state or row.tkt_state < TKT_CLOSED) %}
+      <a class="btn btn-sm btn-outline-secondary"
+         href="{{ url_for('bl_tags.manage_question_tags', qtn_id=row.qtn_id) }}">
+        <i class="bi bi-tags"></i> {{ _('Tags') }}
+      </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="mb-3">
+    {% if row.tkt_id %}{{ row.tkt_state|tkt_state_badge }}{% endif %}
+  </div>
+
+  {% if question_tags %}
+  <div class="mb-3">
+    {% for t in question_tags %}
+    <a href="{{ url_for('bl_references.tag_page', tag_id=t.tag_id) }}"
+       class="badge bg-light text-dark border me-1 text-decoration-none">{{ t|localized_name('tag_name') }}</a>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if not row.qtn_is_valid %}
+  <div class="alert alert-secondary mb-3">
+    <strong>{{ _('Archived.') }}</strong> {{ _('This question has been cancelled and is no longer active.') }}
+  </div>
+  {% endif %}
+
+  {% if row.tkt_state == TKT_QUOTED %}
+  {# TKT_QUOTED: show price options and accept/reject #}
+  {% set payload = row.tkt_quote_payload or {} %}
+  {% set has_axes = payload.axes is defined and payload.axes|length > 0 %}
+
+  {% if has_axes %}
+  {# ---- NEW: Multi-axis slider UI ---- #}
+  <div class="card border-primary mb-3">
+    <div class="card-header bg-primary text-white">
+      {{ (payload.ui or {}).get('copy', {}).get('headline', 'Choose your plan') }}
+    </div>
+    <div class="card-body">
+      <p class="text-muted small mb-3">
+        {{ (payload.ui or {}).get('copy', {}).get('subheadline', 'Adjust speed and depth to fit your needs. You only pay if you accept.') }}
+      </p>
+
+      {# Sliders — one per axis #}
+      {% for axis in payload.axes %}
+      <div class="mb-3">
+        <label class="form-label fw-semibold">{{ axis.label }}</label>
+        <input type="range" class="form-range" id="axis_{{ axis.id }}"
+               min="0" max="{{ axis['values']|length - 1 }}" step="1" value="0">
+        <div class="d-flex justify-content-between small text-muted" id="axis_labels_{{ axis.id }}">
+          {% for v in axis['values'] %}
+            <span>{{ v.label }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+
+      {# Result card — updated by JS #}
+      <div class="card border-2 text-center p-3 mb-3" id="selectedOptionCard">
+        <div id="optBadges" class="mb-1"></div>
+        <div id="optLabel" class="fw-bold"></div>
+        <div id="optPrice" class="fs-3 my-2"></div>
+        <div id="optDelivery" class="small text-muted"></div>
+        <ul id="optFeatures" class="list-unstyled small text-start mt-2 mb-0"></ul>
+      </div>
+
+      <form method="post" action="{{ url_for('bl_question.accept_quote', qtn_id=row.qtn_id) }}" id="acceptForm">
+        <input type="hidden" name="option_id" id="hiddenOptionId" value="">
+
+        {% if row.tkt_quote_note %}
+          <p class="text-muted small mb-2">{{ row.tkt_quote_note }}</p>
+        {% endif %}
+        <p class="text-muted small mb-3">
+          {{ _('Quoted at:') }} {{ row.tkt_quoted_at.strftime('%Y-%m-%d %H:%M') if row.tkt_quoted_at else '—' }}
+        </p>
+
+        {% if not has_payer %}
+        <div class="alert alert-info mb-2">
+          <strong>{{ _('Before you can accept:') }}</strong>
+          <a href="{{ url_for('bl_payer.register_payer', next=url_for('bl_question.question_detail', qtn_id=row.qtn_id)) }}">
+            {{ _('Register a payer') }}
+          </a>
+          {{ _('(parent, guardian, or yourself).') }}
+        </div>
+        {% elif not has_vault %}
+        <div class="alert alert-warning mb-2">
+          <strong>{{ _('PayPal not connected.') }}</strong>
+          {{ _('Your payer must') }}
+          <a href="{{ url_for('bl_auth.userprofile') }}">{{ _('set up PayPal') }}</a>
+          {{ _('before you can accept a quote.') }}
+        </div>
+        {% endif %}
+
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-success"
+                  {% if not has_payer or not has_vault %}disabled{% endif %}>{{ _('Accept') }}</button>
+        </div>
+      </form>
+      <form method="post" class="mt-2"
+            action="{{ url_for('bl_question.reject_quote', qtn_id=row.qtn_id) }}"
+            data-confirm="{{ _('Are you sure you want to decline this quote?') }}">
+        <button type="submit" class="btn btn-outline-danger">{{ _('Decline') }}</button>
+      </form>
+    </div>
+  </div>
+
+  {% else %}
+  {# ---- SIMPLE: single-card display (manual / legacy quotes) ---- #}
+  <div class="card border-primary mb-3">
+    <div class="card-header bg-primary text-white">
+      {{ _('Quote for your question') }}
+    </div>
+    <div class="card-body">
+      {% if payload.options and payload.options|length > 0 %}
+        {% set opt = payload.options[0] %}
+        <p class="fs-4 mb-1">{{ "%.2f"|format(opt.price_cents / 100) }} {{ payload.currency or 'EUR' }}</p>
+        {% if opt.label %}<p class="text-muted small mb-1">{{ opt.label }}</p>{% endif %}
+      {% else %}
+        <p class="fs-4 mb-1">{{ _('Quote pending — please contact support.') }}</p>
+      {% endif %}
+
+      {% if row.tkt_quote_note %}
+        <p class="text-muted small mb-2">{{ row.tkt_quote_note }}</p>
+      {% endif %}
+      <p class="text-muted small mb-3">
+        {{ _('Quoted at:') }} {{ row.tkt_quoted_at.strftime('%Y-%m-%d %H:%M') if row.tkt_quoted_at else '—' }}
+      </p>
+
+      {% if not has_payer %}
+      <div class="alert alert-info mb-2">
+        <strong>{{ _('Before you can accept:') }}</strong>
+        <a href="{{ url_for('bl_payer.register_payer', next=url_for('bl_question.question_detail', qtn_id=row.qtn_id)) }}">
+          {{ _('Register a payer') }}
+        </a>
+        {{ _('(parent, guardian, or yourself).') }}
+      </div>
+      {% elif not has_vault %}
+      <div class="alert alert-warning mb-2">
+        <strong>{{ _('PayPal not connected.') }}</strong>
+        {{ _('Your payer must') }}
+        <a href="{{ url_for('bl_auth.userprofile') }}">{{ _('set up PayPal') }}</a>
+        {{ _('before you can accept a quote.') }}
+      </div>
+      {% endif %}
+
+      <div class="d-flex gap-2">
+        <form method="post"
+              action="{{ url_for('bl_question.accept_quote', qtn_id=row.qtn_id) }}">
+          {% if payload.options and payload.options|length > 0 %}
+            <input type="hidden" name="option_id" value="{{ payload.options[0].id }}">
+          {% endif %}
+          <button type="submit" class="btn btn-success"
+                  {% if not has_payer or not has_vault %}disabled{% endif %}>{{ _('Accept') }}</button>
+        </form>
+        <form method="post"
+              action="{{ url_for('bl_question.reject_quote', qtn_id=row.qtn_id) }}"
+              data-confirm="{{ _('Are you sure you want to decline this quote?') }}">
+          <button type="submit" class="btn btn-outline-danger">{{ _('Decline') }}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  {% elif row.tkt_state == TKT_NEEDS_CLARIFICATION %}
+  {# TKT_NEEDS_CLARIFICATION: AI found issues #}
+  <div class="card border-warning mb-3">
+    <div class="card-header bg-warning text-dark">
+      {{ _('Clarification needed') }}
+    </div>
+    <div class="card-body">
+      <p>{{ _('Our analysis found some issues with your submission:') }}</p>
+      {% if row.tkt_ai_hint %}
+        <div class="alert alert-light mb-2">{{ row.tkt_ai_hint }}</div>
+      {% endif %}
+      <p class="text-muted small mb-0">
+        {{ _('Please edit your question to fix the issues, then save to resubmit.') }}
+      </p>
+    </div>
+  </div>
+  {% elif row.tkt_state == TKT_NEEDS_REVIEW %}
+  {# TKT_NEEDS_REVIEW: custom / overflow #}
+  <div class="card border-warning mb-3">
+    <div class="card-header bg-warning text-dark">
+      {{ _('Quote under review') }}
+    </div>
+    <div class="card-body">
+      <p>{{ _('Your question requires a custom quote. An admin will review it shortly.') }}</p>
+      {% if row.tkt_quote_note %}
+        <p class="text-muted small mb-0">{{ row.tkt_quote_note }}</p>
+      {% endif %}
+    </div>
+  </div>
+  {% elif row.tkt_state == TKT_REJECTED %}
+  {# TKT_REJECTED: student declined #}
+  <div class="card border-secondary mb-3">
+    <div class="card-header bg-secondary text-white">
+      {{ _('Quote declined') }}
+    </div>
+    <div class="card-body">
+      <p class="mb-1">{{ _('You declined the quote.') }}</p>
+      <p class="mb-3">
+        {{ _('You can update your question — change the scope, add details, or simplify it — and resubmit to get a revised quote.') }}
+      </p>
+      <a href="{{ url_for('bl_question.question_edit', qtn_id=row.qtn_id) }}"
+         class="btn btn-outline-secondary">
+        {{ _('Edit your question') }} &rarr;
+      </a>
+    </div>
+  </div>
+  {% elif row.tkt_state >= TKT_ACCEPTED and row.tkt_selected_quote_cents %}
+  {# Accepted and beyond: show accepted price as info #}
+  <div class="card border-success mb-3">
+    <div class="card-header bg-success text-white">
+      {{ _('Accepted quote') }}
+    </div>
+    <div class="card-body">
+      <p class="fs-5 mb-0">
+        {{ "%.2f"|format(row.tkt_selected_quote_cents / 100) }} {{ row.tkt_currency }}
+      </p>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="card mb-3">
+    <div class="card-body">
+      <div id="viewer" class="ns-quill-bg"></div>
+    </div>
+  </div>
+
+  {% if documents %}
+  <div class="card mb-3">
+    <div class="card-header">{{ _('Attached document') }}</div>
+    <div class="card-body">
+      {% for doc in documents %}
+        {% if doc.doc_content_type.startswith('image/') %}
+          <img src="{{ s3docsurl }}{{ doc.doc_s3_key }}" alt="{{ doc.doc_filename }}"
+               class="img-fluid mw-100">
+        {% else %}
+          <a href="{{ s3docsurl }}{{ doc.doc_s3_key }}" target="_blank"
+             class="btn btn-outline-primary btn-sm">
+            {{ doc.doc_filename }} (PDF)
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if row.tkt_state == TKT_DELIVERED_PENDING_PAYMENT %}
+    <div class="card border-info mb-3">
+      <div class="card-header bg-info text-white">{{ _('Answer') }}</div>
+      <div class="card-body">
+        <p class="mb-0">{{ _('Your answer is ready. Waiting for payment confirmation.') }}</p>
+      </div>
+    </div>
+  {% elif row.ans_id and row.tkt_state >= TKT_DELIVERED %}
+    <div class="card mb-3">
+      <div class="card-header">{{ _('Answer') }}</div>
+      <div class="card-body">
+        {% if row.ans_ctx_delta_text %}
+          <div id="ans_viewer" class="ns-quill-viewer"></div>
+        {% else %}
+          <div class="alert alert-secondary mt-3">
+            {{ _('Answer not delivered yet.') }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="small text-muted mb-3">
+      {{ _('Answer created:') }} {{ row.ans_ctx_createdwhen }}
+      · {{ _('modified:') }} {{ row.ans_ctx_modifiedwhen }}
+    </div>
+
+    {% if answer_refs %}
+    <div class="card mb-3">
+      <div class="card-header">{{ _('Answer references') }}</div>
+      <div class="card-body p-0">
+        <table class="table table-sm align-middle mb-0">
+          <tbody>
+          {% for r in answer_refs %}
+          <tr>
+            <td><span class="badge bg-secondary">{{ r.rtp_name_eng }}</span></td>
+            <td class="fw-semibold">
+            <a href="{{ url_for('bl_references.ref_detail', ref_id=r.ref_id) }}"
+               class="text-decoration-none text-body">{{ r.ref_title or '—' }}</a>
+          </td>
+            <td class="small text-muted">{{ r.ref_author1_name or '' }}</td>
+            <td class="small text-muted">{{ r.ref_year or '' }}</td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endif %}
+  {% endif %}
+
+  {% if row.qtn_is_valid and row.tkt_state == TKT_DELIVERED %}
+  {# TKT_DELIVERED: student can accept and close #}
+  <div class="card border-success mb-3">
+    <div class="card-body d-flex align-items-center justify-content-between">
+      <div>
+        <strong>{{ _('Delivery complete.') }}</strong>
+        <span class="text-muted">{{ _('Satisfied with the answer? Accept and close this ticket.') }}</span>
+      </div>
+      <form method="post"
+            action="{{ url_for('bl_question.close_ticket', qtn_id=row.qtn_id) }}"
+            data-confirm="{{ _('Accept the delivery and close this ticket? This action cannot be undone.') }}">
+        <button type="submit" class="btn btn-success">{{ _('Accept & Close') }}</button>
+      </form>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if question_refs %}
+  <div class="card mb-3">
+    <div class="card-header">{{ _('References') }}</div>
+    <div class="card-body p-0">
+      <table class="table table-sm align-middle mb-0">
+        <tbody>
+        {% for r in question_refs %}
+        <tr>
+          <td><span class="badge bg-secondary">{{ r.rtp_name_eng }}</span></td>
+          <td class="fw-semibold">
+            <a href="{{ url_for('bl_references.ref_detail', ref_id=r.ref_id) }}"
+               class="text-decoration-none text-body">{{ r.ref_title or '—' }}</a>
+          </td>
+          <td class="small text-muted">{{ r.ref_author1_name or '' }}</td>
+          <td class="small text-muted">{{ r.ref_year or '' }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if row.tkt_id and row.tkt_state >= TKT_ASSIGNED %}
+  {# Comments section: visible from ASSIGNED onwards #}
+  <div class="card mb-3">
+    <div class="card-header">{{ _('Comments') }}</div>
+    <div class="card-body">
+      <div id="comments-container" style="max-height:420px;overflow-y:auto;">
+      {% if comments %}
+        {% for cmt in comments %}
+        <div class="mb-3 pb-3 {% if not loop.last %}border-bottom{% endif %}"
+             data-cmt-id="{{ cmt.cmt_id }}">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <strong class="small">{{ cmt.usr_name or cmt.usr_email }}</strong>
+            <span class="text-muted small">{{ cmt.cmt_created_at.strftime('%d %b %Y, %H:%M') }}</span>
+          </div>
+          <div id="cmt_viewer_{{ cmt.cmt_id }}" class="ns-quill-bg"></div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <p class="text-muted mb-0" id="no-comments-msg">{{ _('No comments yet. Use the form below to start a conversation with your tutor.') }}</p>
+      {% endif %}
+      </div>
+
+      {% if row.tkt_state < TKT_CLOSED %}
+      <hr>
+      <div id="comment-error" class="alert alert-danger d-none mb-2"></div>
+      <form method="post"
+            action="{{ url_for('bl_question.add_comment_student', qtn_id=row.qtn_id) }}"
+            id="commentForm">
+        <div class="mb-2">
+          <div id="comment_editor" class="ns-quill-viewer-sm"></div>
+        </div>
+        <input type="hidden" name="cmt_ctx_delta" id="cmt_ctx_delta" />
+        <input type="hidden" name="cmt_ctx_plaintext" id="cmt_ctx_plaintext" />
+        <button type="submit" class="btn btn-sm btn-primary" id="commentSubmitBtn">{{ _('Post comment') }}</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if row.qtn_notes %}
+    <div class="mb-3">
+      <h6>{{ _('Notes') }}</h6>
+      <div class="card"><div class="card-body">{{ row.qtn_notes }}</div></div>
+    </div>
+  {% endif %}
+
+  <div class="small text-muted mt-3">
+    {{ _('Question created:') }} {{ row.ctx_createdwhen }} · {{ _('last edited:') }} {{ row.ctx_modifiedwhen }}
+  </div>
+
+{% include 'incl_quill_katex.html' %}
+{% include 'incl_vault_prompt_modal.html' %}
+{% include 'incl_formula_modal.html' %}
+
+{% if pusher_key %}
+<script src="https://js.pusher.com/8.2/pusher.min.js"></script>
+{% endif %}
+
+<script>
+  window.NS_I18N = {
+    commentPlaceholder: {{ _('Write a comment...')|tojson }},
+    posting: {{ _('Posting...')|tojson }},
+    postComment: {{ _('Post comment')|tojson }},
+    emptyComment: {{ _('Cannot post an empty comment.')|tojson }},
+    failedToPost: {{ _('Failed to post comment.')|tojson }},
+    networkError: {{ _('Network error. Please try again.')|tojson }},
+    deliveryWithin: {{ _('Delivery within')|tojson }},
+    hours: {{ _('hours')|tojson }},
+  };
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    // --- Safety checks ---
+    if (!window.Quill) {
+      console.error("Quill is not loaded. Check incl_quill_katex.html includes.");
+      return;
+    }
+    if (!window.katex) {
+      console.warn("KaTeX is not loaded. Formula rendering may not work.");
+      // keep going: content will still render as text
+    }
+
+    function normalizeDelta(raw) {
+      let d = raw;
+      try {
+        if (typeof d === 'string') d = JSON.parse(d);
+      } catch (e) {
+        console.warn("Delta JSON parse failed:", e, raw);
+        return { ops: [] };
+      }
+      if (d && typeof d === 'object' && Array.isArray(d.ops)) return d;
+      return { ops: [] };
+    }
+
+    function buildReadonlyViewer(selector, rawDelta) {
+      const host = document.querySelector(selector);
+      if (!host) return null;
+
+      const q = new Quill(selector, {
+        theme: 'snow',
+        readOnly: true,
+        modules: { toolbar: false }
+      });
+
+      // Hide Quill border / spacing for "viewer" mode
+      const qlContainer = host.closest('.ql-container');
+      if (qlContainer) qlContainer.style.border = 'none';
+
+      const editorEl = host.querySelector('.ql-editor');
+      if (editorEl) {
+        editorEl.style.padding = '0';
+        editorEl.style.minHeight = '0';
+      }
+
+      // Load delta
+      const delta = normalizeDelta(rawDelta);
+      q.setContents(delta);
+
+      // Extra hardening: prevent focus / selection
+      q.enable(false);
+      q.root.setAttribute('tabindex', '-1');
+      q.root.style.cursor = 'default';
+
+      return q;
+    }
+
+    // --- Question viewer ---
+    const qDeltaRaw = {{ (row.ctx_delta_text or '{"ops":[]}') | tojson }};
+    buildReadonlyViewer('#viewer', qDeltaRaw);
+
+    // --- Answer viewer ---
+    {% if row.ans_id and row.tkt_state >= TKT_DELIVERED %}
+      const aDeltaRaw = {{ (row.ans_ctx_delta_text or '{"ops":[]}') | tojson }};
+      buildReadonlyViewer('#ans_viewer', aDeltaRaw);
+    {% endif %}
+
+    // --- Comment viewers ---
+    {% if row.tkt_id and row.tkt_state >= TKT_ASSIGNED and comments %}
+      {% for cmt in comments %}
+        buildReadonlyViewer('#cmt_viewer_{{ cmt.cmt_id }}',
+          {{ (cmt.cmt_ctx_delta_text or '{"ops":[]}') | tojson }});
+      {% endfor %}
+    {% endif %}
+
+    // --- Comment editor ---
+    {% if row.tkt_id and row.tkt_state >= TKT_ASSIGNED and row.tkt_state < TKT_CLOSED %}
+    (function() {
+      const cmtQuill = new Quill('#comment_editor', {
+        theme: 'snow',
+        placeholder: window.NS_I18N.commentPlaceholder,
+        modules: {
+          toolbar: ['bold', 'italic', 'formula']
+        }
+      });
+
+      // --- Formula modal wiring for comment editor ---
+      const modalEl = document.getElementById('formulaModal');
+      const formulaInput = document.getElementById('formulaInput');
+      const formulaPreview = document.getElementById('formulaPreview');
+      const formulaError = document.getElementById('formulaError');
+      const applyBtn = document.getElementById('formulaApplyBtn');
+      const bsModal = modalEl ? new bootstrap.Modal(modalEl) : null;
+
+      let formulaContext = { mode: 'insert', index: null };
+      let formulaApplied = false;
+      let formulaRestoreRange = null;
+
+      function restoreCaretAfterCancel() {
+        if (!formulaRestoreRange) return;
+        const y = window.scrollY;
+        try { cmtQuill.focus(); } catch (e) {}
+        try { window.scrollTo(0, y); } catch (e) {}
+        try { cmtQuill.setSelection(formulaRestoreRange.index, 0, 'silent'); } catch (e) {}
+      }
+
+      if (modalEl) {
+        modalEl.addEventListener('hidden.bs.modal', () => {
+          if (!formulaApplied) restoreCaretAfterCancel();
+          formulaApplied = false;
+          formulaRestoreRange = null;
+        });
+      }
+
+      function renderPreview(latex) {
+        formulaError.style.display = 'none';
+        formulaError.textContent = '';
+        formulaPreview.innerHTML = '';
+        if (!latex) return;
+        try {
+          if (!window.katex) throw new Error("KaTeX is not available");
+          window.katex.render(latex, formulaPreview, { throwOnError: false, displayMode: true });
+        } catch (e) {
+          formulaError.style.display = 'block';
+          formulaError.textContent = String(e);
+        }
+      }
+
+      function openFormulaModal({ latex = '', mode = 'insert', index = null }) {
+        formulaApplied = false;
+        if (mode === 'insert') {
+          const r = cmtQuill.getSelection(true) || { index: cmtQuill.getLength(), length: 0 };
+          formulaRestoreRange = { index: r.index, length: 0 };
+        } else if (mode === 'edit' && typeof index === 'number') {
+          formulaRestoreRange = { index: index + 1, length: 0 };
+        }
+        formulaContext = { mode, index };
+        formulaInput.value = latex || '';
+        renderPreview(formulaInput.value);
+        bsModal.show();
+        setTimeout(() => formulaInput.focus(), 150);
+      }
+
+      formulaInput.addEventListener('input', () => renderPreview(formulaInput.value));
+
+      applyBtn.addEventListener('click', () => {
+        const latex = (formulaInput.value || '').trim();
+        if (!latex) { bsModal.hide(); return; }
+        formulaApplied = true;
+        if (formulaContext.mode === 'insert') {
+          const range = cmtQuill.getSelection(true) || { index: cmtQuill.getLength() };
+          cmtQuill.insertEmbed(range.index, 'formula', latex, 'user');
+          cmtQuill.setSelection(range.index + 1, 0, 'silent');
+        } else if (formulaContext.mode === 'edit' && typeof formulaContext.index === 'number') {
+          cmtQuill.deleteText(formulaContext.index, 1, 'user');
+          cmtQuill.insertEmbed(formulaContext.index, 'formula', latex, 'user');
+          cmtQuill.setSelection(formulaContext.index + 1, 0, 'silent');
+        }
+        bsModal.hide();
+      });
+
+      const toolbar = cmtQuill.getModule('toolbar');
+      if (toolbar) {
+        toolbar.addHandler('formula', () => openFormulaModal({ mode: 'insert' }));
+      }
+
+      cmtQuill.root.addEventListener('click', (e) => {
+        const blot = Quill.find(e.target, true);
+        if (!blot || !blot.domNode) return;
+        const el = blot.domNode;
+        const latex = el.getAttribute && el.getAttribute('data-value');
+        if (!latex) return;
+        const index = cmtQuill.getIndex(blot);
+        if (index < 0) return;
+        openFormulaModal({ latex, mode: 'edit', index });
+      });
+
+      // --- AJAX comment submit ---
+      const cmtForm = document.getElementById('commentForm');
+      const submitBtn = document.getElementById('commentSubmitBtn');
+      const errorDiv = document.getElementById('comment-error');
+
+      cmtForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const deltaJson = JSON.stringify(cmtQuill.getContents());
+        const plaintext = cmtQuill.getText().trim();
+
+        if (!plaintext) {
+          errorDiv.textContent = window.NS_I18N.emptyComment;
+          errorDiv.classList.remove('d-none');
+          return;
+        }
+
+        errorDiv.classList.add('d-none');
+        submitBtn.disabled = true;
+        submitBtn.textContent = window.NS_I18N.posting;
+
+        const formData = new FormData();
+        formData.append('cmt_ctx_delta', deltaJson);
+        formData.append('cmt_ctx_plaintext', plaintext);
+
+        fetch(cmtForm.action, {
+          method: 'POST',
+          headers: { 'X-Requested-With': 'XMLHttpRequest' },
+          body: formData,
+        })
+        .then(r => r.json())
+        .then(data => {
+          if (data.ok) {
+            appendComment({
+              cmt_id: data.cmt_id,
+              usr_name: data.usr_name,
+              cmt_ctx_delta_text: data.cmt_ctx_delta_text,
+              cmt_created_at: data.cmt_created_at,
+            });
+            cmtQuill.setContents([{ insert: '\n' }]);
+          } else {
+            errorDiv.textContent = data.error || window.NS_I18N.failedToPost;
+            errorDiv.classList.remove('d-none');
+          }
+        })
+        .catch(() => {
+          errorDiv.textContent = window.NS_I18N.networkError;
+          errorDiv.classList.remove('d-none');
+        })
+        .finally(() => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = window.NS_I18N.postComment;
+        });
+      });
+
+      // --- Append a comment to the DOM ---
+      function appendComment({ cmt_id, usr_name, cmt_ctx_delta_text, cmt_created_at }) {
+        // Deduplication: skip if already rendered
+        if (document.querySelector(`[data-cmt-id="${cmt_id}"]`)) return;
+
+        // Remove "No comments yet" message
+        const noMsg = document.getElementById('no-comments-msg');
+        if (noMsg) noMsg.remove();
+
+        const container = document.getElementById('comments-container');
+
+        // Add border-bottom to the previous last comment
+        const prev = container.querySelector('.mb-3.pb-3:last-child');
+        if (prev && !prev.classList.contains('border-bottom')) {
+          prev.classList.add('border-bottom');
+        }
+
+        const div = document.createElement('div');
+        div.className = 'mb-3 pb-3';
+        div.setAttribute('data-cmt-id', cmt_id);
+        div.innerHTML = `
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <strong class="small">${escapeHtml(usr_name)}</strong>
+            <span class="text-muted small">${escapeHtml(cmt_created_at)}</span>
+          </div>
+          <div id="cmt_viewer_${cmt_id}" class="ns-quill-bg"></div>
+        `;
+        container.appendChild(div);
+
+        // Render Quill content in the new viewer
+        buildReadonlyViewer(`#cmt_viewer_${cmt_id}`, cmt_ctx_delta_text);
+      }
+
+      // --- Simple HTML escaper ---
+      function escapeHtml(str) {
+        const d = document.createElement('div');
+        d.textContent = str || '';
+        return d.innerHTML;
+      }
+
+      // --- Pusher subscription ---
+      {% if pusher_key and row.tkt_id %}
+      (function() {
+        const pusher = new Pusher('{{ pusher_key }}', {
+          cluster: '{{ pusher_cluster }}',
+          authEndpoint: '/pusher/auth',
+        });
+
+        const channel = pusher.subscribe('private-ticket-{{ row.tkt_id }}');
+        channel.bind('new-comment', (data) => {
+          appendComment({
+            cmt_id: data.cmt_id,
+            usr_name: data.usr_name,
+            cmt_ctx_delta_text: data.cmt_ctx_delta_text,
+            cmt_created_at: data.cmt_created_at,
+          });
+        });
+      })();
+      {% endif %}
+
+    })();
+    {% endif %}
+
+    // --- Slider configurator (multi-axis quotes) ---
+    {% if row.tkt_state == TKT_QUOTED and row.tkt_quote_payload and row.tkt_quote_payload.axes is defined and row.tkt_quote_payload.axes|length > 0 %}
+    (function() {
+      const payload = {{ row.tkt_quote_payload | tojson }};
+      const axes = payload.axes || [];
+      const options = payload.options || [];
+      const currency = payload.currency || 'EUR';
+
+      // Build lookup: option_id -> option object
+      const optionsMap = {};
+      options.forEach(o => { optionsMap[o.id] = o; });
+
+      // Build axis value arrays indexed by rank
+      const axisValues = {};
+      axes.forEach(ax => {
+        axisValues[ax.id] = ax.values.slice().sort((a, b) => a.rank - b.rank);
+      });
+
+      function buildOptionId() {
+        const parts = [];
+        axes.forEach(ax => {
+          const slider = document.getElementById('axis_' + ax.id);
+          const rank = parseInt(slider.value, 10);
+          const val = axisValues[ax.id][rank];
+          parts.push(ax.id + '_' + val.id);
+        });
+        return 'opt_' + parts.join('__');
+      }
+
+      function updateDisplay() {
+        const optId = buildOptionId();
+        const opt = optionsMap[optId];
+        if (!opt) return;
+
+        document.getElementById('hiddenOptionId').value = optId;
+        document.getElementById('optLabel').textContent = opt.label || '';
+        document.getElementById('optPrice').textContent =
+          (opt.price_cents / 100).toFixed(2) + ' ' + currency;
+
+        // Badges
+        const badgesEl = document.getElementById('optBadges');
+        badgesEl.innerHTML = '';
+        (opt.badges || []).forEach(b => {
+          const span = document.createElement('span');
+          span.className = 'badge text-bg-primary me-1';
+          span.textContent = b;
+          badgesEl.appendChild(span);
+        });
+
+        // Delivery hours
+        const delivEl = document.getElementById('optDelivery');
+        if (opt.delivery_hours) {
+          delivEl.textContent = window.NS_I18N.deliveryWithin + ' ' + opt.delivery_hours + ' ' + window.NS_I18N.hours;
+        } else {
+          delivEl.textContent = '';
+        }
+
+        // Features
+        const featEl = document.getElementById('optFeatures');
+        featEl.innerHTML = '';
+        (opt.features || []).forEach(f => {
+          const li = document.createElement('li');
+          li.textContent = f;
+          featEl.appendChild(li);
+        });
+      }
+
+      // Wire sliders
+      axes.forEach(ax => {
+        const slider = document.getElementById('axis_' + ax.id);
+        // Set default position
+        const defaultIdx = axisValues[ax.id].findIndex(v => v.id === ax.default_value_id);
+        if (defaultIdx >= 0) slider.value = defaultIdx;
+        slider.addEventListener('input', updateDisplay);
+      });
+
+      // Initial render
+      updateDisplay();
+    })();
+    {% endif %}
+  });
+</script>
+
+{% endblock %}

@@ -1,0 +1,56 @@
+
+{% extends "base.html" %}
+
+{% block metatags %}
+<title>{{ _('Sign up') }} | Night Squirrels</title>
+<meta name="description" content="{{ _('Create your Night Squirrels account to submit questions and receive expert answers.') }}">
+{% endblock %}
+
+{% block contents %}
+  <div>
+    <ol class="breadcrumb small">
+        <li class="breadcrumb-item"><a href="{{url_for('bl_home.index')}}">{{ _('Home') }}</a></li>
+        <li class="breadcrumb-item" aria-current="page">{{ _('Sign up') }}</li>
+    </ol>
+  </div>
+
+  <h1>{{ _('Sign up') }}</h1>
+
+  <section class="px-4 py-4 px-md-5 mt-4 text-center text-lg-start ns-auth-section">
+    <div class="row gx-lg-5 align-items-center">
+      <div class="col-lg-6 mb-4 mb-lg-0">
+        <figure class="ns-img-placeholder" style="height:360px;">
+          <i class="bi bi-image ns-placeholder-icon"></i>
+          <span class="ns-placeholder-name">auth_signup.png</span>
+          <span class="ns-placeholder-dims">400 × 360 px</span>
+          <figcaption class="ns-placeholder-caption">Image TBD</figcaption>
+        </figure>
+      </div>
+
+      <div class="col-lg-6 mb-5 mb-lg-0">
+        <h4 class="ns-auth-subtitle mb-4">
+          {{ _('Create your account to submit questions and get expert answers.') }}
+          {{ _('You will receive an access key via email.') }}
+        </h4>
+        <div class="card">
+          <div class="card-body py-5 px-md-5">
+            <form method="post">
+              <!-- Email input -->
+              <div class="form-outline">
+                <label class="form-label" for="email">{{ _('Email address') }}</label>
+                <input type="email" id="email" name="email" class="form-control" required />
+              </div>
+              <!-- Submit button -->
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-block mb-3 mt-4" name="btn_signup">
+                  {{ _('Sign up') }}
+                </button>
+                <p class="text-muted">{{ _('Just') }} <a href="{{url_for('bl_auth.login')}}">{{ _('login') }}</a> {{ _('if you are already registered.') }}</p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

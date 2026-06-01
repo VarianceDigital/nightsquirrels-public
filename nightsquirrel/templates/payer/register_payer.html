@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block metatags %}
+<title>{{ _('Register Payer') }} | Night Squirrels</title>
+{% endblock %}
+
+{% block ns_container %}ns-container-narrow{% endblock %}
+{% block contents %}
+
+  <div class="d-flex align-items-center justify-content-between mt-3 mb-3">
+    <h2 class="m-0">{{ _('Register a Payer') }}</h2>
+    <a class="btn btn-sm btn-outline-secondary"
+       href="{{ request.args.get('next') or url_for('bl_auth.userprofile') }}">{{ _('Back') }}</a>
+  </div>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <p class="text-muted mb-3">
+    {{ _('A payer is the person whose PayPal account will be charged when your question is answered. This can be a parent, guardian, or yourself.') }}
+  </p>
+
+  <form method="post">
+    {# --- Self-pay checkbox --- #}
+    <div class="form-check mb-3">
+      <input class="form-check-input" type="checkbox" id="is_self_pay" name="is_self_pay"
+             {% if form.get('is_self_pay') %}checked{% endif %}
+             onchange="toggleSelfPay()">
+      <label class="form-check-label" for="is_self_pay">
+        <strong>{{ _('I am the payer') }}</strong> {{ _('(I will pay with my own PayPal account)') }}
+      </label>
+    </div>
+
+    {# --- Payer details (hidden when self-pay) --- #}
+    <div id="payer_details_section">
+      <div class="mb-3">
+        <label for="payer_email" class="form-label">{{ _("Payer's email") }}</label>
+        <input type="email" class="form-control form-control-sm" id="payer_email" name="payer_email"
+               placeholder="parent@example.com"
+               value="{{ form.get('payer_email') or '' }}">
+        <div class="form-text">
+          {{ _('If this person already has an account, they will be linked directly. Otherwise, a new account will be created and credentials sent to this email.') }}
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="relationship" class="form-label">{{ _('Relationship') }}</label>
+        <select class="form-select form-select-sm" id="relationship" name="relationship">
+          <option value="parent" {% if form.get('relationship') == 'parent' or not form.get('relationship') %}selected{% endif %}>{{ _('Parent') }}</option>
+          <option value="guardian" {% if form.get('relationship') == 'guardian' %}selected{% endif %}>{{ _('Guardian') }}</option>
+          <option value="other" {% if form.get('relationship') == 'other' %}selected{% endif %}>{{ _('Other') }}</option>
+        </select>
+      </div>
+    </div>
+
+    {# --- PayPal email (always visible) --- #}
+    <div class="mb-3">
+      <label for="paypal_email" class="form-label">{{ _('PayPal email') }}</label>
+      <input type="email" class="form-control form-control-sm" id="paypal_email" name="paypal_email"
+             placeholder="paypal-account@example.com" required
+             value="{{ form.get('paypal_email') or '' }}">
+      <div class="form-text">
+        {{ _('The PayPal account that will be charged when your questions are answered.') }}
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">{{ _('Register payer') }}</button>
+  </form>
+
+<script>
+  function toggleSelfPay() {
+    var checkbox = document.getElementById('is_self_pay');
+    var section = document.getElementById('payer_details_section');
+    if (checkbox.checked) {
+      section.style.display = 'none';
+    } else {
+      section.style.display = 'block';
+    }
+  }
+  // Run on page load to set initial state
+  window.addEventListener('DOMContentLoaded', toggleSelfPay);
+</script>
+{% endblock %}

@@ -1,0 +1,68 @@
+-- ============================================================
+-- NightSquirrel — References + Tags seed
+-- ============================================================
+-- NOTE FOR PUBLIC REPO READERS
+-- ============================================================
+-- This file is intentionally left without data.
+-- In a live deployment, 9-library-seed.sql contains a full
+-- snapshot of the references library: persons, publishers,
+-- books/references, cover-image S3 keys, and tags.
+-- That content is proprietary and not distributed with the
+-- source code.
+--
+-- HOW THIS FILE IS GENERATED (the "rebase" workflow)
+-- ---------------------------------------------------
+-- The admin panel exposes a "Rebase" function backed by
+-- db_generate_library_seed() in db_admin.py.  That function
+-- queries the live database and produces a self-contained SQL
+-- script — this file — that can recreate the entire library
+-- from scratch in the correct insertion order:
+--
+--   1. tbl_r_person       (authors, editors, …)
+--   2. tbl_r_publisher
+--   3. tbl_r_reference    (books, articles, …)
+--   4. tbl_r_ref_person   (many-to-many join)
+--   5. tbl_tag            (thematic tags)
+--   6. tbl_r_ref_tag      (many-to-many join)
+--
+-- To seed your own library, replace the INSERT statements
+-- below with your own data following the structure shown in
+-- the examples, or use the admin panel to build the library
+-- interactively and then export it via the Rebase button.
+--
+-- ============================================================
+-- EXAMPLE ROWS (illustrative — not real data)
+-- ============================================================
+
+-- INSERT INTO nightsquirrel.tbl_r_person (
+--     per_id, per_firstname, per_familyname,
+--     per_caption_ita, per_caption_eng, per_strings,
+--     per_won_nobel, per_created_at, per_updated_at)
+-- OVERRIDING SYSTEM VALUE VALUES (
+--     1, 'Jane', 'Doe', 'Descrizione italiana.', 'English description.',
+--     'Jane Doe', NULL, NOW(), NOW());
+
+-- INSERT INTO nightsquirrel.tbl_r_publisher (
+--     pub_id, pub_name, pub_othername, pub_location,
+--     pub_description, pub_created_at, pub_updated_at)
+-- OVERRIDING SYSTEM VALUE VALUES (
+--     1, 'Example Press', NULL, NULL, NULL, NOW(), NOW());
+
+-- INSERT INTO nightsquirrel.tbl_r_reference (
+--     ref_id, rtp_id, usr_id, ref_bok_id, ref_art_id,
+--     ref_vid_id, ref_wlk_id, ref_cover_img_id, ref_thumbnail_img_id,
+--     ref_is_library, ref_note, ref_needs_review,
+--     ref_is_current, ref_is_recent, ref_is_crucial,
+--     ref_created_at, ref_updated_at)
+-- OVERRIDING SYSTEM VALUE VALUES (
+--     1, 1, 1, 1, NULL, NULL, NULL, NULL, NULL,
+--     true, NULL, false, false, false, false, NOW(), NOW());
+
+-- INSERT INTO nightsquirrel.tbl_r_ref_person (ref_id, per_id)
+-- VALUES (1, 1);
+
+-- INSERT INTO nightsquirrel.tbl_tag (tag_id, tag_name, tag_created_at)
+-- OVERRIDING SYSTEM VALUE VALUES (1, 'example-tag', NOW());
+
+-- INSERT INTO nightsquirrel.tbl_r_ref_tag (ref_id, tag_id)
+-- VALUES (1, 1);

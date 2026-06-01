@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+
+{% block metatags %}
+<title>Night Squirrels</title>
+<meta name="description" content="{{ _('Night Squirrels — get expert help on your homework questions with transparent pricing and secure payments.') }}">
+{% endblock %}
+
+{% block contents %}
+
+  <!-- Hero -->
+  <section class="ns-hero p-4 p-md-5 mt-4 mb-5">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <h1 class="mb-3">{{ _('Find new ideas, forge your tools, get solutions') }}</h1>
+        <p class="lead mb-4">
+          {{ _('The Night Squirrels team will answer all your questions') }}
+        </p>
+
+        {% if g.user_confirmed %}
+        {% if g.usr_is_student and not g.student_profile_complete %}
+        <div class="alert alert-info d-flex align-items-center mb-3" role="alert">
+            <i class="bi bi-mortarboard me-2 fs-5"></i>
+            <div>
+                <strong>{{ _('Complete your academic profile') }}</strong> &mdash;
+                {{ _('tell us your school type and year for faster quoting.') }}
+                <a href="{{ url_for('bl_auth.userprofile') }}#sct_id" class="alert-link">{{ _('Go to profile') }}</a>
+            </div>
+        </div>
+        {% endif %}
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <a href="{{url_for('bl_auth.userprofile')}}">
+            <img src="{{s3tileurl}}{{record['usr_tile']}}" alt="{{record['usr_name']}}"
+                 width="40" height="40" class="rounded-circle">
+          </a>
+          <span>{{ _('Welcome back,') }} <strong>{{record['usr_name']}}</strong>!</span>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+          {% if g.usr_is_student %}
+          <a class="btn btn-primary" href="{{url_for('bl_question.new_question')}}">{{ _('Ask a question') }}</a>
+          <a class="btn btn-outline-primary" href="{{url_for('bl_question.my_questions')}}">{{ _('My questions') }}</a>
+          {% endif %}
+        </div>
+
+        {% elif g.user_is_logged %}
+        <div class="alert alert-warning d-flex align-items-center" role="alert">
+          <div class="me-2">
+            <a href="{{url_for('bl_auth.userprofile')}}">
+              <img src="{{s3tileurl}}{{record['usr_tile']}}" alt="{{record['usr_name']}}" width="32" height="32">
+            </a>
+          </div>
+          <div>
+            {{ _('Welcome') }} <strong>{{record['usr_name']}}</strong>!
+            {{ _('Please confirm your email: click the link in the mail we sent you.') }}
+          </div>
+        </div>
+
+        {% else %}
+        <div class="d-flex flex-wrap gap-2">
+          <a class="btn btn-primary btn-lg" href="{{url_for('bl_auth.signup')}}">{{ _('Sign up') }}</a>
+          <a class="btn btn-outline-primary btn-lg" href="#how-it-works">{{ _('Learn how it works') }}</a>
+        </div>
+        {% endif %}
+      </div>
+      <div class="col-lg-4 text-center d-none d-lg-block">
+        <figure class="ns-img-placeholder" style="height:420px;">
+          <i class="bi bi-image ns-placeholder-icon"></i>
+          <span class="ns-placeholder-name">hero_main.png</span>
+          <span class="ns-placeholder-dims">480 × 420 px</span>
+          <figcaption class="ns-placeholder-caption">Image TBD</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section id="how-it-works" class="mb-5">
+    <h2 class="text-center mb-4">{{ _('How it works') }}</h2>
+    <div class="row g-4">
+      <div class="col-md-4 text-center">
+        <div class="mb-2"><span class="ns-step-number">1</span></div>
+        <div class="ns-step-icon mb-2"><i class="bi bi-pencil-square"></i></div>
+        <figure class="ns-img-placeholder mx-auto mb-2" style="height:160px; max-width:160px;">
+          <i class="bi bi-image ns-placeholder-icon"></i>
+          <span class="ns-placeholder-name">step_ask.png</span>
+          <span class="ns-placeholder-dims">160 × 160 px</span>
+          <figcaption class="ns-placeholder-caption">Image TBD</figcaption>
+        </figure>
+        <h5>{{ _('Ask') }}</h5>
+        <p class="text-muted">{{ _('Write your question using our rich editor. Attach a photo or PDF if needed.') }}</p>
+      </div>
+      <div class="col-md-4 text-center">
+        <div class="mb-2"><span class="ns-step-number">2</span></div>
+        <div class="ns-step-icon mb-2"><i class="bi bi-receipt"></i></div>
+        <figure class="ns-img-placeholder mx-auto mb-2" style="height:160px; max-width:160px;">
+          <i class="bi bi-image ns-placeholder-icon"></i>
+          <span class="ns-placeholder-name">step_quote.png</span>
+          <span class="ns-placeholder-dims">160 × 160 px</span>
+          <figcaption class="ns-placeholder-caption">Image TBD</figcaption>
+        </figure>
+        <h5>{{ _('Choose your quote') }}</h5>
+        <p class="text-muted">{{ _('Receive a transparent quote with options. Accept only if you\'re happy with it.') }}</p>
+      </div>
+      <div class="col-md-4 text-center">
+        <div class="mb-2"><span class="ns-step-number">3</span></div>
+        <div class="ns-step-icon mb-2"><i class="bi bi-check-circle"></i></div>
+        <figure class="ns-img-placeholder mx-auto mb-2" style="height:160px; max-width:160px;">
+          <i class="bi bi-image ns-placeholder-icon"></i>
+          <span class="ns-placeholder-name">step_answer.png</span>
+          <span class="ns-placeholder-dims">160 × 160 px</span>
+          <figcaption class="ns-placeholder-caption">Image TBD</figcaption>
+        </figure>
+        <h5>{{ _('Get your answer') }}</h5>
+        <p class="text-muted">{{ _('A verified tutor delivers your answer. Payment happens only on delivery.') }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust block -->
+  <section class="mb-5">
+    <div class="row g-3">
+      <div class="col-sm-6 col-lg-3">
+        <div class="d-flex align-items-start gap-2">
+          <i class="bi bi-shield-check ns-trust-icon flex-shrink-0"></i>
+          <div>
+            <strong>{{ _('Quoted before payment') }}</strong>
+            <p class="text-muted small mb-0">{{ _('You always know the price before you commit.') }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="d-flex align-items-start gap-2">
+          <i class="bi bi-credit-card ns-trust-icon flex-shrink-0"></i>
+          <div>
+            <strong>{{ _('Charged only on delivery') }}</strong>
+            <p class="text-muted small mb-0">{{ _('No upfront payment. You pay when the answer is ready.') }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="d-flex align-items-start gap-2">
+          <i class="bi bi-people ns-trust-icon flex-shrink-0"></i>
+          <div>
+            <strong>{{ _('Parent/guardian support') }}</strong>
+            <p class="text-muted small mb-0">{{ _('A parent or guardian can manage payments on your behalf.') }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="d-flex align-items-start gap-2">
+          <i class="bi bi-paperclip ns-trust-icon flex-shrink-0"></i>
+          <div>
+            <strong>{{ _('Attachments supported') }}</strong>
+            <p class="text-muted small mb-0">{{ _('Upload photos or PDFs of your exercise directly.') }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- For Students / For Parents -->
+  <section class="mb-5">
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title"><i class="bi bi-mortarboard me-2"></i>{{ _('For students') }}</h5>
+            <p class="card-text text-muted">
+              {{ _('Submit questions with our rich text and formula editor. Track your ticket from quote to delivery, and chat with your tutor if you need clarifications after receiving the answer.') }}
+            </p>
+            {% if not g.user_is_logged %}
+            <a href="{{url_for('bl_auth.signup')}}" class="btn btn-sm btn-outline-primary">{{ _('Get started') }}</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title"><i class="bi bi-person-check me-2"></i>{{ _('For parents') }}</h5>
+            <p class="card-text text-muted">
+              {{ _('Link your PayPal account to your child\'s profile. You stay in control — payment only happens when the answer is delivered, and you are notified before every charge.') }}
+            </p>
+            {% if g.user_confirmed %}
+              {% if payment_ok %}
+              <span class="badge text-bg-success"><i class="bi bi-check-circle me-1"></i>{{ _('Payment set up') }}</span>
+              {% else %}
+              <a href="{{url_for('bl_payer.register_payer')}}" class="btn btn-sm btn-outline-primary">{{ _('Set up payment') }}</a>
+              {% endif %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Library teaser -->
+  {% if library_preview %}
+  <section class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="m-0">{{ _("Book Wall – Leo's Library") }}</h2>
+      <a class="btn btn-outline-primary btn-sm" href="{{ url_for('bl_references.library') }}">
+        {{ _('Browse the library') }} →
+      </a>
+    </div>
+    <p class="text-muted mb-3">{{ _('Books, papers and resources that inspire the questions we love to answer.') }}</p>
+    <div class="row g-3">
+      {% for r in library_preview %}
+      <div class="col-md-6">
+        {% include 'incl_ref_card.html' %}
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Bottom CTA -->
+  <section class="text-center mb-4">
+    {% if g.user_confirmed and g.usr_is_student %}
+      <h4>{{ _('Have a question?') }}</h4>
+      <a class="btn btn-primary btn-lg" href="{{url_for('bl_question.new_question')}}">{{ _('Ask now') }}</a>
+    {% elif not g.user_is_logged %}
+      <h4>{{ _('Ready to get started?') }}</h4>
+      <a class="btn btn-primary btn-lg" href="{{url_for('bl_auth.signup')}}">{{ _('Sign up') }}</a>
+    {% endif %}
+  </section>
+
+{% endblock %}

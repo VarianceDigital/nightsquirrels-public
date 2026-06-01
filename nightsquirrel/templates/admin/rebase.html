@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block metatags %}<title>{{ _('Admin') }} · {{ _('Rebase Utilities') }} | Night Squirrels</title>{% endblock %}
+{% block ns_container %}ns-container-md{% endblock %}
+{% block contents %}
+
+<div class="d-flex justify-content-between align-items-center mt-3 mb-4">
+  <h2 class="m-0">{{ _('Rebase Utilities') }}</h2>
+  <a class="btn btn-outline-secondary btn-sm"
+     href="{{ url_for('bl_admin.dashboard') }}">
+    <i class="bi bi-arrow-left"></i> {{ _('Dashboard') }}
+  </a>
+</div>
+
+<div class="d-flex flex-column gap-3">
+
+  <div class="card">
+    <div class="card-body d-flex justify-content-between align-items-center">
+      <div>
+        <div class="fw-semibold"><i class="bi bi-database-down me-2 text-muted"></i>{{ _('Library seed') }}</div>
+        <div class="text-muted small mt-1">{{ _('Generate and download the current library data as a SQL seed file (9-library-seed.sql).') }}</div>
+      </div>
+      <a href="{{ url_for('bl_admin.generate_library_seed') }}"
+         class="btn btn-outline-secondary btn-sm ms-3 flex-shrink-0">
+        <i class="bi bi-download"></i> {{ _('Download') }}
+      </a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body d-flex justify-content-between align-items-center">
+      <div>
+        <div class="fw-semibold"><i class="bi bi-database-down me-2 text-muted"></i>{{ _('Examples seed') }}</div>
+        <div class="text-muted small mt-1">{{ _('Generate and download the current examples as a SQL seed file (11-example-seed.sql).') }}</div>
+      </div>
+      <a href="{{ url_for('bl_examples.generate_examples_seed') }}"
+         class="btn btn-outline-secondary btn-sm ms-3 flex-shrink-0">
+        <i class="bi bi-download"></i> {{ _('Download') }}
+      </a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body d-flex justify-content-between align-items-center">
+      <div>
+        <div class="fw-semibold"><i class="bi bi-file-earmark-code me-2 text-muted"></i>{{ _('Rebase SQL') }}</div>
+        <div class="text-muted small mt-1">{{ _('Concatenate all SQL scripts into a single file for a full database rebuild (nightsquirrel_seed.sql).') }}</div>
+      </div>
+      <a href="{{ url_for('bl_admin.seed_sql') }}"
+         class="btn btn-outline-secondary btn-sm ms-3 flex-shrink-0">
+        <i class="bi bi-download"></i> {{ _('Download') }}
+      </a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body d-flex justify-content-between align-items-center">
+      <div>
+        <div class="fw-semibold"><i class="bi bi-bucket me-2 text-muted"></i>{{ _('Purge S3') }}</div>
+        <div class="text-muted small mt-1">{{ _('Remove orphaned reference images from the S3 bucket.') }}</div>
+      </div>
+      <a href="{{ url_for('bl_admin.purge_ref_images_preview') }}"
+         class="btn btn-outline-warning btn-sm ms-3 flex-shrink-0">
+        <i class="bi bi-trash"></i> {{ _('Purge') }}
+      </a>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% block metatags %}<title>{{ _('Tutor dashboard') }} | Night Squirrels</title>{% endblock %}
+{% block ns_container %}ns-container-wide{% endblock %}
+{% block contents %}
+  <div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+    <h2 class="m-0">{{ _('Tutor dashboard') }}</h2>
+    <a href="{{ url_for('bl_ideas.admin_ideas') }}"
+       class="btn btn-outline-secondary btn-sm">
+      <i class="bi bi-lightbulb-fill"></i> {{ _('Ideas') }}
+    </a>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-header">{{ _('Open tickets') }}</div>
+        <div class="card-body p-0">
+          {% if open_tickets %}
+          <div class="table-responsive">
+            <table class="table table-sm table-hover mb-0">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>{{ _('Question') }}</th>
+                  <th>{{ _('Student') }}</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for t in open_tickets %}
+                <tr>
+                  <td>{{ t.tkt_id }}</td>
+                  <td>
+                    <div class="fw-semibold">{{ t.qtn_title }}</div>
+                    <div class="text-muted small">q#{{ t.qtn_id }} · {{ t.tkt_state|tkt_state_badge }}</div>
+                  </td>
+                  <td class="small">{{ t.usr_email }}</td>
+                  <td class="text-end">
+                    <div class="d-flex gap-1 justify-content-end">
+                      <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('bl_tutor.ticket_detail', tkt_id=t.tkt_id) }}"><i class="bi bi-eye"></i> {{ _('View') }}</a>
+                      <form method="post" action="{{ url_for('bl_tutor.ticket_claim', tkt_id=t.tkt_id) }}">
+                        <button class="btn btn-sm btn-outline-primary"><i class="bi bi-box-arrow-in-right"></i> {{ _('Claim') }}</button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% else %}
+            <div class="p-3 text-muted">{{ _('No open tickets.') }}</div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-header">{{ _('My tickets') }}</div>
+        <div class="card-body p-0">
+          {% if my_tickets %}
+          <div class="table-responsive">
+            <table class="table table-sm table-hover mb-0">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>{{ _('Question') }}</th>
+                  <th>{{ _('State') }}</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for t in my_tickets %}
+                <tr>
+                  <td>{{ t.tkt_id }}</td>
+                  <td>
+                    <div class="fw-semibold">{{ t.qtn_title }}</div>
+                    <div class="text-muted small">q#{{ t.qtn_id }}</div>
+                  </td>
+                  <td>{{ t.tkt_state|tkt_state_badge }}</td>
+                  <td class="text-end">
+                    <div class="d-flex gap-1 justify-content-end flex-wrap">
+                      <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('bl_tutor.ticket_detail', tkt_id=t.tkt_id) }}"><i class="bi bi-eye"></i> {{ _('View') }}</a>
+                      {% if t.tkt_state == TKT_ASSIGNED %}
+                      <form method="post" action="{{ url_for('bl_tutor.ticket_in_progress', tkt_id=t.tkt_id) }}">
+                        <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-hourglass-split"></i> {{ _('In progress') }}</button>
+                      </form>
+                      {% endif %}
+                      {% if t.tkt_state in [TKT_ASSIGNED, TKT_IN_PROGRESS] %}
+                      <form method="post" action="{{ url_for('bl_tutor.ticket_delivered', tkt_id=t.tkt_id) }}"
+                            data-confirm="{{ _('Mark this ticket as delivered?') }}">
+                        <button type="submit" class="btn btn-sm btn-outline-success"><i class="bi bi-check-circle"></i> {{ _('Delivered') }}</button>
+                      </form>
+                      <form method="post" action="{{ url_for('bl_tutor.ticket_unclaim', tkt_id=t.tkt_id) }}"
+                            data-confirm="{{ _('Release this ticket?') }}">
+                        <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-x-circle"></i> {{ _('Release') }}</button>
+                      </form>
+                      {% endif %}
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% else %}
+            <div class="p-3 text-muted">{{ _('No claimed tickets.') }}</div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

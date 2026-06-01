@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block metatags %}<title>{{ _('Admin') }} · {{ _('Publishers') }} | Night Squirrels</title>{% endblock %}
+{% block ns_container %}ns-container-md{% endblock %}
+{% block contents %}
+
+<div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+  <h2 class="m-0">{{ _('Admin') }} · {{ _('Publishers') }}</h2>
+  <div class="d-flex gap-2">
+    <a class="btn btn-primary btn-sm" href="{{ url_for('bl_references.admin_new_publisher') }}">+ {{ _('New publisher') }}</a>
+    <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('bl_references.admin_list') }}">{{ _('References') }}</a>
+  </div>
+</div>
+
+<form class="row g-2 mb-3" method="get">
+  <div class="col-md-8">
+    <input class="form-control form-control-sm" name="q" placeholder="{{ _('Search name…') }}" value="{{ q or '' }}">
+  </div>
+  <div class="col-md-2 d-grid"><button class="btn btn-sm btn-primary">{{ _('Filter') }}</button></div>
+  <div class="col-md-2 d-grid"><a class="btn btn-sm btn-outline-secondary" href="{{ url_for('bl_references.admin_publishers') }}">{{ _('Clear') }}</a></div>
+</form>
+
+<div class="table-responsive">
+  <table class="table table-sm align-middle">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>{{ _('Name') }}</th>
+        <th>{{ _('Other name') }}</th>
+        <th>{{ _('Location') }}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for r in rows %}
+      <tr>
+        <td class="text-muted small">{{ r.pub_id }}</td>
+        <td class="fw-semibold">{{ r.pub_name }}</td>
+        <td class="small text-muted">{{ r.pub_othername or '' }}</td>
+        <td class="small text-muted">{{ r.pub_location or '' }}</td>
+        <td class="text-end">
+          <a class="btn btn-sm btn-outline-primary"
+             href="{{ url_for('bl_references.admin_edit_publisher', pub_id=r.pub_id) }}">{{ _('Edit') }}</a>
+          <form method="post" class="d-inline"
+                action="{{ url_for('bl_references.admin_delete_publisher', pub_id=r.pub_id) }}">
+            <button class="btn btn-sm btn-outline-danger"
+                    data-confirm="{{ _('Delete this publisher?') }}">{{ _('Delete') }}</button>
+          </form>
+        </td>
+      </tr>
+    {% else %}
+      <tr><td colspan="5" class="text-center text-muted py-4">{{ _('No publishers found.') }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

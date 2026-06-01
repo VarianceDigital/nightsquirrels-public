@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block metatags %}<title>{{ _('My References') }} | Night Squirrels</title>{% endblock %}
+{% block ns_container %}ns-container-wide{% endblock %}
+{% block contents %}
+
+<div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+  <h2 class="m-0">{{ _('My References') }}</h2>
+  <a class="btn btn-primary btn-sm" href="{{ url_for('bl_references.my_new_choose_type') }}">+ {{ _('New reference') }}</a>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-sm align-middle">
+    <thead>
+      <tr>
+        <th>{{ _('Type') }}</th>
+        <th>{{ _('Title') }}</th>
+        <th>{{ _('Author') }}</th>
+        <th>{{ _('Year') }}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for r in refs %}
+      <tr>
+        <td><span class="badge bg-secondary">{{ r.rtp_name_eng }}</span></td>
+        <td style="width:40px;">
+          {% if r.thumbnail_s3_key %}
+          <img src="{{ images_bucket_url }}{{ r.thumbnail_s3_key }}"
+               alt="" style="height:40px; width:32px; object-fit:cover;" class="rounded">
+          {% endif %}
+        </td>
+        <td class="fw-semibold">
+          <a href="{{ url_for('bl_references.ref_detail', ref_id=r.ref_id) }}"
+             class="text-decoration-none text-body">{{ r.ref_title or '—' }}</a>
+        </td>
+        <td class="small text-muted">{{ r.ref_author1_name or '' }}</td>
+        <td class="small text-muted">{{ r.ref_year or '' }}</td>
+        <td class="text-end">
+          <a class="btn btn-sm btn-outline-primary"
+             href="{{ url_for('bl_references.my_edit_ref', ref_id=r.ref_id) }}">{{ _('Edit') }}</a>
+          <a class="btn btn-sm btn-outline-secondary"
+             href="{{ url_for('bl_tags.manage_reference_tags', ref_id=r.ref_id) }}">{{ _('Tags') }}</a>
+          <form method="post" class="d-inline"
+                action="{{ url_for('bl_references.my_delete_ref', ref_id=r.ref_id) }}">
+            <button class="btn btn-sm btn-outline-danger"
+                    data-confirm="{{ _('Delete this reference?') }}">{{ _('Delete') }}</button>
+          </form>
+        </td>
+      </tr>
+    {% else %}
+      <tr><td colspan="6" class="text-center text-muted py-4">
+        {{ _('No references yet.') }}
+        <a href="{{ url_for('bl_references.my_new_choose_type') }}">{{ _('Create your first one.') }}</a>
+      </td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

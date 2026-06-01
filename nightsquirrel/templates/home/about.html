@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block metatags %}
+<title>{{ _('About') }} | Night Squirrels</title>
+<meta name="description" content="{{ _('About Night Squirrels — how the platform works.') }}">
+{% endblock %}
+
+{% block contents %}
+    <div>
+        <ol class="breadcrumb small">
+            <li class="breadcrumb-item"><a href="{{url_for('bl_home.index')}}">{{ _('Home') }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ _('About') }}</li>
+        </ol>
+    </div>
+
+    <h1>{{ _('About Night Squirrels') }}</h1>
+    <p class="lead">{{ _('Night Squirrels helps students get expert answers to their homework questions, with transparent pricing and secure payments.') }}</p>
+    <p><strong>{{ _('How it works:') }}</strong> {{ _('submit your question, receive a clear quote, and only pay when the answer is delivered. Parents and guardians can manage payments on the student\'s behalf.') }}</p>
+    <p>{{ _('Answers are crafted by verified tutors and support rich text, formulas, and attachments.') }}</p>
+
+{% endblock %}

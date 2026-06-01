@@ -1,0 +1,67 @@
+{#
+  incl_ref_card.html — horizontal reference card partial
+  Required: r, images_bucket_url
+  Optional (set before include):
+    tags_by_ref (dict)   — omit to hide tags
+    link_author (bool)   — set false to suppress the person-page link on the author name; default true
+#}
+<div class="card h-100 flex-row overflow-hidden">
+  {% if r.thumbnail_s3_key %}
+  <div class="position-relative flex-shrink-0 bg-light" style="width:88px;">
+    <a href="{{ url_for('bl_references.ref_detail', ref_id=r.ref_id) }}" class="d-block h-100">
+      <img src="{{ images_bucket_url }}{{ r.thumbnail_s3_key }}"
+           alt="{{ r.ref_title or '' }}"
+           style="width:88px; height:100%; min-height:110px; object-fit:contain; display:block;">
+    </a>
+    <div class="position-absolute top-0 start-0 m-1 d-flex flex-column gap-1">
+      {% if r.ref_is_current %}
+      <span class="d-inline-flex align-items-center justify-content-center rounded-circle bg-dark bg-opacity-75"
+            style="width:20px;height:20px;" title="{{ _('Leo is reading this') }}">
+        <i class="bi bi-cup-hot-fill text-warning" style="font-size:0.6rem;"></i>
+      </span>
+      {% endif %}
+      {% if r.ref_is_crucial %}
+      <span class="d-inline-flex align-items-center justify-content-center rounded-circle bg-dark bg-opacity-75"
+            style="width:20px;height:20px;" title="{{ _('Crucial reference') }}">
+        <i class="bi bi-suit-heart-fill text-danger" style="font-size:0.6rem;"></i>
+      </span>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+  <div class="card-body py-2 px-3 d-flex flex-column">
+    <div>
+      <span class="badge bg-secondary" style="font-size:0.6rem;">{{ r.rtp_name_eng }}</span>
+    </div>
+    <a href="{{ url_for('bl_references.ref_detail', ref_id=r.ref_id) }}"
+       class="fw-semibold text-decoration-none text-body lh-sm mt-1 mb-1 d-block">{{ r.ref_title or '—' }}{% if r.ref_subtitle %}. <span class="fw-normal">{{ r.ref_subtitle }}</span>{% endif %}</a>
+    {% if r.ref_author1_name %}
+    <div class="small text-muted">
+      {% if r.ref_author1_per_id and (link_author is not defined or link_author) %}
+      <a href="{{ url_for('bl_references.person_page', per_id=r.ref_author1_per_id) }}"
+         class="text-muted text-decoration-none">{{ r.ref_author1_name }}</a>
+      {% else %}{{ r.ref_author1_name }}{% endif %}
+      {% if r.ref_author1_won_nobel %}
+      <i class="bi bi-award-fill text-warning ms-1"
+         title="{{ _('Nobel Prize: %(prizes)s', prizes=r.ref_author1_won_nobel) }}"
+         style="font-size:0.8em;"></i>
+      {% endif %}
+      {% if r.ref_year %}, {{ r.ref_year }}{% endif %}
+    </div>
+    {% endif %}
+    {% if r.ref_note %}
+    <p class="small mt-1 mb-0 fst-italic text-muted">{{ r.ref_note }}</p>
+    {% endif %}
+    {% if tags_by_ref is defined %}
+      {% set ref_tags = tags_by_ref.get(r.ref_id, []) %}
+      {% if ref_tags %}
+      <div class="mt-auto pt-1">
+        {% for t in ref_tags %}
+        <a href="{{ url_for('bl_references.tag_page', tag_id=t.tag_id) }}"
+           class="badge bg-light text-dark border me-1 text-decoration-none" style="font-size:0.6rem;">{{ t|localized_name('tag_name') }}</a>
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>

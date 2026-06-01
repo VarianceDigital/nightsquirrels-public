@@ -1,0 +1,323 @@
+{% extends 'base.html' %}
+{% block metatags %}<title>{{ _('Admin') }} · {{ _('Whiteboard') }} | Night Squirrels</title>{% endblock %}
+{% block ns_container %}ns-container-md{% endblock %}
+{% block contents %}
+
+<div class="d-flex justify-content-between align-items-center mt-3 mb-2">
+  <div>
+    <h2 class="m-0">{{ row.idea_title }}</h2>
+    {% if row.idea_subtitle %}
+    <p class="text-muted mb-0">{{ row.idea_subtitle }}</p>
+    {% endif %}
+  </div>
+  <div class="d-flex gap-2">
+    <a class="btn btn-outline-primary btn-sm"
+       href="{{ url_for('bl_ideas.admin_edit_idea', idea_id=row.idea_id) }}">
+      <i class="bi bi-pencil"></i> {{ _('Edit metadata') }}
+    </a>
+    <a class="btn btn-outline-secondary btn-sm"
+       href="{{ url_for('bl_ideas.admin_ideas') }}">
+      <i class="bi bi-arrow-left"></i> {{ _('Back') }}
+    </a>
+  </div>
+</div>
+
+<form method="post" id="whiteboardForm">
+
+  <div class="card mb-3">
+    <div class="card-header fw-semibold">{{ _('Whiteboard') }}</div>
+    <div class="card-body p-0">
+      <div id="wb_editor" class="ns-quill-editor-xl"></div>
+    </div>
+  </div>
+  <input type="hidden" name="idea_body_delta" id="idea_body_delta">
+
+  <div class="d-flex gap-2">
+    <button class="btn btn-primary" type="submit">
+      <i class="bi bi-floppy"></i> {{ _('Save') }}
+    </button>
+    <a class="btn btn-outline-secondary"
+       href="{{ url_for('bl_ideas.admin_ideas') }}">{{ _('Cancel') }}</a>
+  </div>
+
+</form>
+
+{% include 'incl_formula_modal.html' %}
+{% include 'incl_quill_katex.html' %}
+
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+  if (!window.Quill) { console.error("Quill not loaded"); return; }
+  if (!window.katex) { console.warn("KaTeX not loaded; formula preview may fail"); }
+
+  const TOOLBAR = [
+    [{ header: [1, 2, 3, false] }],
+    ['bold', 'italic', 'underline'],
+    [{ list: 'ordered' }, { list: 'bullet' }],
+    [{ align: [] }],
+    ['link', 'code-block', 'formula', 'image'],
+    ['clean']
+  ];
+
+  const wbQuill = new Quill('#wb_editor', { theme: 'snow', modules: { toolbar: TOOLBAR } });
+
+  // Load existing delta
+  {% if row.idea_body_delta %}
+  try {
+    let d = {{ row.idea_body_delta | tojson }};
+    if (typeof d === 'string') d = JSON.parse(d);
+    if (d && Array.isArray(d.ops)) wbQuill.setContents(d);
+  } catch(e) { console.warn('Failed to load whiteboard delta:', e); }
+  {% endif %}
+
+  // ── Formula modal plumbing ────────────────────────────────────────────────
+  const modalEl        = document.getElementById('formulaModal');
+  const formulaInput   = document.getElementById('formulaInput');
+  const formulaPreview = document.getElementById('formulaPreview');
+  const formulaError   = document.getElementById('formulaError');
+  const applyBtn       = document.getElementById('formulaApplyBtn');
+  const bsModal        = modalEl ? new bootstrap.Modal(modalEl) : null;
+
+  let formulaContext      = { mode: 'insert', index: null };
+  let formulaApplied      = false;
+  let formulaRestoreRange = null;
+
+  if (modalEl) {
+    modalEl.addEventListener('hidden.bs.modal', () => {
+      if (!formulaApplied && formulaRestoreRange) {
+        const y = window.scrollY;
+        try { wbQuill.focus(); } catch(e) {}
+        try { window.scrollTo(0, y); } catch(e) {}
+        try { wbQuill.setSelection(formulaRestoreRange.index, 0, 'silent'); } catch(e) {}
+      }
+      formulaApplied = false;
+      formulaRestoreRange = null;
+    });
+  }
+
+  function renderPreview(latex) {
+    formulaError.style.display = 'none';
+    formulaError.textContent   = '';
+    formulaPreview.innerHTML   = '';
+    if (!latex) return;
+    try {
+      if (!window.katex) throw new Error('KaTeX not available');
+      window.katex.render(latex, formulaPreview, { throwOnError: false, displayMode: true });
+    } catch(e) {
+      formulaError.style.display = 'block';
+      formulaError.textContent   = String(e);
+    }
+  }
+
+  function openFormulaModal({ latex = '', mode = 'insert', index = null }) {
+    formulaApplied = false;
+    if (mode === 'insert') {
+      const r = wbQuill.getSelection(true) || { index: wbQuill.getLength(), length: 0 };
+      formulaRestoreRange = { index: r.index, length: 0 };
+    } else if (mode === 'edit' && typeof index === 'number') {
+      formulaRestoreRange = { index: index + 1, length: 0 };
+    }
+    formulaContext = { mode, index };
+    formulaInput.value = latex || '';
+    renderPreview(formulaInput.value);
+    bsModal.show();
+    setTimeout(() => formulaInput.focus(), 150);
+  }
+
+  formulaInput.addEventListener('input', () => renderPreview(formulaInput.value));
+
+  applyBtn.addEventListener('click', () => {
+    const latex = (formulaInput.value || '').trim();
+    if (!latex) { bsModal.hide(); return; }
+    formulaApplied = true;
+    if (formulaContext.mode === 'insert') {
+      const range = wbQuill.getSelection(true) || { index: wbQuill.getLength() };
+      wbQuill.insertEmbed(range.index, 'formula', latex, 'user');
+      wbQuill.setSelection(range.index + 1, 0, 'silent');
+    } else if (formulaContext.mode === 'edit' && typeof formulaContext.index === 'number') {
+      wbQuill.deleteText(formulaContext.index, 1, 'user');
+      wbQuill.insertEmbed(formulaContext.index, 'formula', latex, 'user');
+      wbQuill.setSelection(formulaContext.index + 1, 0, 'silent');
+    }
+    bsModal.hide();
+  });
+
+  const tb = wbQuill.getModule('toolbar');
+  if (tb) tb.addHandler('formula', () => openFormulaModal({ mode: 'insert' }));
+
+  wbQuill.root.addEventListener('click', (e) => {
+    const blot  = Quill.find(e.target, true);
+    if (!blot || !blot.domNode) return;
+    const latex = blot.domNode.getAttribute && blot.domNode.getAttribute('data-value');
+    if (!latex) return;
+    const index = wbQuill.getIndex(blot);
+    if (index < 0) return;
+    openFormulaModal({ latex, mode: 'edit', index });
+  });
+
+  // ── Image upload + resize ─────────────────────────────────────────────────
+  const UPLOAD_URL = {{ url_for('bl_question.upload_image') | tojson }};
+  const MAX_PX     = 1200;
+  const MAX_BYTES  = 5 * 1024 * 1024;
+
+  async function resizeAndUpload(file) {
+    if (file.size > MAX_BYTES) throw new Error('Image too large (max 5 MB)');
+    return new Promise((resolve, reject) => {
+      const img  = new Image();
+      const bUrl = URL.createObjectURL(file);
+      img.onload = () => {
+        URL.revokeObjectURL(bUrl);
+        let w = img.naturalWidth, h = img.naturalHeight;
+        if (w > MAX_PX || h > MAX_PX) {
+          const s = Math.min(MAX_PX / w, MAX_PX / h);
+          w = Math.round(w * s); h = Math.round(h * s);
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        const mime = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+        const qual = mime === 'image/jpeg' ? 0.88 : undefined;
+        const name = mime === 'image/png'  ? 'image.png' : 'image.jpg';
+        canvas.toBlob(async (blob) => {
+          const fd = new FormData();
+          fd.append('image', blob, name);
+          try {
+            const res = await fetch(UPLOAD_URL, { method: 'POST', body: fd });
+            if (!res.ok) throw new Error('Upload failed (' + res.status + ')');
+            const data = await res.json();
+            if (data.error) throw new Error(data.error);
+            resolve(data.url);
+          } catch(e) { reject(e); }
+        }, mime, qual);
+      };
+      img.onerror = () => { URL.revokeObjectURL(bUrl); reject(new Error('Could not load image')); };
+      img.src = bUrl;
+    });
+  }
+
+  async function uploadAndInsert(file, index) {
+    try {
+      const url = await resizeAndUpload(file);
+      wbQuill.insertEmbed(index, 'image', url, 'user');
+      wbQuill.setSelection(index + 1, 0, 'silent');
+    } catch(err) { console.error('Image upload failed:', err); }
+  }
+
+  if (tb) {
+    tb.addHandler('image', () => {
+      const inp = document.createElement('input');
+      inp.type = 'file';
+      inp.accept = 'image/jpeg,image/png,image/gif,image/webp';
+      inp.onchange = async () => {
+        const file = inp.files[0];
+        if (!file) return;
+        const range = wbQuill.getSelection(true) || { index: wbQuill.getLength() };
+        await uploadAndInsert(file, range.index);
+      };
+      inp.click();
+    });
+  }
+
+  wbQuill.root.addEventListener('paste', async (e) => {
+    const imgItem = Array.from(e.clipboardData?.items || [])
+                         .find(it => it.type.startsWith('image/'));
+    if (!imgItem) return;
+    e.stopImmediatePropagation();
+    e.preventDefault();
+    const file = imgItem.getAsFile();
+    if (!file) return;
+    const range = wbQuill.getSelection(true) || { index: wbQuill.getLength() };
+    await uploadAndInsert(file, range.index);
+  }, true);
+
+  wbQuill.root.addEventListener('dragover', (e) => e.preventDefault());
+  wbQuill.root.addEventListener('drop', async (e) => {
+    const file = Array.from(e.dataTransfer?.files || [])
+                     .find(f => f.type.startsWith('image/'));
+    if (!file) return;
+    e.preventDefault();
+    const range = wbQuill.getSelection() || { index: wbQuill.getLength() };
+    await uploadAndInsert(file, range.index);
+  });
+
+  wbQuill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
+    delta.ops = delta.ops.filter(op =>
+      !(op.insert && op.insert.image && String(op.insert.image).startsWith('data:'))
+    );
+    return delta;
+  });
+
+  // Image resize handle
+  (function () {
+    const container = wbQuill.root.parentElement;
+    const overlay   = document.createElement('div');
+    overlay.style.cssText = 'position:absolute;pointer-events:none;display:none;' +
+                            'border:2px solid #0d6efd;box-sizing:border-box;z-index:100;';
+    const handle = document.createElement('div');
+    handle.title = 'Drag to resize';
+    handle.style.cssText = 'position:absolute;right:-5px;bottom:-5px;width:10px;height:10px;' +
+                           'background:#0d6efd;cursor:se-resize;pointer-events:all;border-radius:2px;';
+    overlay.appendChild(handle);
+    container.appendChild(overlay);
+
+    let activeImg = null, drag = null;
+
+    function positionOverlay(img) {
+      const cRect = container.getBoundingClientRect();
+      const iRect = img.getBoundingClientRect();
+      overlay.style.left   = (iRect.left - cRect.left + wbQuill.root.scrollLeft) + 'px';
+      overlay.style.top    = (iRect.top  - cRect.top  + wbQuill.root.scrollTop)  + 'px';
+      overlay.style.width  = iRect.width  + 'px';
+      overlay.style.height = iRect.height + 'px';
+      overlay.style.display = 'block';
+    }
+
+    wbQuill.root.addEventListener('click', (e) => {
+      if (e.target.tagName === 'IMG') { activeImg = e.target; positionOverlay(e.target); }
+      else { overlay.style.display = 'none'; activeImg = null; }
+    });
+    document.addEventListener('click', (e) => {
+      if (!container.contains(e.target)) { overlay.style.display = 'none'; activeImg = null; }
+    });
+    wbQuill.on('text-change', () => {
+      if (!activeImg) return;
+      if (!wbQuill.root.contains(activeImg)) { overlay.style.display = 'none'; activeImg = null; }
+      else positionOverlay(activeImg);
+    });
+
+    handle.addEventListener('mousedown', (e) => {
+      e.preventDefault(); e.stopPropagation();
+      if (!activeImg) return;
+      drag = { startX: e.clientX, startW: activeImg.getBoundingClientRect().width };
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup',   onUp);
+    });
+
+    function onMove(e) {
+      if (!drag || !activeImg) return;
+      activeImg.setAttribute('width', Math.max(40, Math.round(drag.startW + (e.clientX - drag.startX))));
+      positionOverlay(activeImg);
+    }
+
+    function onUp() {
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup',   onUp);
+      if (!drag || !activeImg) { drag = null; return; }
+      const finalW = Math.round(activeImg.getBoundingClientRect().width);
+      const blot   = Quill.find(activeImg, true);
+      if (blot) {
+        const idx = wbQuill.getIndex(blot);
+        if (idx >= 0) wbQuill.formatText(idx, 1, { width: String(finalW) }, 'user');
+      }
+      drag = null;
+      positionOverlay(activeImg);
+    }
+  }());
+
+  // ── Form submit ───────────────────────────────────────────────────────────
+  document.getElementById('whiteboardForm').addEventListener('submit', () => {
+    document.getElementById('idea_body_delta').value = JSON.stringify(wbQuill.getContents());
+  });
+});
+</script>
+{% endblock %}

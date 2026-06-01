@@ -1,0 +1,109 @@
+{#
+  incl_quill_image_upload.html
+  Inline image upload for Quill editors.
+  Include this INSIDE a DOMContentLoaded handler, after `quill` is defined.
+  Handles: toolbar button, clipboard paste, drag & drop.
+  Images are resized client-side to ≤1200 px, converted to JPEG, uploaded to S3.
+  base64 embeds are blocked at every entry point.
+#}
+    // === Inline image upload ===
+    (function () {
+      const UPLOAD_URL = {{ url_for('bl_question.upload_image') | tojson }};
+      const MAX_PX     = 1200;
+      const MAX_BYTES  = 5 * 1024 * 1024; // 5 MB
+
+      async function resizeAndUpload(file) {
+        if (file.size > MAX_BYTES) throw new Error('Image too large (max 5 MB)');
+        return new Promise((resolve, reject) => {
+          const img  = new Image();
+          const bUrl = URL.createObjectURL(file);
+          img.onload = () => {
+            URL.revokeObjectURL(bUrl);
+            let w = img.naturalWidth, h = img.naturalHeight;
+            if (w > MAX_PX || h > MAX_PX) {
+              const s = Math.min(MAX_PX / w, MAX_PX / h);
+              w = Math.round(w * s); h = Math.round(h * s);
+            }
+            const canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+            // Preserve PNG for images that likely have transparency; JPEG for everything else
+            const mime = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+            const q    = mime === 'image/jpeg' ? 0.88 : undefined;
+            const name = mime === 'image/png'  ? 'image.png' : 'image.jpg';
+            canvas.toBlob(async (blob) => {
+              const fd = new FormData();
+              fd.append('image', blob, name);
+              try {
+                const res = await fetch(UPLOAD_URL, { method: 'POST', body: fd });
+                if (!res.ok) throw new Error('Upload failed (' + res.status + ')');
+                const data = await res.json();
+                if (data.error) throw new Error(data.error);
+                resolve(data.url);
+              } catch (e) { reject(e); }
+            }, mime, q);
+          };
+          img.onerror = () => { URL.revokeObjectURL(bUrl); reject(new Error('Could not load image')); };
+          img.src = bUrl;
+        });
+      }
+
+      async function uploadAndInsert(file, index) {
+        try {
+          const url = await resizeAndUpload(file);
+          quill.insertEmbed(index, 'image', url, 'user');
+          quill.setSelection(index + 1, 0, 'silent');
+        } catch (err) {
+          console.error('Image upload failed:', err);
+        }
+      }
+
+      // Toolbar image button — override default (which would insert base64)
+      const tb = quill.getModule('toolbar');
+      if (tb) {
+        tb.addHandler('image', () => {
+          const inp = document.createElement('input');
+          inp.type = 'file';
+          inp.accept = 'image/jpeg,image/png,image/gif,image/webp';
+          inp.onchange = async () => {
+            const file = inp.files[0];
+            if (!file) return;
+            const range = quill.getSelection(true) || { index: quill.getLength() };
+            await uploadAndInsert(file, range.index);
+          };
+          inp.click();
+        });
+      }
+
+      // Clipboard paste — capture phase so we run before Quill's own paste module
+      quill.root.addEventListener('paste', async (e) => {
+        const imgItem = Array.from(e.clipboardData?.items || [])
+                             .find(it => it.type.startsWith('image/'));
+        if (!imgItem) return; // text-only paste — let Quill handle it normally
+        e.stopImmediatePropagation();
+        e.preventDefault();
+        const file = imgItem.getAsFile();
+        if (!file) return;
+        const range = quill.getSelection(true) || { index: quill.getLength() };
+        await uploadAndInsert(file, range.index);
+      }, true); // capture phase
+
+      // Drag & drop
+      quill.root.addEventListener('dragover', (e) => e.preventDefault());
+      quill.root.addEventListener('drop', async (e) => {
+        const file = Array.from(e.dataTransfer?.files || [])
+                         .find(f => f.type.startsWith('image/'));
+        if (!file) return;
+        e.preventDefault();
+        const range = quill.getSelection() || { index: quill.getLength() };
+        await uploadAndInsert(file, range.index);
+      });
+
+      // Safety net: strip any base64 image that Quill's clipboard module might produce
+      quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
+        delta.ops = delta.ops.filter(op =>
+          !(op.insert && op.insert.image && String(op.insert.image).startsWith('data:'))
+        );
+        return delta;
+      });
+    }());

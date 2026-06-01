@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block metatags %}<title>{{ _('Tags') }} · {{ rrow.ref_title or ref_id }} | Night Squirrels</title>{% endblock %}
+{% block ns_container %}ns-container-md{% endblock %}
+{% block contents %}
+
+<div class="d-flex justify-content-between align-items-center mt-3 mb-4">
+  <h2 class="m-0">{{ _('Reference tags') }}</h2>
+  <a class="btn btn-outline-secondary btn-sm" href="{{ back_url }}">{{ _('Back') }}</a>
+</div>
+
+<p class="text-muted mb-4">{{ rrow.ref_title or '—' }}</p>
+
+<div class="card mb-4">
+  <div class="card-header">{{ _('Attached tags') }}</div>
+  <div class="card-body">
+    {% if attached %}
+    <div class="d-flex flex-wrap gap-2">
+      {% for t in attached %}
+      <form method="post"
+            action="{{ url_for('bl_tags.detach_reference_tag', ref_id=ref_id, tag_id=t.tag_id) }}"
+            class="d-inline">
+        <button type="submit" class="btn btn-sm btn-secondary">
+          {{ t|localized_name('tag_name') }} &times;
+        </button>
+      </form>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-muted mb-0 small">{{ _('No tags attached yet.') }}</p>
+    {% endif %}
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header d-flex align-items-center gap-2">
+    <span class="me-auto">{{ _('Add a tag') }}</span>
+    {% if available %}
+    <input id="tagFilter" type="search" class="form-control form-control-sm w-auto"
+           placeholder="{{ _('Search…') }}" autocomplete="off">
+    {% endif %}
+    {% if g.usr_is_admin %}
+    <a class="btn btn-sm btn-outline-success"
+       href="{{ url_for('bl_tags.admin_new_tag', attach_ref=ref_id) }}">+ {{ _('New tag') }}</a>
+    {% endif %}
+  </div>
+  {% if available %}
+  <div class="card-body p-0">
+    <table class="table table-sm align-middle mb-0" id="tagTable">
+      <tbody>
+      {% for t in available %}
+      <tr>
+        <td class="fw-semibold">{{ t|localized_name('tag_name') }}</td>
+        <td class="text-muted small">{{ t.tag_name_eng }}</td>
+        <td class="small text-muted">{{ t.tag_type or '' }}</td>
+        <td class="text-end">
+          <form method="post"
+                action="{{ url_for('bl_tags.attach_reference_tag', ref_id=ref_id, tag_id=t.tag_id) }}">
+            <button type="submit" class="btn btn-sm btn-outline-primary">+ {{ _('Add') }}</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+      <tr id="tagNoResults" class="d-none">
+        <td colspan="4" class="text-center text-muted py-3 small">{{ _('No tags match your search.') }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="card-body">
+    <p class="text-muted mb-0 small">{{ _('All available tags are already attached.') }}</p>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+(function () {
+  const input = document.getElementById('tagFilter');
+  if (!input) return;
+  input.addEventListener('input', function () {
+    const q = this.value.toLowerCase();
+    let visible = 0;
+    document.querySelectorAll('#tagTable tbody tr:not(#tagNoResults)').forEach(function (row) {
+      const match = row.textContent.toLowerCase().includes(q);
+      row.classList.toggle('d-none', !match);
+      if (match) visible++;
+    });
+    document.getElementById('tagNoResults').classList.toggle('d-none', visible > 0);
+  });
+  input.focus();
+})();
+</script>
+
+{% endblock %}

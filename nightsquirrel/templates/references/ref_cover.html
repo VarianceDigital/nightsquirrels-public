@@ -1,0 +1,226 @@
+{% extends 'base.html' %}
+{% block metatags %}<title>{{ ref.ref_title or _('Reference') }} · {{ _('Cover') }} | Night Squirrels</title>{% endblock %}
+{% block ns_container %}ns-container-md{% endblock %}
+{% block contents %}
+
+<div class="d-flex justify-content-between align-items-center mt-3 mb-4">
+  <div>
+    <h2 class="m-0">{{ _('Manage Cover') }}</h2>
+    <p class="text-muted mb-0 mt-1 small">{{ ref.ref_title or '—' }}</p>
+  </div>
+  <a class="btn btn-outline-secondary btn-sm" href="{{ back_url }}">
+    <i class="bi bi-arrow-left"></i> {{ _('Back') }}
+  </a>
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+  <div class="alert alert-{{ category }} alert-dismissible fade show">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+  {% endfor %}
+{% endwith %}
+
+{# ── Current cover ─────────────────────────────────────────────────────────── #}
+<div class="card mb-4">
+  <div class="card-header fw-semibold">{{ _('Current cover') }}</div>
+  <div class="card-body">
+    {% if fks.ref_cover_img_id %}
+    <div class="d-flex flex-wrap gap-4 mb-3">
+      <div>
+        <p class="text-muted small mb-1">{{ _('Cover') }}</p>
+        <img src="{{ images_bucket_url }}{{ ref.cover_s3_key }}"
+             class="img-thumbnail" style="max-height:220px" alt="{{ _('Cover') }}">
+      </div>
+      {% if fks.ref_thumbnail_img_id %}
+      <div>
+        <p class="text-muted small mb-1">{{ _('Thumbnail') }}</p>
+        <img src="{{ images_bucket_url }}{{ ref.thumbnail_s3_key }}"
+             class="img-thumbnail" style="max-height:220px" alt="{{ _('Thumbnail') }}">
+      </div>
+      {% endif %}
+    </div>
+    <form method="post" action="{{ delete_url }}">
+      <input type="hidden" name="next" value="{{ back_url }}">
+      <button class="btn btn-outline-danger btn-sm"
+              onclick="return confirm({{ _('Remove cover and thumbnail?')|tojson }})">
+        <i class="bi bi-trash"></i> {{ _('Remove cover') }}
+      </button>
+    </form>
+    {% else %}
+    <p class="text-muted mb-0">{{ _('No cover image yet.') }}</p>
+    {% endif %}
+  </div>
+</div>
+
+{# ── Upload cover (+ auto-thumb) ───────────────────────────────────────────── #}
+<div class="card mb-4">
+  <div class="card-header fw-semibold">
+    {% if fks.ref_cover_img_id %}{{ _('Replace cover') }}{% else %}{{ _('Upload cover') }}{% endif %}
+  </div>
+  <div class="card-body">
+    <p class="text-muted small mb-3">{{ _('Select an image from disk. You can crop and rotate it before uploading. The thumbnail will be generated automatically.') }}</p>
+    <div id="cover-preview-wrap" class="mb-3 d-none">
+      <img id="cover-preview" src="" alt=""
+           style="max-height:200px;border-radius:4px;border:1px solid #dee2e6">
+    </div>
+    <div class="input-group">
+      <input type="file" id="cover-file-input" accept="image/jpeg,image/png,image/webp" class="form-control">
+      <button class="btn btn-primary" id="cover-upload-btn" disabled>
+        <i class="bi bi-cloud-upload me-1"></i>{{ _('Upload') }}
+      </button>
+    </div>
+  </div>
+</div>
+
+{# ── Advanced: thumbnail only ──────────────────────────────────────────────── #}
+<div class="accordion mb-4" id="advancedAccordion">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed py-2" type="button"
+              data-bs-toggle="collapse" data-bs-target="#thumbSection"
+              aria-expanded="false" aria-controls="thumbSection">
+        <span class="small">{{ _('Advanced: replace thumbnail only') }}</span>
+      </button>
+    </h2>
+    <div id="thumbSection" class="accordion-collapse collapse" data-bs-parent="#advancedAccordion">
+      <div class="accordion-body">
+        <p class="text-muted small mb-3">{{ _('Use this only if the auto-generated thumbnail does not look right (e.g. wrong crop area). The cover image is not affected.') }}</p>
+        <div id="thumb-preview-wrap" class="mb-3 d-none">
+          <img id="thumb-preview" src="" alt=""
+               style="max-height:200px;border-radius:4px;border:1px solid #dee2e6">
+        </div>
+        <div class="input-group">
+          <input type="file" id="thumb-file-input" accept="image/jpeg,image/png,image/webp" class="form-control">
+          <button class="btn btn-outline-secondary" id="thumb-upload-btn" disabled>
+            <i class="bi bi-cloud-upload me-1"></i>{{ _('Upload thumbnail') }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{# ── Crop modal (shared for cover + thumb) ─────────────────────────────────── #}
+<div class="modal fade" id="cropModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header py-2">
+        <h6 class="modal-title mb-0">{{ _('Crop & Rotate') }}</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-1" style="max-height:65vh;overflow:hidden;background:#222">
+        <img id="cropImg" src="" style="display:block;max-width:100%;max-height:60vh;margin:auto">
+      </div>
+      <div class="modal-footer py-2 justify-content-between">
+        <div class="d-flex gap-2">
+          <button type="button" class="btn btn-outline-secondary btn-sm" id="cropRotateLeft">↺ {{ _('Rotate left') }}</button>
+          <button type="button" class="btn btn-outline-secondary btn-sm" id="cropRotateRight">↻ {{ _('Rotate right') }}</button>
+        </div>
+        <div class="d-flex gap-2">
+          <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">{{ _('Cancel') }}</button>
+          <button type="button" class="btn btn-primary btn-sm" id="cropApplyBtn">{{ _('Apply') }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+
+<script>
+window.addEventListener('DOMContentLoaded', function () {
+(function () {
+  const URLS = {
+    cover: {{ upload_url       | tojson }},
+    thumb: {{ upload_thumb_url | tojson }},
+  };
+
+  let activeSlot = null;
+  let cropper    = null;
+  let blobs      = { cover: null, thumb: null };
+
+  const cropImg     = document.getElementById('cropImg');
+  const cropModalEl = document.getElementById('cropModal');
+  const bsModal     = new bootstrap.Modal(cropModalEl);
+
+  function slotEls(name) {
+    return {
+      fileInput:   document.getElementById(name + '-file-input'),
+      uploadBtn:   document.getElementById(name + '-upload-btn'),
+      previewWrap: document.getElementById(name + '-preview-wrap'),
+      previewImg:  document.getElementById(name + '-preview'),
+    };
+  }
+
+  ['cover', 'thumb'].forEach(name => {
+    const s = slotEls(name);
+
+    s.fileInput.addEventListener('change', () => {
+      const file = s.fileInput.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        activeSlot  = name;
+        cropImg.src = e.target.result;
+        bsModal.show();
+      };
+      reader.readAsDataURL(file);
+    });
+
+    s.uploadBtn.addEventListener('click', async () => {
+      const blob = blobs[name];
+      if (!blob) return;
+      s.uploadBtn.disabled = true;
+      s.uploadBtn.textContent = '…';
+      const fd = new FormData();
+      fd.append('image', blob, name + '.jpg');
+      try {
+        const res = await fetch(URLS[name], { method: 'POST', body: fd });
+        if (res.ok) {
+          window.location.reload();
+        } else {
+          nsAlert({{ _('Upload failed.')|tojson }});
+          s.uploadBtn.disabled = false;
+          s.uploadBtn.textContent = {{ _('Upload')|tojson }};
+        }
+      } catch {
+        nsAlert({{ _('Network error. Please try again.')|tojson }});
+        s.uploadBtn.disabled = false;
+        s.uploadBtn.textContent = {{ _('Upload')|tojson }};
+      }
+    });
+  });
+
+  cropModalEl.addEventListener('shown.bs.modal', () => {
+    if (cropper) { cropper.destroy(); cropper = null; }
+    cropper = new Cropper(cropImg, { viewMode: 1, autoCropArea: 1, responsive: true, background: false });
+  });
+
+  cropModalEl.addEventListener('hidden.bs.modal', () => {
+    if (activeSlot && !blobs[activeSlot]) {
+      slotEls(activeSlot).fileInput.value = '';
+    }
+  });
+
+  document.getElementById('cropRotateLeft').addEventListener('click',  () => cropper?.rotate(-90));
+  document.getElementById('cropRotateRight').addEventListener('click', () => cropper?.rotate(90));
+
+  document.getElementById('cropApplyBtn').addEventListener('click', () => {
+    if (!cropper || !activeSlot) return;
+    cropper.getCroppedCanvas({ maxWidth: 2048, maxHeight: 2048 }).toBlob(blob => {
+      blobs[activeSlot] = blob;
+      const s = slotEls(activeSlot);
+      s.previewImg.src = URL.createObjectURL(blob);
+      s.previewWrap.classList.remove('d-none');
+      s.uploadBtn.disabled = false;
+      bsModal.hide();
+    }, 'image/jpeg', 0.92);
+  });
+}());
+});
+</script>
+
+{% endblock %}

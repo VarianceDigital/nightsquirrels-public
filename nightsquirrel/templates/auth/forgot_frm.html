@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block metatags %}
+<title>{{ _('Forgot access key') }} | Night Squirrels</title>
+<meta name="description" content="{{ _('Reset your Night Squirrels access key.') }}">
+{% endblock %}
+
+{% block contents %}
+    <div>
+        <ol class="breadcrumb small">
+            <li class="breadcrumb-item"><a href="{{url_for('bl_home.index')}}">{{ _('Home') }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ _('Forgot access key') }}</li>
+        </ol>
+    </div>
+    <h1 class="mb-4">{{ _('Forgot access key') }}</h1>
+
+    <section class="px-4 py-4 px-md-5 mt-4 text-center text-lg-start ns-auth-section">
+    <div class="row gx-lg-5 align-items-center">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+            <figure class="ns-img-placeholder" style="height:320px;">
+              <i class="bi bi-image ns-placeholder-icon"></i>
+              <span class="ns-placeholder-name">auth_forgot.png</span>
+              <span class="ns-placeholder-dims">400 × 320 px</span>
+              <figcaption class="ns-placeholder-caption">Image TBD</figcaption>
+            </figure>
+        </div>
+        <div class="col-lg-6 mb-5 mb-lg-0">
+        <h4 class="ns-auth-subtitle mb-2">{{ _('Ask for a new key') }}</h4>
+        <p class="ns-auth-subtitle mb-4">{{ _('Insert the email used for the subscription.') }}<br>{{ _('We will send you an email with the new access key.') }}</p>
+        <div class="card"><div class="card-body py-5 px-md-5">
+            <form class="row g-2" method="post">
+                <div class="col-auto">
+                    <label for="email" class="visually-hidden">{{ _('Your email') }}</label>
+                    <input type="email" required class="form-control form-control-sm" size="40" onkeyup="button_send_on();" id="email" name="email" placeholder="{{ _('Your email') }}">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary btn-sm" id="btn_send_new_key" name="btn_send_new_key" disabled>{{ _('I need a new key') }}</button>
+                </div>
+                <div class="col-auto">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="restore_email_input();">{{ _('Cancel') }}</button>
+                </div>
+            </form>
+        </div></div><!-- card -->
+        </div>
+    </div>
+    </section>
+
+<script>
+    function restore_email_input(){
+        var button_save = document.getElementById('btn_send_new_key');
+        var input_email = document.getElementById('email');
+        input_email.value=""
+        button_save.disabled=true;
+    }
+    function button_send_on()
+    {
+        var button_save = document.getElementById('btn_send_new_key');
+        button_save.disabled=false;
+    }
+</script>
+
+{% endblock %}

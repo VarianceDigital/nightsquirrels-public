@@ -1,0 +1,488 @@
+{% extends 'base.html' %}
+{% block metatags %}<title>{{ _('Ticket') }} #{{ row.tkt_id }} | Night Squirrels</title>{% endblock %}
+{% block ns_container %}ns-container-md{% endblock %}
+{% block contents %}
+  <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mt-3 mb-3">
+    <h2 class="m-0">Ticket #{{ row.tkt_id }}</h2>
+    <div class="d-flex flex-wrap gap-2">
+        <a class="btn btn-sm btn-outline-secondary"
+           href="{{ url_for('bl_tutor.dashboard') }}">
+          <i class="bi bi-arrow-left"></i> {{ _('Back') }}
+        </a>
+        {% if can_claim %}
+          <form method="post" action="{{ url_for('bl_tutor.ticket_claim', tkt_id=row.tkt_id) }}">
+            <button class="btn btn-sm btn-outline-primary"><i class="bi bi-box-arrow-in-right"></i> {{ _('Claim') }}</button>
+          </form>
+        {% elif not is_assigned_to_me %}
+            <span class="badge bg-secondary">{{ _('Not assigned to you') }}</span>
+        {% endif %}
+
+        {% if can_create_answer %}
+            <a class="btn btn-sm btn-primary" href="{{ url_for('bl_tutor.answer_create', tkt_id=row.tkt_id) }}"><i class="bi bi-pencil-square"></i> {{ _('Create answer') }}</a>
+        {% elif can_edit_answer %}
+            <a class="btn btn-sm btn-primary" href="{{ url_for('bl_tutor.answer_edit', tkt_id=row.tkt_id) }}"><i class="bi bi-pencil"></i> {{ _('Edit answer') }}</a>
+        {% elif can_view_answer_ro %}
+            <span class="badge bg-info">{{ _('Answer exists (read-only)') }}</span>
+        {% endif %}
+        {% if is_assigned_to_me %}
+        <a class="btn btn-sm btn-outline-secondary"
+           href="{{ url_for('bl_tags.manage_question_tags', qtn_id=row.qtn_id) }}">
+          <i class="bi bi-tags"></i> {{ _('Tags') }}
+        </a>
+        {% endif %}
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <h4 class="mb-1">{{ row.qtn_title }}</h4>
+    <div class="small text-muted">
+      q#{{ row.qtn_id }} · {{ row.tkt_state|tkt_state_badge }}
+    </div>
+    {% if question_tags %}
+    <div class="mt-1">
+      {% for t in question_tags %}
+      <a href="{{ url_for('bl_references.tag_page', tag_id=t.tag_id) }}"
+         class="badge bg-light text-dark border me-1 text-decoration-none">{{ t|localized_name('tag_name') }}</a>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header">{{ _('Question (read-only)') }}</div>
+    <div class="card-body">
+      <div id="viewer" class="ns-quill-viewer"></div>
+    </div>
+  </div>
+
+  {% if question_refs %}
+  <div class="card mb-3">
+    <div class="card-header">{{ _('Question references') }}</div>
+    <div class="card-body p-0">
+      <table class="table table-sm align-middle mb-0">
+        <tbody>
+        {% for r in question_refs %}
+        <tr>
+          <td><span class="badge bg-secondary">{{ r.rtp_name_eng }}</span></td>
+          <td class="fw-semibold">
+            <a href="{{ url_for('bl_references.ref_detail', ref_id=r.ref_id) }}"
+               class="text-decoration-none text-body">{{ r.ref_title or '—' }}</a>
+          </td>
+          <td class="small text-muted">{{ r.ref_author1_name or '' }}</td>
+          <td class="small text-muted">{{ r.ref_year or '' }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+
+    {% if row.a_ctx_delta_text %}
+        <div class="card mt-3 mb-3">
+            <div class="card-body">
+            <div id="ans_viewer"></div>
+            </div>
+        </div>
+    {% endif %}
+
+  {% if has_answer %}
+  <div class="card mb-3">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      {{ _('Answer references') }}
+      {% if can_edit_answer %}
+      <a class="btn btn-sm btn-outline-secondary"
+         href="{{ url_for('bl_references.manage_answer_refs', ans_id=row.ans_id) }}">
+        {{ _('Manage') }}
+      </a>
+      {% endif %}
+    </div>
+    {% if answer_refs %}
+    <div class="card-body p-0">
+      <table class="table table-sm align-middle mb-0">
+        <tbody>
+        {% for r in answer_refs %}
+        <tr>
+          <td><span class="badge bg-secondary">{{ r.rtp_name_eng }}</span></td>
+          <td class="fw-semibold">
+            <a href="{{ url_for('bl_references.ref_detail', ref_id=r.ref_id) }}"
+               class="text-decoration-none text-body">{{ r.ref_title or '—' }}</a>
+          </td>
+          <td class="small text-muted">{{ r.ref_author1_name or '' }}</td>
+          <td class="small text-muted">{{ r.ref_year or '' }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="card-body">
+      <p class="text-muted mb-0 small">{{ _('No references attached to the answer yet.') }}</p>
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  {# Comments section #}
+  <div class="card mb-3">
+    <div class="card-header">{{ _('Comments') }}</div>
+    <div class="card-body">
+      <div id="comments-container" style="max-height:420px;overflow-y:auto;">
+      {% if comments %}
+        {% for cmt in comments %}
+        <div class="mb-3 pb-3 {% if not loop.last %}border-bottom{% endif %}"
+             data-cmt-id="{{ cmt.cmt_id }}">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <strong class="small">{{ cmt.usr_name or cmt.usr_email }}</strong>
+            <span class="text-muted small">{{ cmt.cmt_created_at.strftime('%d %b %Y, %H:%M') }}</span>
+          </div>
+          <div id="cmt_viewer_{{ cmt.cmt_id }}" class="ns-quill-bg"></div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <p class="text-muted mb-0" id="no-comments-msg">{{ _('No comments yet.') }}</p>
+      {% endif %}
+      </div>
+    </div>
+  </div>
+
+  {% if is_assigned_to_me and row.tkt_state < TKT_CLOSED %}
+  <div class="card mb-3">
+    <div class="card-header">{{ _('Add a comment') }}</div>
+    <div class="card-body">
+      <div id="comment-error" class="alert alert-danger d-none mb-2"></div>
+      <form method="post"
+            action="{{ url_for('bl_tutor.add_comment_tutor', tkt_id=row.tkt_id) }}"
+            id="commentForm">
+        <div class="mb-2">
+          <div id="comment_editor" class="ns-quill-viewer-sm"></div>
+        </div>
+        <input type="hidden" name="cmt_ctx_delta" id="cmt_ctx_delta" />
+        <input type="hidden" name="cmt_ctx_plaintext" id="cmt_ctx_plaintext" />
+        <button type="submit" class="btn btn-sm btn-primary" id="commentSubmitBtn">{{ _('Post comment') }}</button>
+      </form>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if row.qtn_notes %}
+    <div class="mb-3">
+      <h6>{{ _('Notes') }}</h6>
+      <div class="card"><div class="card-body">{{ row.qtn_notes }}</div></div>
+    </div>
+  {% endif %}
+
+{% include 'incl_quill_katex.html' %}
+{% include 'incl_formula_modal.html' %}
+
+{% if pusher_key %}
+<script src="https://js.pusher.com/8.2/pusher.min.js"></script>
+{% endif %}
+
+<script>
+  window.NS_I18N = {
+    commentPlaceholder: {{ _('Write a comment...')|tojson }},
+    posting: {{ _('Posting...')|tojson }},
+    postComment: {{ _('Post comment')|tojson }},
+    emptyComment: {{ _('Cannot post an empty comment.')|tojson }},
+    failedToPost: {{ _('Failed to post comment.')|tojson }},
+    networkError: {{ _('Network error. Please try again.')|tojson }},
+  };
+</script>
+
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+    // --- Safety checks ---
+    if (!window.Quill) {
+      console.error("Quill is not loaded. Check incl_quill_katex.html includes.");
+      return;
+    }
+    if (!window.katex) {
+      console.warn("KaTeX is not loaded. Formula rendering may not work.");
+      // keep going: content will still render as text
+    }
+
+    function normalizeDelta(raw) {
+      let d = raw;
+      try {
+        if (typeof d === 'string') d = JSON.parse(d);
+      } catch (e) {
+        console.warn("Delta JSON parse failed:", e, raw);
+        return { ops: [] };
+      }
+      if (d && typeof d === 'object' && Array.isArray(d.ops)) return d;
+      return { ops: [] };
+    }
+
+    function buildReadonlyViewer(selector, rawDelta) {
+      const host = document.querySelector(selector);
+      if (!host) return null;
+
+      const q = new Quill(selector, {
+        theme: 'snow',
+        readOnly: true,
+        modules: { toolbar: false }
+      });
+
+      // Hide Quill border / spacing for "viewer" mode
+      const qlContainer = host.closest('.ql-container');
+      if (qlContainer) qlContainer.style.border = 'none';
+
+      const editorEl = host.querySelector('.ql-editor');
+      if (editorEl) {
+        editorEl.style.padding = '0';
+        editorEl.style.minHeight = '0';
+      }
+
+      // Load delta
+      const delta = normalizeDelta(rawDelta);
+      q.setContents(delta);
+
+      // Extra hardening: prevent focus / selection
+      q.enable(false);
+      q.root.setAttribute('tabindex', '-1');
+      q.root.style.cursor = 'default';
+
+      return q;
+    }
+
+    // --- Question viewer ---
+    const qDeltaRaw = {{ (row.q_ctx_delta_text or '{"ops":[]}') | tojson }};
+    buildReadonlyViewer('#viewer', qDeltaRaw);
+
+    // --- Answer viewer ---
+    {% if row.ans_id %}
+      const aDeltaRaw = {{ (row.a_ctx_delta_text or '{"ops":[]}') | tojson }};
+      buildReadonlyViewer('#ans_viewer', aDeltaRaw);
+    {% endif %}
+
+    // --- Comment viewers ---
+    {% if comments %}
+      {% for cmt in comments %}
+        buildReadonlyViewer('#cmt_viewer_{{ cmt.cmt_id }}',
+          {{ (cmt.cmt_ctx_delta_text or '{"ops":[]}') | tojson }});
+      {% endfor %}
+    {% endif %}
+
+    // --- Comment editor ---
+    {% if is_assigned_to_me and row.tkt_state < TKT_CLOSED %}
+    (function() {
+      const cmtQuill = new Quill('#comment_editor', {
+        theme: 'snow',
+        placeholder: window.NS_I18N.commentPlaceholder,
+        modules: {
+          toolbar: ['bold', 'italic', 'formula']
+        }
+      });
+
+      // --- Formula modal wiring for comment editor ---
+      const modalEl = document.getElementById('formulaModal');
+      const formulaInput = document.getElementById('formulaInput');
+      const formulaPreview = document.getElementById('formulaPreview');
+      const formulaError = document.getElementById('formulaError');
+      const applyBtn = document.getElementById('formulaApplyBtn');
+      const bsModal = modalEl ? new bootstrap.Modal(modalEl) : null;
+
+      let formulaContext = { mode: 'insert', index: null };
+      let formulaApplied = false;
+      let formulaRestoreRange = null;
+
+      function restoreCaretAfterCancel() {
+        if (!formulaRestoreRange) return;
+        const y = window.scrollY;
+        try { cmtQuill.focus(); } catch (e) {}
+        try { window.scrollTo(0, y); } catch (e) {}
+        try { cmtQuill.setSelection(formulaRestoreRange.index, 0, 'silent'); } catch (e) {}
+      }
+
+      if (modalEl) {
+        modalEl.addEventListener('hidden.bs.modal', () => {
+          if (!formulaApplied) restoreCaretAfterCancel();
+          formulaApplied = false;
+          formulaRestoreRange = null;
+        });
+      }
+
+      function renderPreview(latex) {
+        formulaError.style.display = 'none';
+        formulaError.textContent = '';
+        formulaPreview.innerHTML = '';
+        if (!latex) return;
+        try {
+          if (!window.katex) throw new Error("KaTeX is not available");
+          window.katex.render(latex, formulaPreview, { throwOnError: false, displayMode: true });
+        } catch (e) {
+          formulaError.style.display = 'block';
+          formulaError.textContent = String(e);
+        }
+      }
+
+      function openFormulaModal({ latex = '', mode = 'insert', index = null }) {
+        formulaApplied = false;
+        if (mode === 'insert') {
+          const r = cmtQuill.getSelection(true) || { index: cmtQuill.getLength(), length: 0 };
+          formulaRestoreRange = { index: r.index, length: 0 };
+        } else if (mode === 'edit' && typeof index === 'number') {
+          formulaRestoreRange = { index: index + 1, length: 0 };
+        }
+        formulaContext = { mode, index };
+        formulaInput.value = latex || '';
+        renderPreview(formulaInput.value);
+        bsModal.show();
+        setTimeout(() => formulaInput.focus(), 150);
+      }
+
+      formulaInput.addEventListener('input', () => renderPreview(formulaInput.value));
+
+      applyBtn.addEventListener('click', () => {
+        const latex = (formulaInput.value || '').trim();
+        if (!latex) { bsModal.hide(); return; }
+        formulaApplied = true;
+        if (formulaContext.mode === 'insert') {
+          const range = cmtQuill.getSelection(true) || { index: cmtQuill.getLength() };
+          cmtQuill.insertEmbed(range.index, 'formula', latex, 'user');
+          cmtQuill.setSelection(range.index + 1, 0, 'silent');
+        } else if (formulaContext.mode === 'edit' && typeof formulaContext.index === 'number') {
+          cmtQuill.deleteText(formulaContext.index, 1, 'user');
+          cmtQuill.insertEmbed(formulaContext.index, 'formula', latex, 'user');
+          cmtQuill.setSelection(formulaContext.index + 1, 0, 'silent');
+        }
+        bsModal.hide();
+      });
+
+      const toolbar = cmtQuill.getModule('toolbar');
+      if (toolbar) {
+        toolbar.addHandler('formula', () => openFormulaModal({ mode: 'insert' }));
+      }
+
+      cmtQuill.root.addEventListener('click', (e) => {
+        const blot = Quill.find(e.target, true);
+        if (!blot || !blot.domNode) return;
+        const el = blot.domNode;
+        const latex = el.getAttribute && el.getAttribute('data-value');
+        if (!latex) return;
+        const index = cmtQuill.getIndex(blot);
+        if (index < 0) return;
+        openFormulaModal({ latex, mode: 'edit', index });
+      });
+
+      // --- AJAX comment submit ---
+      const cmtForm = document.getElementById('commentForm');
+      const submitBtn = document.getElementById('commentSubmitBtn');
+      const errorDiv = document.getElementById('comment-error');
+
+      cmtForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const deltaJson = JSON.stringify(cmtQuill.getContents());
+        const plaintext = cmtQuill.getText().trim();
+
+        if (!plaintext) {
+          errorDiv.textContent = window.NS_I18N.emptyComment;
+          errorDiv.classList.remove('d-none');
+          return;
+        }
+
+        errorDiv.classList.add('d-none');
+        submitBtn.disabled = true;
+        submitBtn.textContent = window.NS_I18N.posting;
+
+        const formData = new FormData();
+        formData.append('cmt_ctx_delta', deltaJson);
+        formData.append('cmt_ctx_plaintext', plaintext);
+
+        fetch(cmtForm.action, {
+          method: 'POST',
+          headers: { 'X-Requested-With': 'XMLHttpRequest' },
+          body: formData,
+        })
+        .then(r => r.json())
+        .then(data => {
+          if (data.ok) {
+            appendComment({
+              cmt_id: data.cmt_id,
+              usr_name: data.usr_name,
+              cmt_ctx_delta_text: data.cmt_ctx_delta_text,
+              cmt_created_at: data.cmt_created_at,
+            });
+            cmtQuill.setContents([{ insert: '\n' }]);
+          } else {
+            errorDiv.textContent = data.error || window.NS_I18N.failedToPost;
+            errorDiv.classList.remove('d-none');
+          }
+        })
+        .catch(() => {
+          errorDiv.textContent = window.NS_I18N.networkError;
+          errorDiv.classList.remove('d-none');
+        })
+        .finally(() => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = window.NS_I18N.postComment;
+        });
+      });
+
+      // --- Append a comment to the DOM ---
+      function appendComment({ cmt_id, usr_name, cmt_ctx_delta_text, cmt_created_at }) {
+        // Deduplication: skip if already rendered
+        if (document.querySelector(`[data-cmt-id="${cmt_id}"]`)) return;
+
+        // Remove "No comments yet" message
+        const noMsg = document.getElementById('no-comments-msg');
+        if (noMsg) noMsg.remove();
+
+        const container = document.getElementById('comments-container');
+
+        // Add border-bottom to the previous last comment
+        const prev = container.querySelector('.mb-3.pb-3:last-child');
+        if (prev && !prev.classList.contains('border-bottom')) {
+          prev.classList.add('border-bottom');
+        }
+
+        const div = document.createElement('div');
+        div.className = 'mb-3 pb-3';
+        div.setAttribute('data-cmt-id', cmt_id);
+        div.innerHTML = `
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <strong class="small">${escapeHtml(usr_name)}</strong>
+            <span class="text-muted small">${escapeHtml(cmt_created_at)}</span>
+          </div>
+          <div id="cmt_viewer_${cmt_id}" class="ns-quill-bg"></div>
+        `;
+        container.appendChild(div);
+
+        // Render Quill content in the new viewer
+        buildReadonlyViewer(`#cmt_viewer_${cmt_id}`, cmt_ctx_delta_text);
+      }
+
+      // --- Simple HTML escaper ---
+      function escapeHtml(str) {
+        const d = document.createElement('div');
+        d.textContent = str || '';
+        return d.innerHTML;
+      }
+
+      // --- Pusher subscription ---
+      {% if pusher_key and row.tkt_id %}
+      (function() {
+        const pusher = new Pusher('{{ pusher_key }}', {
+          cluster: '{{ pusher_cluster }}',
+          authEndpoint: '/pusher/auth',
+        });
+
+        const channel = pusher.subscribe('private-ticket-{{ row.tkt_id }}');
+        channel.bind('new-comment', (data) => {
+          appendComment({
+            cmt_id: data.cmt_id,
+            usr_name: data.usr_name,
+            cmt_ctx_delta_text: data.cmt_ctx_delta_text,
+            cmt_created_at: data.cmt_created_at,
+          });
+        });
+      })();
+      {% endif %}
+
+    })();
+    {% endif %}
+  });
+</script>
+{% endblock %}

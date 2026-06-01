@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block metatags %}<title>{{ _('Examples') }} | Night Squirrels</title>{% endblock %}
+{% block ns_container %}ns-container-md{% endblock %}
+{% block contents %}
+
+{% set grade_labels = {'1': _('Base'), '2': _('Medium'), '3': _('High School'), '4': _('University')} %}
+
+<div class="mt-3 mb-3">
+  <h2 class="mb-1">{{ _('Question examples') }}</h2>
+  <p class="text-muted">{{ _('See a completed example for each question type.') }}</p>
+</div>
+
+<div class="d-flex flex-wrap gap-2 mb-4">
+  <a href="{{ url_for('bl_examples.examples') }}"
+     class="btn btn-sm {% if not active_grade %}btn-secondary{% else %}btn-outline-secondary{% endif %}">{{ _('All') }}</a>
+  {% for g, label in [('1', _('Base')), ('2', _('Medium')), ('3', _('High School')), ('4', _('University'))] %}
+  <a href="{{ url_for('bl_examples.examples', grade=g) }}"
+     class="btn btn-sm {% if active_grade == g %}btn-secondary{% else %}btn-outline-secondary{% endif %}">{{ label }}</a>
+  {% endfor %}
+</div>
+
+{% for qtype in qtypes %}
+{% set examples = by_type.get(qtype.qtp_id, []) %}
+{% if examples or not active_grade %}
+<div id="type-{{ qtype.qtp_id }}" class="mb-5">
+  <h4 class="border-bottom pb-2 mb-3">{{ qtype|localized_name('qtp_name') }}</h4>
+
+  {% if examples %}
+    {% for ex in examples %}
+    <div class="mb-4">
+      <div class="mb-2">
+        <span class="fw-semibold">{{ ex.ex_title }}</span>
+        {% if ex.ex_grade %}
+        <span class="badge bg-light text-dark border ms-1" style="font-size:0.65rem;">{{ grade_labels.get(ex.ex_grade, ex.ex_grade) }}</span>
+        {% endif %}
+        {% if ex.ex_subject %}
+        <span class="text-muted small ms-2">{{ ex.ex_subject }}</span>
+        {% endif %}
+      </div>
+
+      <div class="card mb-2">
+        <div class="card-header small text-muted">{{ _('Question') }}</div>
+        <div class="card-body py-2">
+          <div id="q-viewer-{{ ex.ex_id }}" class="ns-quill-bg"></div>
+        </div>
+      </div>
+
+      <div class="card border-success">
+        <div class="card-header small text-success">{{ _('Answer') }}</div>
+        <div class="card-body py-2">
+          <div id="a-viewer-{{ ex.ex_id }}" class="ns-quill-bg"></div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <p class="text-muted fst-italic small">{{ _('Examples coming soon.') }}</p>
+  {% endif %}
+</div>
+{% endif %}
+{% endfor %}
+
+{% include 'incl_quill_katex.html' %}
+
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+  function buildViewer(selector, delta) {
+    const host = document.querySelector(selector);
+    if (!host) return;
+    const q = new Quill(selector, { theme: 'snow', readOnly: true,
+                                     modules: { toolbar: false } });
+    const c = host.closest('.ql-container');
+    if (c) c.style.border = 'none';
+    const e = host.querySelector('.ql-editor');
+    if (e) { e.style.padding = '0'; e.style.minHeight = '0'; }
+    q.setContents(delta);
+    q.enable(false);
+    q.root.setAttribute('tabindex', '-1');
+    q.root.style.cursor = 'default';
+  }
+
+  {% for qtype in qtypes %}
+  {% for ex in by_type.get(qtype.qtp_id, []) %}
+  buildViewer('#q-viewer-{{ ex.ex_id }}', {{ ex.ex_q_delta | tojson }});
+  buildViewer('#a-viewer-{{ ex.ex_id }}', {{ ex.ex_a_delta | tojson }});
+  {% endfor %}
+  {% endfor %}
+});
+</script>
+{% endblock %}

@@ -1,0 +1,272 @@
+@charset "UTF-8";
+
+/* ============================================================
+   Night Squirrels Design System
+   ============================================================
+   To change the color palette, edit the --ns-* variables below.
+   Everything else adapts automatically.
+   ============================================================ */
+
+/* --- Color Palette --- */
+:root {
+  /* Brand */
+  --ns-primary:        #c9703b;
+  --ns-primary-hover:  #b5622f;
+  --ns-accent:         #ffdab9;
+  --ns-accent-light:   #fff3e6;
+
+  /* Neutrals */
+  --ns-sand:           #f7f4f0;
+  --ns-border:         #e6e0d8;
+  --ns-text:           #3b3028;
+  --ns-text-muted:     #8a7e72;
+
+  /* Status */
+  --ns-success:        #6a9e6e;
+  --ns-warning:        #d4a843;
+  --ns-danger:         #c4513a;
+  --ns-info:           #5e8eab;
+
+  /* Semantic mappings */
+  --ns-navbar-bg:      var(--ns-primary);
+  --ns-body-bg:        #ffffff;
+  --ns-auth-bg:        var(--ns-accent-light);
+  --ns-auth-text:      var(--ns-text-muted);
+
+  /* Quill dimensions */
+  --ns-quill-height:     380px;
+  --ns-quill-height-lg:  420px;
+  --ns-quill-height-xl:  460px;
+}
+
+/* --- Global --- */
+body {
+  color: var(--ns-text);
+}
+
+/* Existing rule (navbar offset) */
+main > .container {
+  padding: 70px 10px 40px 10px;
+}
+
+/* --- Navbar --- */
+.ns-navbar {
+  background-color: var(--ns-navbar-bg);
+}
+
+.ns-navbar-logo {
+  position: relative;
+  top: -2px;
+}
+
+/* --- Bootstrap overrides --- */
+
+/* Primary buttons — override Bootstrap 5 CSS vars so disabled/spinner states stay on-palette */
+.btn-primary {
+  --bs-btn-bg:                  var(--ns-primary);
+  --bs-btn-border-color:        var(--ns-primary);
+  --bs-btn-hover-bg:            var(--ns-primary-hover);
+  --bs-btn-hover-border-color:  var(--ns-primary-hover);
+  --bs-btn-active-bg:           var(--ns-primary-hover);
+  --bs-btn-active-border-color: var(--ns-primary-hover);
+  --bs-btn-disabled-bg:         var(--ns-primary);
+  --bs-btn-disabled-border-color: var(--ns-primary);
+}
+.btn-outline-primary {
+  --bs-btn-color:               var(--ns-primary);
+  --bs-btn-border-color:        var(--ns-primary);
+  --bs-btn-hover-bg:            var(--ns-primary);
+  --bs-btn-hover-border-color:  var(--ns-primary);
+  --bs-btn-active-bg:           var(--ns-primary);
+  --bs-btn-active-border-color: var(--ns-primary);
+  --bs-btn-disabled-color:      var(--ns-primary);
+  --bs-btn-disabled-border-color: var(--ns-primary);
+}
+
+/* Muted text */
+.text-muted {
+  color: var(--ns-text-muted) !important;
+}
+
+/* Links */
+a {
+  color: var(--ns-primary);
+}
+a:hover {
+  color: var(--ns-primary-hover);
+}
+
+/* Alerts */
+.alert-success {
+  background-color: #eaf3eb;
+  border-color: var(--ns-success);
+  color: #3b5e3d;
+}
+.alert-warning {
+  background-color: #fdf6e8;
+  border-color: var(--ns-warning);
+  color: #6b5226;
+}
+.alert-danger {
+  background-color: #f9eae7;
+  border-color: var(--ns-danger);
+  color: #6d302a;
+}
+
+/* Badges */
+.badge.text-bg-success, .badge.bg-success {
+  background-color: var(--ns-success) !important;
+}
+.badge.text-bg-warning, .badge.bg-warning {
+  background-color: var(--ns-warning) !important;
+  color: var(--ns-text) !important;
+}
+.badge.text-bg-danger, .badge.bg-danger {
+  background-color: var(--ns-danger) !important;
+}
+.badge.text-bg-info, .badge.bg-info {
+  background-color: var(--ns-info) !important;
+  color: #fff !important;
+}
+
+/* --- Container widths --- */
+.ns-container-narrow { max-width: 680px; }
+.ns-container-md     { max-width: 980px; }
+.ns-container-wide   { max-width: 1140px; }
+
+/* --- Quill editors & viewers --- */
+.ns-quill-editor { background: #fff; }
+.ns-quill-editor .ql-editor { min-height: var(--ns-quill-height); }
+
+.ns-quill-editor-lg { background: #fff; }
+.ns-quill-editor-lg .ql-editor { min-height: var(--ns-quill-height-lg); }
+
+.ns-quill-editor-xl { background: #fff; }
+.ns-quill-editor-xl .ql-editor { min-height: var(--ns-quill-height-xl); }
+.ns-quill-viewer {
+  min-height: var(--ns-quill-height);
+  background: #fff;
+}
+.ns-quill-viewer-sm {
+  min-height: 80px;
+  background: #fff;
+}
+.ns-quill-viewer-md {
+  min-height: 120px;
+  background: #fff;
+}
+.ns-quill-bg {
+  background: #fff;
+}
+
+/* --- Auth pages --- */
+.ns-auth-section {
+  background-color: var(--ns-auth-bg);
+}
+.ns-auth-subtitle {
+  color: var(--ns-auth-text);
+}
+
+/* --- Suspended account banner --- */
+.ns-suspended-alert {
+  padding-top: 70px;
+}
+
+/* --- Admin table utilities --- */
+.ns-admin-col-actions { width: 260px; }
+.ns-admin-col-sm      { width: 70px; }
+.ns-admin-col-md      { width: 100px; }
+.ns-admin-truncate {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --- Homepage --- */
+.ns-hero {
+  background-color: var(--ns-accent-light);
+  border-radius: 12px;
+}
+.ns-step-icon {
+  font-size: 2.5rem;
+  color: var(--ns-primary);
+}
+.ns-step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: var(--ns-primary);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.ns-trust-icon {
+  font-size: 1.5rem;
+  color: var(--ns-primary);
+}
+
+/* --- Document preview --- */
+.ns-doc-preview { max-width: 300px; }
+
+/* --- Academic profile summary --- */
+.ns-profile-summary {
+  border-left: 3px solid var(--ns-primary);
+  padding-left: 0.75rem;
+}
+
+/* --- Language switcher flags --- */
+.navbar .fi {
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 2px;
+}
+
+/* --- FAQ Accordion --- */
+.ns-accordion {
+  --bs-accordion-bg:                var(--ns-sand);
+  --bs-accordion-border-color:      var(--ns-border);
+  --bs-accordion-btn-color:         var(--ns-text);
+  --bs-accordion-btn-bg:            var(--ns-sand);
+  --bs-accordion-btn-active-bg:     var(--ns-accent-light);
+  --bs-accordion-btn-active-color:  var(--ns-primary);
+  --bs-accordion-active-bg:         var(--ns-accent-light);
+  --bs-accordion-active-color:      var(--ns-text);
+  --bs-accordion-btn-focus-box-shadow: 0 0 0 0.2rem rgba(201, 112, 59, 0.2);
+  --bs-accordion-btn-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%233b3028'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+  --bs-accordion-btn-active-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23c9703b'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+/* --- Error pages --- */
+.ns-error-img {
+  max-width: 50%;
+}
+
+/* --- Image placeholders (dev only — remove before production) --- */
+.ns-img-placeholder {
+  border: 2px dashed var(--ns-border);
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--ns-sand),
+    var(--ns-sand) 10px,
+    #ede9e3 10px,
+    #ede9e3 20px
+  );
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--ns-text-muted);
+  text-align: center;
+  padding: 1.25rem;
+  gap: 0.35rem;
+  margin: 0;
+  width: 100%;
+}
+.ns-placeholder-icon    { font-size: 2.5rem; opacity: 0.35; line-height: 1; }
+.ns-placeholder-name    { font-family: monospace; font-size: 0.8rem; font-weight: 600; color: var(--ns-text); }
+.ns-placeholder-dims    { font-size: 0.72rem; opacity: 0.7; }
+.ns-placeholder-caption { font-size: 0.78rem; font-style: italic; margin: 0; max-width: 30ch; line-height: 1.4; }

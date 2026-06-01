@@ -1,0 +1,27 @@
+{# Quill + KaTeX includes (Quill 2 + KaTeX) #}
+
+<!-- KaTeX -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
+
+<!-- Quill 2 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css">
+<script defer src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+
+<style>
+  .ql-editor { font-size: 1rem; }
+  .ql-container.ql-snow { border-radius: .375rem; }
+  .ql-toolbar.ql-snow { border-radius: .375rem .375rem 0 0; }
+
+/* Fix vertical alignment of Quill align dropdown */
+.ql-snow.ql-toolbar .ql-picker.ql-align {
+  margin-top: 0px;        /* tweak: -1px or -2px depending on taste */
+}
+
+/* Make picker height match icon buttons */
+.ql-snow.ql-toolbar .ql-picker-label {
+  height: 24px;
+  display: flex;
+  align-items: center;
+}
+</style>

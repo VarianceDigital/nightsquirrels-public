@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% block metatags %}<title>{{ _('Admin') }} · {{ _('References') }} | Night Squirrels</title>{% endblock %}
+{% block ns_container %}ns-container-wide{% endblock %}
+{% block contents %}
+
+<div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mt-3 mb-3">
+  <h2 class="m-0">{{ _('Admin') }} · {{ _('References') }}</h2>
+  <div class="d-flex flex-wrap gap-2">
+    <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('bl_references.admin_persons') }}">{{ _('Persons') }}</a>
+    <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('bl_references.admin_publishers') }}">{{ _('Publishers') }}</a>
+    <a class="btn btn-primary btn-sm" href="{{ url_for('bl_references.admin_new_choose_type') }}">+ {{ _('New reference') }}</a>
+    <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('bl_references.admin_draft_list') }}">{{ _('Drafts') }}</a>
+    <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('bl_admin.dashboard') }}">{{ _('Dashboard') }}</a>
+  </div>
+</div>
+
+<!-- filter bar -->
+<form class="row g-2 mb-3" method="get">
+  <div class="col-md-6">
+    <input class="form-control form-control-sm" name="q" placeholder="{{ _('Search title…') }}" value="{{ q or '' }}">
+  </div>
+  <div class="col-md-3">
+    <select class="form-select form-select-sm" name="rtp">
+      <option value="">{{ _('All types') }}</option>
+      <option value="book"    {% if rtp_filter=='book'    %}selected{% endif %}>{{ _('Book') }}</option>
+      <option value="article" {% if rtp_filter=='article' %}selected{% endif %}>{{ _('Paper') }}</option>
+      <option value="video"   {% if rtp_filter=='video'   %}selected{% endif %}>{{ _('Video') }}</option>
+      <option value="weblink" {% if rtp_filter=='weblink' %}selected{% endif %}>{{ _('Web Link') }}</option>
+    </select>
+  </div>
+  <div class="col-md-1 d-grid"><button class="btn btn-sm btn-primary">{{ _('Filter') }}</button></div>
+  <div class="col-md-1 d-grid"><a class="btn btn-sm btn-outline-secondary" href="{{ url_for('bl_references.admin_list') }}">{{ _('Clear') }}</a></div>
+  <div class="col-auto">
+    <a class="btn btn-sm {% if review_filter %}btn-warning{% else %}btn-outline-warning{% endif %}"
+       href="{{ url_for('bl_references.admin_list', review='1') if not review_filter else url_for('bl_references.admin_list') }}">
+      {{ _('Needs review') }}{% if review_filter %} ✕{% endif %}
+    </a>
+  </div>
+</form>
+
+<div class="table-responsive">
+  <table class="table table-sm align-middle">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>{{ _('Type') }}</th>
+        <th style="width:40px;"></th>
+        <th>{{ _('Title') }}</th>
+        <th>{{ _('Author') }}</th>
+        <th>{{ _('Year') }}</th>
+        <th>{{ _('Owner') }}</th>
+        <th class="text-center">{{ _('Library') }}</th>
+        <th class="text-center">{{ _('Flags') }}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for r in refs %}
+      <tr>
+        <td class="text-muted small">{{ r.ref_id }}</td>
+        <td><span class="badge bg-secondary">{{ r.rtp_name_eng }}</span></td>
+        <td style="width:40px;">
+          {% if r.thumbnail_s3_key %}
+          <img src="{{ images_bucket_url }}{{ r.thumbnail_s3_key }}"
+               alt="" style="height:40px; width:32px; object-fit:cover;" class="rounded">
+          {% endif %}
+        </td>
+        <td class="fw-semibold">
+          <a href="{{ url_for('bl_references.ref_detail', ref_id=r.ref_id) }}"
+             class="text-decoration-none text-body">{{ r.ref_title or '—' }}</a>
+          {% if r.ref_needs_review %}
+          <form method="post" class="d-inline"
+                action="{{ url_for('bl_references.admin_clear_needs_review', ref_id=r.ref_id) }}">
+            <button type="submit" class="btn btn-link p-0 border-0 ms-1"
+                    title="{{ _('Mark as reviewed') }}">
+              <span class="badge bg-warning text-dark">{{ _('Review') }}</span>
+            </button>
+          </form>
+          {% endif %}
+        </td>
+        <td class="small text-muted">{{ r.ref_author1_name or '' }}</td>
+        <td class="small text-muted">{{ r.ref_year or '' }}</td>
+        <td class="small text-muted">
+          <div>{{ r.owner_name or '' }}</div>
+          <div class="text-muted">{{ r.owner_email or '' }}</div>
+        </td>
+        <td class="text-center">
+          <form method="post" action="{{ url_for('bl_references.admin_toggle_library', ref_id=r.ref_id) }}">
+            <button type="submit" class="btn btn-link p-0 border-0"
+                    title="{{ _('Toggle library') }}">
+              {% if r.ref_is_library %}
+                <span class="badge bg-success">{{ _('Yes') }}</span>
+              {% else %}
+                <span class="badge bg-light text-muted border">{{ _('No') }}</span>
+              {% endif %}
+            </button>
+          </form>
+        </td>
+        <td class="text-center" style="white-space:nowrap;">
+          <form method="post" class="d-inline"
+                action="{{ url_for('bl_references.admin_toggle_current', ref_id=r.ref_id) }}">
+            <button class="btn btn-link p-0 border-0" title="{{ _('Currently reading') }}">
+              <i class="bi bi-cup-hot-fill {% if r.ref_is_current %}text-warning{% else %}text-muted opacity-25{% endif %}"></i>
+            </button>
+          </form>
+          <form method="post" class="d-inline"
+                action="{{ url_for('bl_references.admin_toggle_recent', ref_id=r.ref_id) }}">
+            <button class="btn btn-link p-0 border-0" title="{{ _('Recently read') }}">
+              <i class="bi bi-clock-history {% if r.ref_is_recent %}text-info{% else %}text-muted opacity-25{% endif %}"></i>
+            </button>
+          </form>
+          <form method="post" class="d-inline"
+                action="{{ url_for('bl_references.admin_toggle_crucial', ref_id=r.ref_id) }}">
+            <button class="btn btn-link p-0 border-0" title="{{ _('Crucial') }}">
+              <i class="bi bi-suit-heart-fill {% if r.ref_is_crucial %}text-danger{% else %}text-muted opacity-25{% endif %}"></i>
+            </button>
+          </form>
+        </td>
+        <td class="text-end">
+          <a class="btn btn-sm btn-outline-primary"
+             href="{{ url_for('bl_references.admin_edit_ref', ref_id=r.ref_id) }}">{{ _('Edit') }}</a>
+          <a class="btn btn-sm btn-outline-secondary"
+             href="{{ url_for('bl_tags.manage_reference_tags', ref_id=r.ref_id) }}">{{ _('Tags') }}</a>
+          <form method="post" class="d-inline"
+                action="{{ url_for('bl_references.admin_delete_ref', ref_id=r.ref_id) }}">
+            <button class="btn btn-sm btn-outline-danger"
+                    data-confirm="{{ _('Delete this reference?') }}">{{ _('Delete') }}</button>
+          </form>
+        </td>
+      </tr>
+    {% else %}
+      <tr><td colspan="10" class="text-center text-muted py-4">{{ _('No references found.') }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

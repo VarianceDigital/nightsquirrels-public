@@ -1,0 +1,82 @@
+{# Vault prompt modal — shown after payer registration to guide the user to step 2 #}
+
+{# Self-pay modal: prompt to connect PayPal now #}
+<div class="modal fade" id="vaultPromptSelf" tabindex="-1" aria-labelledby="vaultPromptSelfLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="vaultPromptSelfLabel">{{ _('Almost there!') }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>{{ _('Your payment setup is registered, but you still need to') }}
+           <strong>{{ _('connect your PayPal account') }}</strong>.</p>
+        <p class="mb-0 text-muted small">{{ _('This is required before you can accept quotes. You will be redirected to PayPal to authorise automatic payments.') }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{ _("I'll do it later") }}</button>
+        <form method="post" action="{{ url_for('bl_payer.vault_setup') }}" class="d-inline">
+          <button type="submit" class="btn btn-primary">{{ _('Connect PayPal now') }}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{# Invited payer modal: inform the student what the payer needs to do #}
+<div class="modal fade" id="vaultPromptInvited" tabindex="-1" aria-labelledby="vaultPromptInvitedLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="vaultPromptInvitedLabel">{{ _('Payer registered') }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>{{ _("We've sent login credentials to") }} <strong id="vaultPromptPayerEmail"></strong>.</p>
+        <p>{{ _('Before you can accept quotes, your payer needs to:') }}</p>
+        <ol class="mb-0">
+          <li>{{ _('Log in to the platform') }}</li>
+          <li>{{ _('Connect their PayPal account from their profile page') }}</li>
+        </ol>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">{{ _('Got it') }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  window.addEventListener('DOMContentLoaded', function() {
+    var params = new URLSearchParams(window.location.search);
+    var vaultPrompt = params.get('vault_prompt');
+    if (!vaultPrompt) return;
+
+    var modalId = null;
+    if (vaultPrompt === 'self') {
+      modalId = 'vaultPromptSelf';
+    } else if (vaultPrompt === 'invited') {
+      modalId = 'vaultPromptInvited';
+      var emailEl = document.getElementById('vaultPromptPayerEmail');
+      if (emailEl) {
+        emailEl.textContent = params.get('payer_email') || '(your payer)';
+      }
+    }
+
+    if (modalId) {
+      var modalEl = document.getElementById(modalId);
+      if (modalEl) {
+        var modal = new bootstrap.Modal(modalEl);
+        modal.show();
+      }
+    }
+
+    // Clean the URL so refresh doesn't re-show the modal
+    params.delete('vault_prompt');
+    params.delete('payer_email');
+    var cleanUrl = window.location.pathname;
+    var remaining = params.toString();
+    if (remaining) cleanUrl += '?' + remaining;
+    window.history.replaceState({}, '', cleanUrl);
+  });
+</script>

@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block metatags %}<title>{{ _('Admin') }} · {{ _('Idea answers') }} | Night Squirrels</title>{% endblock %}
+{% block ns_container %}ns-container-md{% endblock %}
+{% block contents %}
+
+<div class="d-flex justify-content-between align-items-center mt-3 mb-2">
+  <div>
+    <h2 class="m-0">{{ _('Idea answers') }}</h2>
+    <p class="text-muted mb-0">{{ row.idea_title }}</p>
+  </div>
+  <a class="btn btn-outline-secondary btn-sm"
+     href="{{ url_for('bl_ideas.admin_edit_idea', idea_id=row.idea_id) }}">
+    <i class="bi bi-arrow-left"></i> {{ _('Back') }}
+  </a>
+</div>
+
+<div class="card mb-4 mt-3">
+  <div class="card-header">{{ _('Attached answers') }}</div>
+  <div class="card-body">
+    {% if attached %}
+    <div class="d-flex flex-column gap-2">
+      {% for a in attached %}
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <span class="fw-semibold">{{ a.qtn_title }}</span>
+          <span class="text-muted small ms-2">#{{ a.ans_id }}</span>
+        </div>
+        <form method="post"
+              action="{{ url_for('bl_ideas.admin_idea_detach_answer', idea_id=row.idea_id, ans_id=a.ans_id) }}"
+              class="d-inline ms-2">
+          <button type="submit" class="btn btn-sm btn-secondary">&times;</button>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-muted mb-0 small">{{ _('No answers attached yet.') }}</p>
+    {% endif %}
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header d-flex align-items-center gap-2">
+    <span class="me-auto">{{ _('Add an answer') }}</span>
+    {% if available %}
+    <input id="ansFilter" type="search" class="form-control form-control-sm w-auto"
+           placeholder="{{ _('Search…') }}" autocomplete="off">
+    {% endif %}
+  </div>
+  {% if available %}
+  <div class="card-body p-0">
+    <table class="table table-sm align-middle mb-0" id="ansTable">
+      <tbody>
+      {% for a in available %}
+      <tr>
+        <td class="text-muted small">#{{ a.ans_id }}</td>
+        <td class="fw-semibold">{{ a.qtn_title }}</td>
+        <td class="text-end">
+          <form method="post"
+                action="{{ url_for('bl_ideas.admin_idea_attach_answer', idea_id=row.idea_id, ans_id=a.ans_id) }}">
+            <button type="submit" class="btn btn-sm btn-outline-primary">+ {{ _('Add') }}</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+      <tr id="ansNoResults" class="d-none">
+        <td colspan="3" class="text-center text-muted py-3 small">{{ _('No answers match your search.') }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="card-body">
+    <p class="text-muted mb-0 small">{{ _('No answers available to attach.') }}</p>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+(function () {
+  const input = document.getElementById('ansFilter');
+  if (!input) return;
+  input.addEventListener('input', function () {
+    const q = this.value.toLowerCase();
+    let visible = 0;
+    document.querySelectorAll('#ansTable tbody tr:not(#ansNoResults)').forEach(function (row) {
+      const match = row.textContent.toLowerCase().includes(q);
+      row.classList.toggle('d-none', !match);
+      if (match) visible++;
+    });
+    document.getElementById('ansNoResults').classList.toggle('d-none', visible > 0);
+  });
+  input.focus();
+})();
+</script>
+
+{% endblock %}

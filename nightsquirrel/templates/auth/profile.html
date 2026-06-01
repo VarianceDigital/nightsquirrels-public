@@ -1,0 +1,283 @@
+{% extends "base.html" %}
+
+{% block metatags %}
+<title>{{ _('My profile') }} | Night Squirrels</title>
+<meta name="description" content="{{ _('Your Night Squirrels profile.') }}">
+{% endblock %}
+
+{% block contents %}
+    <div>
+        <ol class="breadcrumb small">
+            <li class="breadcrumb-item"><a href="{{url_for('bl_home.index')}}">{{ _('Home') }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ _('User Profile') }}</li>
+        </ol>
+    </div>
+    <h1 class="mb-4">{{ _('My profile') }}</h1>
+    <div class="row">
+        <div class="col-sm-5">
+            <h5 class="mb-1">{{ _('User name') }}</h5>
+            <p>{{ _('The username was assigned at sign-up: you can change it!') }}<br>
+                {{ _('Must be bigger than 3 characters and must be unique.') }}
+            </p>
+        </div>
+        <div class="col-sm-7">
+            <form class="row g-2" method="post">
+                <div class="col-auto">
+                    <label for="username" class="visually-hidden">{{ _('User name') }}</label>
+                    <input type="text" required class="form-control form-control-sm" maxlength="99" minlength="4" size="40"
+                           onkeyup="button_save_username_on();" id="username" name="username" placeholder="{{ _('User name') }}" value="{{g.user_name}}">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary btn-sm" id="btn_save_username" name="btn_save_username" disabled>{{ _('Save') }}</button>
+                </div>
+                <div class="col-auto">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="restore_username_input();">{{ _('Cancel') }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <hr>
+
+    <div class="row">
+        <div class="col-sm-5">
+            <h5 class="mb-1">{{ _('Email') }}</h5>
+            <p>{{ _('Your email used to login. You may change it:') }}<br>
+                {{ _('you will receive an email - click the link to verify your new login.') }}<br>
+                <strong>{{ _('WARNING') }}</strong>: {{ _('you will receive a NEW access key; use it to login.') }}
+            </p>
+        </div>
+        <div class="col-sm-7">
+            <form class="row g-2" method="post">
+                <div class="col-auto">
+                    <label for="email" class="visually-hidden">{{ _('Email') }}</label>
+                    <input type="email" required class="form-control form-control-sm" size="40"
+                           onkeyup="button_save_email_on();" id="email" name="email" placeholder="{{ _('Email') }}" value="{{g.user_email}}">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary btn-sm" id="btn_save_email" name="btn_save_email" disabled>{{ _('Save') }}</button>
+                </div>
+                <div class="col-auto">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="restore_email_input();">{{ _('Cancel') }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-5">
+            <h5 class="mb-1">{{ _('Access key') }}</h5>
+            <p>{{ _('Change your access key.') }} <br>
+        </div>
+        <div class="col-sm-7" id="accesskeydiv">
+            <form method="post">
+                <div class="mb-3">
+                    <label for="accesskey" class="form-label mb-1">{{ _('Your current access key') }}</label>
+                    <input type="password" class="form-control form-control-sm {%if error==105%} is-invalid {%endif%}"
+                    id="accesskey" name="accesskey" aria-describedby="validationServerUserAccessKey" required>
+                    <div id="validationServerUserAccessKey" class="invalid-feedback">
+                        {{ _('Unrecognized access key') }}
+                    </div>
+                </div>
+                <hr>
+                <div class="mb-3">
+                    <label for="newaccesskey" class="form-label mb-1">{{ _('New access key') }}</label>
+                    <input type="password" class="form-control form-control-sm {%if error==107%} is-invalid {%endif%}" id="newaccesskey" name="newaccesskey" aria-describedby="validationServerUserAccessKey" required>
+                    <div id="validationServerNewAccessKey" class="invalid-feedback">
+                        {{ _('Invalid access key: must be at least 8 characters, including a letter and a digit') }}
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="confirmaccesskey" class="form-label mb-1">{{ _('Confirm new access key') }}</label>
+                    <input type="password" class="form-control form-control-sm {%if error==106%} is-invalid {%endif%}"
+                    id="confirmaccesskey" name="confirmaccesskey" aria-describedby="validationServerConfirmationAccessKey" required>
+                    <div id="validationServerConfirmationAccessKey" class="invalid-feedback">
+                        {{ _('Access key and confirm access key should be equal') }}
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm" id="btn_changeaccesskey" name="btn_changeaccesskey">{{ _('Update access key') }}</button>
+            </form>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-5">
+            <h5  class="mb-1">{{ _('Your custom tile') }}</h5>
+            <p>{{ _('It was assigned to you during sign-up.') }}<br>
+        </div>
+        <div class="col-sm-7">
+            <img src="{{s3tileurl}}{{record['usr_tile']}}" alt="{{record['usr_name']}}" width="64" height="64">
+        </div>
+    </div>
+    {% if g.usr_is_student %}
+    <hr>
+    <div class="row">
+        <div class="col-sm-5">
+            <h5 class="mb-1">{{ _('Academic profile') }}</h5>
+            <p>{{ _('Tell us your school type and year so we can pre-fill your questions and give you better quotes.') }}</p>
+        </div>
+        <div class="col-sm-7">
+            <form method="post">
+                <div class="mb-3">
+                    <label for="sct_id" class="form-label mb-1">{{ _('School type') }}</label>
+                    <select class="form-select form-select-sm" name="sct_id" id="sct_id"
+                            onchange="document.getElementById('btn_save_academic').disabled=false;">
+                        <option value="">{{ _('(not set)') }}</option>
+                        {% for st in schooltypes %}
+                            <option value="{{ st.sct_id }}"
+                                {% if record.sct_id is not none and record.sct_id == st.sct_id %}selected{% endif %}>
+                                {{ st|localized_name('sct_name') }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="usr_school_grade" class="form-label mb-1">{{ _('Year / Grade') }}</label>
+                    <input type="number" class="form-control form-control-sm" name="usr_school_grade"
+                           id="usr_school_grade" min="1" max="10"
+                           value="{{ record.usr_school_grade or '' }}"
+                           onchange="document.getElementById('btn_save_academic').disabled=false;"
+                           onkeyup="document.getElementById('btn_save_academic').disabled=false;">
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm" id="btn_save_academic"
+                        name="btn_save_academic" disabled>{{ _('Save') }}</button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+    {% if g.usr_is_payer or g.usr_is_student %}
+    <hr>
+    <div class="row">
+        <div class="col-sm-5">
+            <h5 class="mb-1">{{ _('Payment') }}</h5>
+            {% if payer_link and not is_self_pay %}
+                <p>{{ _('Your payer manages the PayPal account used for payments.') }}</p>
+            {% else %}
+                <p>{{ _('PayPal account used for payments when answers are delivered.') }}</p>
+            {% endif %}
+        </div>
+        <div class="col-sm-7">
+            {% if not payer_link and g.usr_is_student %}
+                <p class="text-muted mb-2">{{ _('No payment method configured yet.') }}</p>
+                <a href="{{ url_for('bl_payer.register_payer', next=url_for('bl_auth.userprofile')) }}" class="btn btn-primary btn-sm">{{ _('Set up payment') }}</a>
+
+            {% elif payer_link and not is_self_pay %}
+                <p class="mb-1"><strong>{{ _('Payer:') }}</strong> {{ payer_link.payer_name or _('(not set)') }} ({{ payer_link.payer_email }})</p>
+                <p class="mb-1"><strong>{{ _('Relationship:') }}</strong> {{ payer_link.plk_relationship | capitalize }}</p>
+                <p class="mb-2">
+                    <strong>{{ _('Vault:') }}</strong>
+                    {% if pmt and pmt.pmt_vault_status == 'vaulted' %}
+                        <span class="badge bg-success">{{ _('Connected') }}</span>
+                    {% elif pmt and pmt.pmt_vault_status == 'pending_approval' %}
+                        <span class="badge bg-info text-dark">{{ _('Awaiting approval') }}</span>
+                    {% elif pmt and pmt.pmt_vault_status in ('suspended', 'cancelled', 'expired') %}
+                        <span class="badge bg-danger">{{ pmt.pmt_vault_status | capitalize }}</span>
+                    {% else %}
+                        <span class="badge bg-warning text-dark">{{ _('Not set up') }}</span>
+                    {% endif %}
+                </p>
+                <form method="post" action="{{ url_for('bl_payer.unlink_payer') }}"
+                      data-confirm="{{ _('Are you sure you want to unlink this payer?') }}">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">{{ _('Unlink payer') }}</button>
+                </form>
+
+            {% elif pmt %}
+                <p class="mb-1"><strong>{{ _('PayPal email:') }}</strong> {{ pmt.pmt_paypal_email or _('(not set)') }}</p>
+                <p class="mb-2">
+                    <strong>{{ _('Vault:') }}</strong>
+                    {% if pmt.pmt_vault_status == 'vaulted' %}
+                        <span class="badge bg-success">{{ _('Connected') }}</span>
+                    {% elif pmt.pmt_vault_status == 'pending_approval' %}
+                        <span class="badge bg-info text-dark">{{ _('Awaiting approval') }}</span>
+                    {% elif pmt.pmt_vault_status in ('suspended', 'cancelled', 'expired') %}
+                        <span class="badge bg-danger">{{ pmt.pmt_vault_status | capitalize }}</span>
+                    {% else %}
+                        <span class="badge bg-warning text-dark">{{ _('Not set up') }}</span>
+                    {% endif %}
+                </p>
+                {% if pmt.pmt_vault_status == 'vaulted' %}
+                <form method="post" action="{{ url_for('bl_payer.vault_disconnect') }}"
+                      data-confirm="{{ _('Disconnect PayPal? You will need to set it up again.') }}"
+                      class="mt-2">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">{{ _('Disconnect PayPal') }}</button>
+                </form>
+                {% else %}
+                <div class="d-flex gap-2">
+                    <form method="post" action="{{ url_for('bl_payer.vault_setup') }}">
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            {% if pmt.pmt_vault_status == 'pending_approval' %}{{ _('Retry PayPal setup') }}{% else %}{{ _('Set up PayPal') }}{% endif %}
+                        </button>
+                    </form>
+                    <form method="post" action="{{ url_for('bl_payer.unlink_payer') }}"
+                          data-confirm="{{ _('This will remove your current payment setup. You can then register a different payer.') }}">
+                        <button type="submit" class="btn btn-outline-secondary btn-sm">{{ _('Cancel setup') }}</button>
+                    </form>
+                </div>
+                {% endif %}
+
+            {% else %}
+                <p class="text-muted">{{ _('No payment method registered yet.') }}</p>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+    <hr>
+    <div class="row">
+        <div class="col-sm-5">
+            <h5  class="mb-1">{{ _('Delete subscription') }}</h5>
+            <p>{{ _('All your images and data will be deleted.') }}<br>
+            <strong>{{ _('Warning') }}</strong>: {{ _('closing your account cannot be undone.') }}</p>
+        </div>
+        <div class="col-sm-7">
+            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#delete_subs_modal">{{ _('Delete subscription...') }}</button>
+        </div>
+    </div>
+<div class="modal fade" id="delete_subs_modal" tabindex="-1" aria-labelledby="delete_subs_modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Night Squirrels</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>{{ _('Are you sure you want to delete your subscription?') }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Cancel') }}</button>
+                <a href="{{url_for('bl_auth.deleteaccount')}}" class="btn btn-primary">{{ _('Delete it') }}</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function restore_email_input(){
+        var button_save_email = document.getElementById('btn_save_email');
+        var input_email = document.getElementById('email');
+        input_email.value="{{g.user_email}}"
+        button_save_email.disabled=true;
+    }
+    function restore_username_input(){
+        var button_save_username = document.getElementById('btn_save_username');
+        var input_username = document.getElementById('username');
+        input_username.value="{{g.user_name}}"
+        button_save_username.disabled=true;
+    }
+    function button_save_email_on()
+    {
+        var button_save_email = document.getElementById('btn_save_email');
+        button_save_email.disabled=false;
+    }
+    function button_save_username_on()
+    {
+        var button_save_username = document.getElementById('btn_save_username');
+        button_save_username.disabled=false;
+    }
+</script>
+{%if error>=105 and error<=107%}
+<script>
+    window.addEventListener('load', function() {
+        document.getElementById("accesskeydiv").scrollIntoView();
+    })
+</script>
+{%endif%}
+{% include 'incl_vault_prompt_modal.html' %}
+{% endblock %}
