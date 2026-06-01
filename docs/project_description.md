@@ -147,12 +147,15 @@ As a final feature, referemces can be flagged with one or more of the following 
 - is_current: Leo/the admin is currently reading the reference
 - is_recent: Leo/the admin has recently read the reference
 - is_crucial: it highlights references of fundamental importance.
+- is_other_outstanding_work: a reference which is not officially in the library but is cucial for the author/person; see The person page (and list) section.
 
 ### The person page (and list)
 
 The person entity is connected to references: the obvious example is the author that has written one or more books of the library. When a person name is present in one of the pages of the site, the name links to a dedicated **person page** that showcases all the references of that person.
 
-THere is also a "People" page, a listing of all items of the "persons" table. The list features each person, with a summary of related references (the list is interactive)
+NOTE: the person page features also a dedicated section listing the person's outstanding works which are not currently in the library.
+
+THere is also a **"People" page**, a listing of all items of the "persons" table. The list features each person, with a summary of related references (the list is interactive).
 
 ## Tags
 
