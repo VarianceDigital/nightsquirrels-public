@@ -6,7 +6,7 @@
 -- This file is intentionally left without data.
 -- In a live deployment, 9-library-seed.sql contains a full
 -- snapshot of the references library: persons, publishers,
--- books/references, cover-image S3 keys, and tags.
+-- books/articles/videos/weblinks, cover-image S3 keys, and tags.
 -- That content is proprietary and not distributed with the
 -- source code.
 --
@@ -20,10 +20,14 @@
 --
 --   1. tbl_r_person       (authors, editors, …)
 --   2. tbl_r_publisher
---   3. tbl_r_reference    (books, articles, …)
---   4. tbl_r_ref_person   (many-to-many join)
---   5. tbl_tag            (thematic tags)
---   6. tbl_r_ref_tag      (many-to-many join)
+--   3. tbl_r_image        (S3 cover/thumbnail image metadata)
+--   4. tbl_r_book
+--   5. tbl_r_article
+--   6. tbl_r_video
+--   7. tbl_r_weblink
+--   8. tbl_r_reference    (top-level reference rows)
+--   9. tbl_t_tag
+--  10. tbl_t_tag2reference (tag ↔ reference junctions)
 --
 -- To seed your own library, replace the INSERT statements
 -- below with your own data following the structure shown in
@@ -48,21 +52,53 @@
 -- OVERRIDING SYSTEM VALUE VALUES (
 --     1, 'Example Press', NULL, NULL, NULL, NOW(), NOW());
 
+-- INSERT INTO nightsquirrel.tbl_r_book (
+--     bok_id, bok_author1_per_id, bok_author2_per_id, bok_author_other,
+--     bok_author_etal, bok_title, bok_subtitle,
+--     bok_editor1_per_id, bok_editor2_per_id, bok_editor_other, bok_editor_etal,
+--     bok_translator1_per_id, bok_translator2_per_id, bok_translator_other, bok_translator_etal,
+--     bok_year, pub_id, bok_location, bok_isbn, bok_edition,
+--     bok_language, bok_pages, bok_link, usr_id, bok_created_at, bok_updated_at)
+-- OVERRIDING SYSTEM VALUE VALUES (
+--     1, 1, NULL, NULL, false, 'An Example Book', NULL,
+--     NULL, NULL, NULL, false, NULL, NULL, NULL, false,
+--     2024, 1, NULL, NULL, NULL, 'en', NULL, NULL, 1, NOW(), NOW());
+
+-- INSERT INTO nightsquirrel.tbl_r_video (
+--     vid_id, vid_title, vid_editor, vid_author1_per_id,
+--     vid_date, vid_platform, vid_language, vid_link,
+--     usr_id, vid_created_at, vid_updated_at)
+-- OVERRIDING SYSTEM VALUE VALUES (
+--     1, 'An Example Video', NULL, 1,
+--     '2024', 'YouTube', 'en', 'https://example.com/video',
+--     1, NOW(), NOW());
+
+-- INSERT INTO nightsquirrel.tbl_r_weblink (
+--     wlk_id, wlk_title, wlk_editor, wlk_author1_per_id,
+--     wlk_date, wlk_platform, wlk_language, wlk_link,
+--     usr_id, wlk_created_at, wlk_updated_at)
+-- OVERRIDING SYSTEM VALUE VALUES (
+--     1, 'An Example Web Link', NULL, 1,
+--     '2024', NULL, 'en', 'https://example.com',
+--     1, NOW(), NOW());
+
 -- INSERT INTO nightsquirrel.tbl_r_reference (
 --     ref_id, rtp_id, usr_id, ref_bok_id, ref_art_id,
 --     ref_vid_id, ref_wlk_id, ref_cover_img_id, ref_thumbnail_img_id,
 --     ref_is_library, ref_note, ref_needs_review,
 --     ref_is_current, ref_is_recent, ref_is_crucial,
+--     ref_is_other_outstanding_work,
 --     ref_created_at, ref_updated_at)
 -- OVERRIDING SYSTEM VALUE VALUES (
 --     1, 1, 1, 1, NULL, NULL, NULL, NULL, NULL,
---     true, NULL, false, false, false, false, NOW(), NOW());
+--     true, NULL, false, false, false, false,
+--     false,
+--     NOW(), NOW());
 
--- INSERT INTO nightsquirrel.tbl_r_ref_person (ref_id, per_id)
--- VALUES (1, 1);
+-- INSERT INTO nightsquirrel.tbl_t_tag (
+--     tag_id, tag_name, tag_created_at)
+-- OVERRIDING SYSTEM VALUE VALUES (
+--     1, 'example-tag', NOW());
 
--- INSERT INTO nightsquirrel.tbl_tag (tag_id, tag_name, tag_created_at)
--- OVERRIDING SYSTEM VALUE VALUES (1, 'example-tag', NOW());
-
--- INSERT INTO nightsquirrel.tbl_r_ref_tag (ref_id, tag_id)
--- VALUES (1, 1);
+-- INSERT INTO nightsquirrel.tbl_t_tag2reference (t2r_id, tag_id, ref_id)
+-- OVERRIDING SYSTEM VALUE VALUES (1, 1, 1);

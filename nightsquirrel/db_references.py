@@ -491,11 +491,18 @@ def db_delete_article(art_id: int) -> bool:
 def db_get_video(vid_id: int) -> Optional[dict]:
     db = get_db()
     cur = db.cursor(cursor_factory=RealDictCursor)
-    cur.execute("SELECT * FROM nightsquirrel.tbl_r_video WHERE vid_id = %s", (vid_id,))
+    cur.execute("""
+        SELECT v.*,
+               CONCAT_WS(' ', p.per_firstname, p.per_familyname) AS vid_author1_name
+          FROM nightsquirrel.tbl_r_video v
+          LEFT JOIN nightsquirrel.tbl_r_person p ON p.per_id = v.vid_author1_per_id
+         WHERE v.vid_id = %s
+    """, (vid_id,))
     return cur.fetchone()
 
 
 def db_create_video(usr_id: int, title: str = None, editor: str = None,
+                    author1_per_id: int = None,
                     date: str = None, platform: str = None,
                     language: str = None, link: str = None) -> int:
     db = get_db()
@@ -503,11 +510,12 @@ def db_create_video(usr_id: int, title: str = None, editor: str = None,
         cur = db.cursor(cursor_factory=RealDictCursor)
         cur.execute("""
             INSERT INTO nightsquirrel.tbl_r_video
-                (usr_id, vid_title, vid_editor, vid_date, vid_platform, vid_language, vid_link)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
+                (usr_id, vid_title, vid_editor, vid_author1_per_id,
+                 vid_date, vid_platform, vid_language, vid_link)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
             RETURNING vid_id
-        """, (usr_id, title or None, editor or None, date or None,
-              platform or None, language or None, link or None))
+        """, (usr_id, title or None, editor or None, author1_per_id,
+              date or None, platform or None, language or None, link or None))
         vid_id = cur.fetchone()['vid_id']
         db.commit()
         return vid_id
@@ -517,6 +525,7 @@ def db_create_video(usr_id: int, title: str = None, editor: str = None,
 
 
 def db_update_video(vid_id: int, title: str = None, editor: str = None,
+                    author1_per_id: int = None,
                     date: str = None, platform: str = None,
                     language: str = None, link: str = None) -> bool:
     db = get_db()
@@ -524,11 +533,11 @@ def db_update_video(vid_id: int, title: str = None, editor: str = None,
         cur = db.cursor()
         cur.execute("""
             UPDATE nightsquirrel.tbl_r_video
-               SET vid_title = %s, vid_editor = %s, vid_date = %s,
-                   vid_platform = %s, vid_language = %s, vid_link = %s
+               SET vid_title = %s, vid_editor = %s, vid_author1_per_id = %s,
+                   vid_date = %s, vid_platform = %s, vid_language = %s, vid_link = %s
              WHERE vid_id = %s
-        """, (title or None, editor or None, date or None,
-              platform or None, language or None, link or None, vid_id))
+        """, (title or None, editor or None, author1_per_id,
+              date or None, platform or None, language or None, link or None, vid_id))
         db.commit()
         return cur.rowcount > 0
     except Exception:
@@ -555,11 +564,18 @@ def db_delete_video(vid_id: int) -> bool:
 def db_get_weblink(wlk_id: int) -> Optional[dict]:
     db = get_db()
     cur = db.cursor(cursor_factory=RealDictCursor)
-    cur.execute("SELECT * FROM nightsquirrel.tbl_r_weblink WHERE wlk_id = %s", (wlk_id,))
+    cur.execute("""
+        SELECT w.*,
+               CONCAT_WS(' ', p.per_firstname, p.per_familyname) AS wlk_author1_name
+          FROM nightsquirrel.tbl_r_weblink w
+          LEFT JOIN nightsquirrel.tbl_r_person p ON p.per_id = w.wlk_author1_per_id
+         WHERE w.wlk_id = %s
+    """, (wlk_id,))
     return cur.fetchone()
 
 
 def db_create_weblink(usr_id: int, title: str = None, editor: str = None,
+                      author1_per_id: int = None,
                       date: str = None, platform: str = None,
                       language: str = None, link: str = None) -> int:
     db = get_db()
@@ -567,11 +583,12 @@ def db_create_weblink(usr_id: int, title: str = None, editor: str = None,
         cur = db.cursor(cursor_factory=RealDictCursor)
         cur.execute("""
             INSERT INTO nightsquirrel.tbl_r_weblink
-                (usr_id, wlk_title, wlk_editor, wlk_date, wlk_platform, wlk_language, wlk_link)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
+                (usr_id, wlk_title, wlk_editor, wlk_author1_per_id,
+                 wlk_date, wlk_platform, wlk_language, wlk_link)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
             RETURNING wlk_id
-        """, (usr_id, title or None, editor or None, date or None,
-              platform or None, language or None, link or None))
+        """, (usr_id, title or None, editor or None, author1_per_id,
+              date or None, platform or None, language or None, link or None))
         wlk_id = cur.fetchone()['wlk_id']
         db.commit()
         return wlk_id
@@ -581,6 +598,7 @@ def db_create_weblink(usr_id: int, title: str = None, editor: str = None,
 
 
 def db_update_weblink(wlk_id: int, title: str = None, editor: str = None,
+                      author1_per_id: int = None,
                       date: str = None, platform: str = None,
                       language: str = None, link: str = None) -> bool:
     db = get_db()
@@ -588,11 +606,11 @@ def db_update_weblink(wlk_id: int, title: str = None, editor: str = None,
         cur = db.cursor()
         cur.execute("""
             UPDATE nightsquirrel.tbl_r_weblink
-               SET wlk_title = %s, wlk_editor = %s, wlk_date = %s,
-                   wlk_platform = %s, wlk_language = %s, wlk_link = %s
+               SET wlk_title = %s, wlk_editor = %s, wlk_author1_per_id = %s,
+                   wlk_date = %s, wlk_platform = %s, wlk_language = %s, wlk_link = %s
              WHERE wlk_id = %s
-        """, (title or None, editor or None, date or None,
-              platform or None, language or None, link or None, wlk_id))
+        """, (title or None, editor or None, author1_per_id,
+              date or None, platform or None, language or None, link or None, wlk_id))
         db.commit()
         return cur.rowcount > 0
     except Exception:
@@ -660,16 +678,28 @@ _REF_LIST_QUERY = """
            r.ref_cover_img_id, r.ref_thumbnail_img_id,
            r.ref_created_at, r.ref_updated_at, r.ref_needs_review,
            r.ref_is_current, r.ref_is_recent, r.ref_is_crucial,
+           r.ref_is_other_outstanding_work,
            rt.rtp_name_ita, rt.rtp_name_eng,
            COALESCE(b.bok_title, a.art_title, v.vid_title, w.wlk_title) AS ref_title,
            b.bok_subtitle AS ref_subtitle,
            COALESCE(
-               CONCAT_WS(' ', pb.per_firstname, pb.per_familyname),
-               CONCAT_WS(' ', pa.per_firstname, pa.per_familyname)
+               NULLIF(CONCAT_WS(' ', pb.per_firstname, pb.per_familyname), ''),
+               NULLIF(CONCAT_WS(' ', pa.per_firstname, pa.per_familyname), ''),
+               NULLIF(CONCAT_WS(' ', pv.per_firstname, pv.per_familyname), ''),
+               NULLIF(CONCAT_WS(' ', pw.per_firstname, pw.per_familyname), '')
            ) AS ref_author1_name,
-           COALESCE(b.bok_author1_per_id, a.art_author1_per_id) AS ref_author1_per_id,
-           COALESCE(pb.per_won_nobel, pa.per_won_nobel) AS ref_author1_won_nobel,
-           COALESCE(b.bok_year::text, a.art_date) AS ref_year,
+           COALESCE(b.bok_author1_per_id, a.art_author1_per_id,
+                    v.vid_author1_per_id, w.wlk_author1_per_id) AS ref_author1_per_id,
+           COALESCE(pb.per_won_nobel, pa.per_won_nobel,
+                    pv.per_won_nobel, pw.per_won_nobel) AS ref_author1_won_nobel,
+           COALESCE(b.bok_author2_per_id, a.art_author2_per_id) AS ref_author2_per_id,
+           COALESCE(
+               NULLIF(CONCAT_WS(' ', pb2.per_firstname, pb2.per_familyname), ''),
+               NULLIF(CONCAT_WS(' ', pa2.per_firstname, pa2.per_familyname), '')
+           ) AS ref_author2_name,
+           COALESCE(pb2.per_won_nobel, pa2.per_won_nobel) AS ref_author2_won_nobel,
+           COALESCE(b.bok_author_etal, a.art_author_etal, false) AS ref_author_etal,
+           COALESCE(b.bok_year::text, a.art_date, v.vid_date, w.wlk_date) AS ref_year,
            ci.img_s3_key  AS cover_s3_key,
            ti.img_s3_key  AS thumbnail_s3_key,
            u.usr_name     AS owner_name,
@@ -682,7 +712,11 @@ _REF_LIST_QUERY = """
       LEFT JOIN nightsquirrel.tbl_r_video   v  ON v.vid_id  = r.ref_vid_id
       LEFT JOIN nightsquirrel.tbl_r_weblink w  ON w.wlk_id  = r.ref_wlk_id
       LEFT JOIN nightsquirrel.tbl_r_person pb  ON pb.per_id = b.bok_author1_per_id
+      LEFT JOIN nightsquirrel.tbl_r_person pb2 ON pb2.per_id = b.bok_author2_per_id
       LEFT JOIN nightsquirrel.tbl_r_person pa  ON pa.per_id = a.art_author1_per_id
+      LEFT JOIN nightsquirrel.tbl_r_person pa2 ON pa2.per_id = a.art_author2_per_id
+      LEFT JOIN nightsquirrel.tbl_r_person pv  ON pv.per_id = v.vid_author1_per_id
+      LEFT JOIN nightsquirrel.tbl_r_person pw  ON pw.per_id = w.wlk_author1_per_id
       LEFT JOIN nightsquirrel.tbl_r_image  ci  ON ci.img_id = r.ref_cover_img_id
       LEFT JOIN nightsquirrel.tbl_r_image  ti  ON ti.img_id = r.ref_thumbnail_img_id
 """
@@ -745,7 +779,7 @@ def db_get_reference(ref_id: int) -> Optional[dict]:
 
 
 def db_list_references_by_person(per_id: int, library_only: bool = True) -> list:
-    """Return references linked to the given person (any author/editor/translator role).
+    """Return non-outstanding references linked to the given person (any author/editor/translator role).
     library_only=True  → only ref_is_library references (public view)
     library_only=False → all references regardless of visibility (admin view)
     """
@@ -754,16 +788,107 @@ def db_list_references_by_person(per_id: int, library_only: bool = True) -> list
     library_clause = "r.ref_is_library = true AND" if library_only else ""
     cur.execute(f"""
         {_REF_LIST_QUERY}
-        WHERE {library_clause} (
+        WHERE {library_clause}
+              r.ref_is_other_outstanding_work = false
+          AND (
               b.bok_author1_per_id = %(p)s OR b.bok_author2_per_id = %(p)s
            OR b.bok_editor1_per_id = %(p)s OR b.bok_editor2_per_id = %(p)s
            OR b.bok_translator1_per_id = %(p)s OR b.bok_translator2_per_id = %(p)s
            OR a.art_author1_per_id = %(p)s OR a.art_author2_per_id = %(p)s
            OR a.art_editor1_per_id = %(p)s OR a.art_editor2_per_id = %(p)s
+           OR v.vid_author1_per_id = %(p)s
+           OR w.wlk_author1_per_id = %(p)s
           )
         ORDER BY r.ref_created_at DESC
     """, {'p': per_id})
     return cur.fetchall()
+
+
+def db_list_outstanding_works_by_person(per_id: int) -> list:
+    """Return references flagged as other_outstanding_work linked to the given person."""
+    db = get_db()
+    cur = db.cursor(cursor_factory=RealDictCursor)
+    cur.execute(f"""
+        {_REF_LIST_QUERY}
+        WHERE r.ref_is_other_outstanding_work = true
+          AND (
+              b.bok_author1_per_id = %(p)s OR b.bok_author2_per_id = %(p)s
+           OR b.bok_editor1_per_id = %(p)s OR b.bok_editor2_per_id = %(p)s
+           OR b.bok_translator1_per_id = %(p)s OR b.bok_translator2_per_id = %(p)s
+           OR a.art_author1_per_id = %(p)s OR a.art_author2_per_id = %(p)s
+           OR a.art_editor1_per_id = %(p)s OR a.art_editor2_per_id = %(p)s
+           OR v.vid_author1_per_id = %(p)s
+           OR w.wlk_author1_per_id = %(p)s
+          )
+        ORDER BY r.ref_created_at DESC
+    """, {'p': per_id})
+    return cur.fetchall()
+
+
+def db_create_outstanding_work(per_id: int, rtp_id: int, usr_id: int,
+                               title: str, year: str = None, link: str = None) -> int:
+    """Create a typed entity + reference flagged as other_outstanding_work for per_id.
+    rtp_id: 1=book, 2=article, 3=video, 4=weblink
+    year: stored as bok_year (int) for books, *_date (text) for the rest.
+    """
+    db = get_db()
+    try:
+        cur = db.cursor(cursor_factory=RealDictCursor)
+        if rtp_id == 1:
+            bok_year = int(year) if year and year.isdigit() else None
+            cur.execute("""
+                INSERT INTO nightsquirrel.tbl_r_book
+                    (usr_id, bok_title, bok_author1_per_id, bok_year, bok_link)
+                VALUES (%s, %s, %s, %s, %s) RETURNING bok_id
+            """, (usr_id, title, per_id, bok_year, link or None))
+            typed_id = cur.fetchone()['bok_id']
+            cur.execute("""
+                INSERT INTO nightsquirrel.tbl_r_reference
+                    (rtp_id, usr_id, ref_bok_id, ref_is_library, ref_is_other_outstanding_work)
+                VALUES (1, %s, %s, false, true) RETURNING ref_id
+            """, (usr_id, typed_id))
+        elif rtp_id == 2:
+            cur.execute("""
+                INSERT INTO nightsquirrel.tbl_r_article
+                    (usr_id, art_title, art_author1_per_id, art_date, art_link)
+                VALUES (%s, %s, %s, %s, %s) RETURNING art_id
+            """, (usr_id, title, per_id, year or None, link or None))
+            typed_id = cur.fetchone()['art_id']
+            cur.execute("""
+                INSERT INTO nightsquirrel.tbl_r_reference
+                    (rtp_id, usr_id, ref_art_id, ref_is_library, ref_is_other_outstanding_work)
+                VALUES (2, %s, %s, false, true) RETURNING ref_id
+            """, (usr_id, typed_id))
+        elif rtp_id == 3:
+            cur.execute("""
+                INSERT INTO nightsquirrel.tbl_r_video
+                    (usr_id, vid_title, vid_author1_per_id, vid_date, vid_link)
+                VALUES (%s, %s, %s, %s, %s) RETURNING vid_id
+            """, (usr_id, title, per_id, year or None, link or None))
+            typed_id = cur.fetchone()['vid_id']
+            cur.execute("""
+                INSERT INTO nightsquirrel.tbl_r_reference
+                    (rtp_id, usr_id, ref_vid_id, ref_is_library, ref_is_other_outstanding_work)
+                VALUES (3, %s, %s, false, true) RETURNING ref_id
+            """, (usr_id, typed_id))
+        else:
+            cur.execute("""
+                INSERT INTO nightsquirrel.tbl_r_weblink
+                    (usr_id, wlk_title, wlk_author1_per_id, wlk_date, wlk_link)
+                VALUES (%s, %s, %s, %s, %s) RETURNING wlk_id
+            """, (usr_id, title, per_id, year or None, link or None))
+            typed_id = cur.fetchone()['wlk_id']
+            cur.execute("""
+                INSERT INTO nightsquirrel.tbl_r_reference
+                    (rtp_id, usr_id, ref_wlk_id, ref_is_library, ref_is_other_outstanding_work)
+                VALUES (4, %s, %s, false, true) RETURNING ref_id
+            """, (usr_id, typed_id))
+        ref_id = cur.fetchone()['ref_id']
+        db.commit()
+        return ref_id
+    except Exception:
+        db.rollback()
+        raise
 
 
 def db_list_references_by_tag(tag_id: int) -> list:
@@ -881,7 +1006,8 @@ def db_get_reference_fks(ref_id: int) -> Optional[dict]:
     cur = db.cursor(cursor_factory=RealDictCursor)
     cur.execute("""
         SELECT ref_id, rtp_id, usr_id, ref_bok_id, ref_art_id, ref_vid_id, ref_wlk_id,
-               ref_cover_img_id, ref_thumbnail_img_id, ref_is_library, ref_note, ref_needs_review
+               ref_cover_img_id, ref_thumbnail_img_id, ref_is_library, ref_note,
+               ref_needs_review, ref_is_other_outstanding_work
           FROM nightsquirrel.tbl_r_reference WHERE ref_id = %s
     """, (ref_id,))
     return cur.fetchone()
@@ -910,16 +1036,17 @@ def db_create_reference(rtp_id: int, usr_id: int,
         raise
 
 
-def db_update_reference_meta(ref_id: int, is_library: bool, note: str = None) -> bool:
-    """Update only the reference-level metadata (library flag, note)."""
+def db_update_reference_meta(ref_id: int, is_library: bool, note: str = None,
+                              is_other_outstanding_work: bool = False) -> bool:
+    """Update the reference-level metadata (library flag, note, outstanding work flag)."""
     db = get_db()
     try:
         cur = db.cursor()
         cur.execute("""
             UPDATE nightsquirrel.tbl_r_reference
-               SET ref_is_library = %s, ref_note = %s
+               SET ref_is_library = %s, ref_note = %s, ref_is_other_outstanding_work = %s
              WHERE ref_id = %s
-        """, (is_library, note or None, ref_id))
+        """, (is_library, note or None, is_other_outstanding_work, ref_id))
         db.commit()
         return cur.rowcount > 0
     except Exception:
@@ -966,8 +1093,8 @@ def db_set_ref_needs_review(ref_id: int) -> None:
 
 
 def db_toggle_ref_flag(ref_id: int, flag: str) -> bool:
-    """Toggle one of ref_is_current, ref_is_recent, ref_is_crucial."""
-    allowed = {'ref_is_current', 'ref_is_recent', 'ref_is_crucial'}
+    """Toggle one of ref_is_current, ref_is_recent, ref_is_crucial, ref_is_other_outstanding_work."""
+    allowed = {'ref_is_current', 'ref_is_recent', 'ref_is_crucial', 'ref_is_other_outstanding_work'}
     if flag not in allowed:
         raise ValueError(f"Invalid flag: {flag}")
     db = get_db()

@@ -39,6 +39,14 @@
           <span class="badge bg-warning text-dark">{{ _("Needs review") }}</span>
         </label>
       </div>
+      <div class="form-check mb-2">
+        <input class="form-check-input" type="checkbox" name="ref_is_other_outstanding_work" id="ref_is_other_outstanding_work"
+               {% if row and row.ref_is_other_outstanding_work %}checked{% endif %}>
+        <label class="form-check-label" for="ref_is_other_outstanding_work">
+          {{ _("Other outstanding work") }}
+          <span class="text-muted small">{{ _("(shown separately on the person page, not in main library)") }}</span>
+        </label>
+      </div>
       <label class="form-label mt-2">{{ _("Leo's note") }}</label>
       <textarea class="form-control" name="ref_note" rows="2"
                 placeholder="{{ _('Personal recommendation or comment…') }}">{{ row.ref_note if row and row.ref_note else '' }}</textarea>
@@ -382,6 +390,18 @@
         <input class="form-control" name="vid_title" value="{{ (e.vid_title or '') if e else '' }}">
       </div>
       <div class="col-md-6">
+        <label class="form-label">{{ _('Author') }}</label>
+        <select class="form-select" name="vid_author1_per_id">
+          <option value="">—</option>
+          {% for p in persons %}
+            <option value="{{ p.per_id }}"
+              {% if e and e.vid_author1_per_id == p.per_id %}selected{% endif %}>
+              {{ p.per_familyname }}{% if p.per_firstname %}, {{ p.per_firstname }}{% endif %}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-6">
         <label class="form-label">{{ _('Editor / Channel') }}</label>
         <input class="form-control" name="vid_editor" value="{{ (e.vid_editor or '') if e else '' }}">
       </div>
@@ -417,7 +437,19 @@
         <input class="form-control" name="wlk_title" value="{{ (e.wlk_title or '') if e else '' }}">
       </div>
       <div class="col-md-6">
-        <label class="form-label">{{ _('Editor / Author') }}</label>
+        <label class="form-label">{{ _('Author') }}</label>
+        <select class="form-select" name="wlk_author1_per_id">
+          <option value="">—</option>
+          {% for p in persons %}
+            <option value="{{ p.per_id }}"
+              {% if e and e.wlk_author1_per_id == p.per_id %}selected{% endif %}>
+              {{ p.per_familyname }}{% if p.per_firstname %}, {{ p.per_firstname }}{% endif %}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">{{ _('Editor / Free text author') }}</label>
         <input class="form-control" name="wlk_editor" value="{{ (e.wlk_editor or '') if e else '' }}">
       </div>
       <div class="col-md-3">

@@ -46,6 +46,19 @@
          title="{{ _('Nobel Prize: %(prizes)s', prizes=r.ref_author1_won_nobel) }}"
          style="font-size:0.8em;"></i>
       {% endif %}
+      {% if r.ref_author2_name %}
+      ,
+      {% if r.ref_author2_per_id and (link_author is not defined or link_author) %}
+      <a href="{{ url_for('bl_references.person_page', per_id=r.ref_author2_per_id) }}"
+         class="text-muted text-decoration-none">{{ r.ref_author2_name }}</a>
+      {% else %}{{ r.ref_author2_name }}{% endif %}
+      {% if r.ref_author2_won_nobel %}
+      <i class="bi bi-award-fill text-warning ms-1"
+         title="{{ _('Nobel Prize: %(prizes)s', prizes=r.ref_author2_won_nobel) }}"
+         style="font-size:0.8em;"></i>
+      {% endif %}
+      {% endif %}
+      {% if r.ref_author_etal %} <em>et al.</em>{% endif %}
       {% if r.ref_year %}, {{ r.ref_year }}{% endif %}
     </div>
     {% endif %}

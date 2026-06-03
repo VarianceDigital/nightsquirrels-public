@@ -115,6 +115,12 @@
               <i class="bi bi-suit-heart-fill {% if r.ref_is_crucial %}text-danger{% else %}text-muted opacity-25{% endif %}"></i>
             </button>
           </form>
+          <form method="post" class="d-inline"
+                action="{{ url_for('bl_references.admin_toggle_outstanding', ref_id=r.ref_id) }}">
+            <button class="btn btn-link p-0 border-0" title="{{ _('Other outstanding work') }}">
+              <i class="bi bi-star-fill {% if r.ref_is_other_outstanding_work %}text-warning{% else %}text-muted opacity-25{% endif %}"></i>
+            </button>
+          </form>
         </td>
         <td class="text-end">
           <a class="btn btn-sm btn-outline-primary"

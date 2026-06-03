@@ -42,4 +42,64 @@
     <button type="submit" class="btn btn-primary">{{ _('Save') }}</button>
   </div>
 </form>
+
+{% if row %}
+<div class="card mt-2 mb-4">
+  <div class="card-header fw-semibold">{{ _('Other outstanding works') }}</div>
+  <div class="card-body p-0">
+    {% if outstanding %}
+    <ul class="list-group list-group-flush">
+      {% for r in outstanding %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span>
+          <span class="badge bg-secondary me-1" style="font-size:0.65rem;">{{ r.rtp_name_eng }}</span>
+          {{ r.ref_title or '(untitled)' }}
+          {% if r.ref_year %}<span class="text-muted small ms-1">{{ r.ref_year }}</span>{% endif %}
+        </span>
+        <form method="post"
+              action="{{ url_for('bl_references.admin_delete_outstanding_work', per_id=row.per_id, ref_id=r.ref_id) }}"
+              onsubmit="return confirm('{{ _('Remove this outstanding work?') }}')">
+          <button type="submit" class="btn btn-outline-danger btn-sm">
+            <i class="bi bi-trash"></i>
+          </button>
+        </form>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-muted small p-3 mb-0">{{ _('No outstanding works yet.') }}</p>
+    {% endif %}
+  </div>
+  <div class="card-footer">
+    <form method="post"
+          action="{{ url_for('bl_references.admin_add_outstanding_work', per_id=row.per_id) }}"
+          class="row g-2 align-items-end">
+      <div class="col-md-2">
+        <label class="form-label small mb-1">{{ _('Type') }}</label>
+        <select class="form-select form-select-sm" name="rtp_id">
+          <option value="1">{{ _('Book') }}</option>
+          <option value="2">{{ _('Article') }}</option>
+          <option value="3">{{ _('Video') }}</option>
+          <option value="4" selected>{{ _('Web Link') }}</option>
+        </select>
+      </div>
+      <div class="col-md-5">
+        <label class="form-label small mb-1">{{ _('Title') }}</label>
+        <input class="form-control form-control-sm" name="title" required>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label small mb-1">{{ _('Year') }}</label>
+        <input class="form-control form-control-sm" name="year" placeholder="e.g. 1984">
+      </div>
+      <div class="col-md-2">
+        <label class="form-label small mb-1">{{ _('Link (optional)') }}</label>
+        <input class="form-control form-control-sm" name="link" type="text">
+      </div>
+      <div class="col-md-1">
+        <button type="submit" class="btn btn-primary btn-sm w-100">{{ _('Add') }}</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endif %}
 {% endblock %}

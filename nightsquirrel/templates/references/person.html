@@ -44,4 +44,22 @@
   <div class="col-12 text-center text-muted py-5">{{ _('No references found.') }}</div>
   {% endfor %}
 </div>
+
+{% if outstanding %}
+<h4 class="mt-5 mb-3">{{ _('Other outstanding works') }}</h4>
+<ul class="list-group list-group-flush">
+  {% for r in outstanding %}
+  <li class="list-group-item ps-0 d-flex align-items-start gap-2">
+    <span class="badge bg-light text-secondary border mt-1" style="font-size:0.65rem; white-space:nowrap;">
+      {{ r.rtp_name_eng }}{% if r.ref_year %}, {{ r.ref_year }}{% endif %}
+    </span>
+    <span>
+      <a href="{{ url_for('bl_references.ref_detail', ref_id=r.ref_id) }}" class="fw-semibold text-decoration-none">
+        {{ r.ref_title or _('(untitled)') }}
+      </a>
+    </span>
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}
 {% endblock %}

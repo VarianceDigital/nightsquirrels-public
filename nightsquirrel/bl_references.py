@@ -27,6 +27,8 @@ from .db_references import (
     db_find_persons_by_familyname, db_find_publishers_by_name_fuzzy,
     db_toggle_ref_flag, db_list_leo_reading,
     db_list_references_by_person,
+    db_list_outstanding_works_by_person,
+    db_create_outstanding_work,
     db_list_references_by_tag,
     db_list_library_persons_with_refs,
 )
@@ -141,6 +143,7 @@ def _video_kwargs():
     return dict(
         title=_str('vid_title'),
         editor=_str('vid_editor'),
+        author1_per_id=_int('vid_author1_per_id'),
         date=_str('vid_date'),
         platform=_str('vid_platform'),
         language=_str('vid_language'),
@@ -152,6 +155,7 @@ def _weblink_kwargs():
     return dict(
         title=_str('wlk_title'),
         editor=_str('wlk_editor'),
+        author1_per_id=_int('wlk_author1_per_id'),
         date=_str('wlk_date'),
         platform=_str('wlk_platform'),
         language=_str('wlk_language'),
@@ -336,12 +340,14 @@ def person_page(per_id: int):
         abort(404)
     is_admin = getattr(g, 'usr_is_admin', False)
     refs = db_list_references_by_person(per_id, library_only=not is_admin)
+    outstanding = db_list_outstanding_works_by_person(per_id)
     tags_by_ref = db_tags_for_refs_batch([r['ref_id'] for r in refs]) if refs else {}
     return render_template(
         'references/person.html',
         mc={'library': 'active'},
         person=person,
         refs=refs,
+        outstanding=outstanding,
         tags_by_ref=tags_by_ref,
         is_admin=is_admin,
         images_bucket_url=_REF_IMAGES_BUCKET_URL,
@@ -1125,7 +1131,8 @@ def admin_edit_ref(ref_id):
             _save_typed_entity(rtp, fks)
             db_update_reference_meta(ref_id=ref_id,
                                      is_library=_bool('ref_is_library'),
-                                     note=_str('ref_note'))
+                                     note=_str('ref_note'),
+                                     is_other_outstanding_work=_bool('ref_is_other_outstanding_work'))
             if _bool('ref_needs_review'):
                 db_set_ref_needs_review(ref_id)
             else:
@@ -1210,6 +1217,13 @@ def admin_toggle_recent(ref_id):
 @admin_required
 def admin_toggle_crucial(ref_id):
     db_toggle_ref_flag(ref_id, 'ref_is_crucial')
+    return redirect(request.referrer or url_for('bl_references.admin_list'))
+
+
+@bp.post('/admin/<int:ref_id>/toggle-outstanding')
+@admin_required
+def admin_toggle_outstanding(ref_id):
+    db_toggle_ref_flag(ref_id, 'ref_is_other_outstanding_work')
     return redirect(request.referrer or url_for('bl_references.admin_list'))
 
 
@@ -1675,9 +1689,46 @@ def admin_edit_person(per_id):
             return redirect(url_for('bl_references.admin_persons'))
         except psycopg2.Error as e:
             flash(_('Database error: %(msg)s', msg=str(e)), 'danger')
+    outstanding = db_list_outstanding_works_by_person(per_id)
     return render_template('admin/references/person_form.html',
                            mc={'admin': 'active'}, row=row,
+                           outstanding=outstanding,
                            action=url_for('bl_references.admin_edit_person', per_id=per_id))
+
+
+@bp.post('/admin/persons/<int:per_id>/outstanding/add')
+@admin_required
+def admin_add_outstanding_work(per_id):
+    if not db_get_person(per_id):
+        abort(404)
+    rtp_id = _int('rtp_id') or 4
+    title = _str('title')
+    year = _str('year')
+    link = _str('link')
+    if not title:
+        flash(_('Title is required.'), 'danger')
+        return redirect(url_for('bl_references.admin_edit_person', per_id=per_id))
+    try:
+        db_create_outstanding_work(per_id=per_id, rtp_id=rtp_id,
+                                   usr_id=g.user_id, title=title, year=year, link=link)
+        flash(_('Outstanding work added.'), 'success')
+    except psycopg2.Error as e:
+        flash(_('Database error: %(msg)s', msg=str(e)), 'danger')
+    return redirect(url_for('bl_references.admin_edit_person', per_id=per_id))
+
+
+@bp.post('/admin/persons/<int:per_id>/outstanding/<int:ref_id>/delete')
+@admin_required
+def admin_delete_outstanding_work(per_id, ref_id):
+    try:
+        s3_keys = db_delete_reference(ref_id)
+        for key in (s3_keys.get('cover_s3_key'), s3_keys.get('thumbnail_s3_key')):
+            if key:
+                delete_file_from_s3(key, _REF_IMAGES_BUCKET_NAME)
+        flash(_('Outstanding work removed.'), 'success')
+    except psycopg2.Error as e:
+        flash(_('Cannot delete: %(msg)s', msg=str(e)), 'danger')
+    return redirect(url_for('bl_references.admin_edit_person', per_id=per_id))
 
 
 @bp.post('/admin/persons/<int:per_id>/delete')
