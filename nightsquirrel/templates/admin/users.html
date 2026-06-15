@@ -62,8 +62,12 @@
           <td class="text-center">
             <input type="checkbox" name="usr_is_payer" {% if r.usr_is_payer %}checked{% endif %}>
           </td>
-          <td>
+          <td class="d-flex gap-1">
             <button class="btn btn-sm btn-outline-primary"><i class="bi bi-check-lg"></i> {{ _('Save') }}</button>
+            <a href="{{ url_for('bl_interests.admin_user_interests', usr_id=r.usr_id) }}"
+               class="btn btn-sm btn-outline-secondary" title="{{ _('Interests') }}">
+              <i class="bi bi-stars"></i>
+            </a>
           </td>
           </form>
         </tr>

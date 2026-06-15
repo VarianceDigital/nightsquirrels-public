@@ -1,5 +1,6 @@
 from inflection import parameterize
-from flask import Markup, g
+from markupsafe import Markup
+from flask import g
 from flask_babel import gettext as _
 from .states import (TKT_NEW, TKT_NEEDS_CLARIFICATION, TKT_QUOTED,
                      TKT_NEEDS_REVIEW, TKT_REJECTED,

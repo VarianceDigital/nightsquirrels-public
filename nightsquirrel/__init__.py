@@ -115,6 +115,9 @@ def create_app():
     from . import bl_tags
     app.register_blueprint(bl_tags.bp)
 
+    from . import bl_interests
+    app.register_blueprint(bl_interests.bp)
+
     from . import bl_examples
     app.register_blueprint(bl_examples.bp)
 

@@ -617,7 +617,7 @@ def db_create_custom_tile(custom_color):
 
     #5. FIND ALL THE COLORS OF THE TILE
     fills = re.findall(r'cls-\d+{fill:#\w+;}', tile_text)
-    allcolors = list(map(lambda x: re.findall('#\w+;',x)[0], fills))
+    allcolors = list(map(lambda x: re.findall(r'#\w+;',x)[0], fills))
     
     #6. SUBSTITUTE ALL COLORS WITH RANDOM COLORS
     #   FIRST AND LAST COLORS ARE SPECIAL

@@ -22,6 +22,7 @@ from .db_lookup import db_get_schooltypes
 from .layoutUtils import read_data_from_form, set_menu
 from .s3_operations import delete_file_from_s3, write_tile_to_s3
 from .db_payment import db_get_active_payer_link, db_get_default_payment_method
+from .db_interests import db_list_interests_for_user, db_list_available_interests_for_user
 import os
 
 bp = Blueprint('bl_auth', __name__, url_prefix='/auth')
@@ -201,10 +202,15 @@ def userprofile():
     else:
         pmt = None
 
+    user_interests = db_list_interests_for_user(g.user_id)
+    available_interests = db_list_available_interests_for_user(g.user_id)
+
     return render_template('auth/profile.html',
                            mc=mc, s3tileurl=s3tileurl, record=record, error=error,
                            payer_link=payer_link, pmt=pmt, is_self_pay=is_self_pay,
-                           schooltypes=schooltypes)
+                           schooltypes=schooltypes,
+                           user_interests=user_interests,
+                           available_interests=available_interests)
 
 
 @bp.route('/forgotkey',methods=('GET', 'POST'))

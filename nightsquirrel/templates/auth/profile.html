@@ -221,6 +221,43 @@
     </div>
     {% endif %}
     <hr>
+    <div class="row" id="interests">
+        <div class="col-sm-5">
+            <h5 class="mb-1">{{ _('My interests') }}</h5>
+            <p>{{ _('Topics and subjects you are interested in.') }}</p>
+        </div>
+        <div class="col-sm-7">
+            <div class="d-flex flex-wrap gap-2 mb-3">
+                {% for i in user_interests %}
+                <form method="post" action="{{ url_for('bl_interests.user_detach', uit_id=i.uit_id) }}">
+                    <span class="badge rounded-pill bg-secondary d-inline-flex align-items-center gap-1 px-2 py-1" style="font-size:0.85rem">
+                        {{ i|localized_name('uit_name') }}
+                        <button type="submit" class="btn-close btn-close-white ms-1" style="font-size:0.6rem" aria-label="{{ _('Remove') }}"></button>
+                    </span>
+                </form>
+                {% else %}
+                <p class="text-muted small mb-0">{{ _('No interests added yet.') }}</p>
+                {% endfor %}
+            </div>
+            {% if available_interests %}
+            <form method="post" action="{{ url_for('bl_interests.user_attach') }}">
+                <div class="input-group input-group-sm">
+                    <select class="form-select form-select-sm" name="uit_id" id="sel_interest"
+                            onchange="document.getElementById('btn_add_interest').disabled=!this.value;">
+                        <option value="">{{ _('Select an interest…') }}</option>
+                        {% for i in available_interests %}
+                        <option value="{{ i.uit_id }}">{{ i|localized_name('uit_name') }}</option>
+                        {% endfor %}
+                    </select>
+                    <button class="btn btn-outline-primary" type="submit" id="btn_add_interest" disabled>
+                        {{ _('Add') }}
+                    </button>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+    <hr>
     <div class="row">
         <div class="col-sm-5">
             <h5  class="mb-1">{{ _('Delete subscription') }}</h5>

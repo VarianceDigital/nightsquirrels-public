@@ -147,6 +147,14 @@
   </div>
 
   <div class="col-6 col-md-4 col-lg-2">
+    <a href="{{ url_for('bl_interests.admin_list') }}"
+       class="btn btn-outline-secondary w-100 d-flex flex-column align-items-center py-3 gap-1">
+      <i class="bi bi-stars fs-4"></i>
+      <span class="small">{{ _('Interests') }}</span>
+    </a>
+  </div>
+
+  <div class="col-6 col-md-4 col-lg-2">
     <a href="{{ url_for('bl_admin.rebase_utilities') }}"
        class="btn btn-outline-secondary w-100 d-flex flex-column align-items-center py-3 gap-1">
       <i class="bi bi-tools fs-4"></i>

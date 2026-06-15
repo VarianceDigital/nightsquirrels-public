@@ -2,6 +2,7 @@ from psycopg2.extras import RealDictCursor
 from .db import get_db
 from typing import Optional
 import json
+from datetime import datetime, timezone
 from .db_references import _REF_LIST_QUERY
 
 
@@ -243,3 +244,62 @@ def db_detach_answer_from_idea(idea_id: int, ans_id: int) -> None:
          WHERE idea_id = %s AND ans_id = %s
     """, (idea_id, ans_id))
     db.commit()
+
+
+# =============================================================================
+# SEED GENERATOR
+# =============================================================================
+
+def db_generate_ideas_seed() -> str:
+    db = get_db()
+    cur = db.cursor(cursor_factory=RealDictCursor)
+
+    def sql_val(v):
+        if v is None:               return 'NULL'
+        if isinstance(v, bool):     return 'true' if v else 'false'
+        if isinstance(v, int):      return str(v)
+        if isinstance(v, float):    return str(v)
+        if isinstance(v, datetime): return "'" + v.isoformat() + "'"
+        if isinstance(v, dict):     return "'" + json.dumps(v).replace("'", "''") + "'"
+        return "'" + str(v).replace("'", "''") + "'"
+
+    generated = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
+    lines = [
+        f'-- {"=" * 60}',
+        f'-- NightSquirrel — Ideas seed',
+        f'-- Generated : {generated}',
+        f'-- {"=" * 60}',
+        '',
+        'DELETE FROM nightsquirrel.tbl_i_idea;',
+        '',
+    ]
+
+    for table, pk, label in [
+        ('tbl_i_idea',          'idea_id', 'ideas'),
+        ('tbl_i_idea2tag',      'i2t_id',  'idea↔tag junctions'),
+        ('tbl_i_idea2reference','i2r_id',  'idea↔reference junctions'),
+        ('tbl_i_idea2answer',   'i2a_id',  'idea↔answer junctions'),
+    ]:
+        cur.execute(f"SELECT * FROM nightsquirrel.{table} ORDER BY {pk}")
+        rows = cur.fetchall()
+        if rows:
+            cols     = list(rows[0].keys())
+            cols_sql = ', '.join(cols)
+            lines.append(f'-- {label}')
+            for row in rows:
+                vals = ', '.join(sql_val(row[c]) for c in cols)
+                lines.append(
+                    f'INSERT INTO nightsquirrel.{table} ({cols_sql})'
+                    f' OVERRIDING SYSTEM VALUE VALUES ({vals});'
+                )
+            lines.append(
+                f"SELECT setval(pg_get_serial_sequence("
+                f"'nightsquirrel.{table}', '{pk}'), "
+                f"COALESCE((SELECT MAX({pk}) FROM nightsquirrel.{table}), 0));"
+            )
+            lines.append('')
+        else:
+            lines.append(f'-- (no {label})')
+            lines.append('')
+
+    return '\n'.join(lines) + '\n'

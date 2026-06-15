@@ -1,5 +1,5 @@
 from flask import (Blueprint, render_template, request, redirect,
-                   url_for, flash, abort, g)
+                   url_for, flash, abort, g, Response)
 from flask_babel import gettext as _
 from functools import wraps
 import psycopg2, json
@@ -12,7 +12,8 @@ from .db_ideas import (db_list_ideas, db_get_idea, db_create_idea,
                        db_list_refs_for_idea, db_list_refs_available_for_idea,
                        db_attach_ref_to_idea, db_detach_ref_from_idea,
                        db_list_answers_for_idea, db_list_answers_available_for_idea,
-                       db_attach_answer_to_idea, db_detach_answer_from_idea)
+                       db_attach_answer_to_idea, db_detach_answer_from_idea,
+                       db_generate_ideas_seed)
 
 bp = Blueprint('bl_ideas', __name__)
 
@@ -282,3 +283,18 @@ def admin_idea_detach_answer(idea_id, ans_id):
     _check_idea_access(row)
     db_detach_answer_from_idea(idea_id, ans_id)
     return redirect(url_for('bl_ideas.admin_idea_answers', idea_id=idea_id))
+
+
+# =============================================================================
+# ADMIN — seed download
+# =============================================================================
+
+@bp.get('/admin/generate-seed')
+@staff_required
+def generate_ideas_seed():
+    sql = db_generate_ideas_seed()
+    return Response(
+        sql,
+        mimetype='text/plain',
+        headers={'Content-Disposition': 'attachment; filename="13-idea-seed.sql"'}
+    )

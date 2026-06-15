@@ -375,7 +375,7 @@ INSERT INTO nightsquirrel.tbl_u_user (
     sct_id, usr_school_grade)
 OVERRIDING SYSTEM VALUE                                                                                                                                 
 VALUES (1, 'variance.milano@gmail.com', 
-        'sha256$lxMnvIx0yDBYjPDy$e17cf3a475356d414e28d1a69a75b195b4026c6fc406a832517ee3dc40bc689d', 
+        'pbkdf2:sha256:1000000$JVsQMwe64SKzAFBG$b8ee84ecd635e350b137a0bc429029f2495db294966718d90242e5082b707c6e', 
         'AdminTutor', true, true, 'tile6.svg', false, true, true, false, NULL, NULL);
 
 INSERT INTO nightsquirrel.tbl_u_user (                                                                          
@@ -385,7 +385,7 @@ INSERT INTO nightsquirrel.tbl_u_user (
     sct_id, usr_school_grade)                                                                                   
 OVERRIDING SYSTEM VALUE
 VALUES (2, 'rinaldo.nani@gmail.com',                                                                          
-        'sha256$lxMnvIx0yDBYjPDy$e17cf3a475356d414e28d1a69a75b195b4026c6fc406a832517ee3dc40bc689d',             
+        'pbkdf2:sha256:1000000$JVsQMwe64SKzAFBG$b8ee84ecd635e350b137a0bc429029f2495db294966718d90242e5082b707c6e',             
         'RinaldoTutor', true, true, 'tile6.svg', false, true, false, false, NULL, NULL);                               
                                                                                                                 
 INSERT INTO nightsquirrel.tbl_u_user (                                                                          
@@ -395,7 +395,7 @@ INSERT INTO nightsquirrel.tbl_u_user (
     sct_id, usr_school_grade)                                                                                   
 OVERRIDING SYSTEM VALUE
 VALUES (3, 'beethovenreview@gmail.com',                                                                        
-        'sha256$lxMnvIx0yDBYjPDy$e17cf3a475356d414e28d1a69a75b195b4026c6fc406a832517ee3dc40bc689d',
+        'pbkdf2:sha256:1000000$JVsQMwe64SKzAFBG$b8ee84ecd635e350b137a0bc429029f2495db294966718d90242e5082b707c6e',
         'StudentBeeth', true, true, 'tile6.svg', true, false, false, false, NULL, NULL);  
 
 SELECT setval(

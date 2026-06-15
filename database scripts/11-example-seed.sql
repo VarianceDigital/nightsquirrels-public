@@ -1,6 +1,6 @@
 -- ============================================================
 -- NightSquirrel — Examples seed
--- Generated : 2026-05-05 22:33 UTC
+-- Generated : 2026-06-09 16:09 UTC
 -- ============================================================
 
 DELETE FROM nightsquirrel.tbl_q_example;
